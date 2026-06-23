@@ -137,7 +137,7 @@ export default function Contact() {
           </p>
 
           <a
-            href="mailto:hello@indicationsmedia.com"
+            href="mailto:indicationsmedia@protonmail.com"
             className="btn-redraw"
             style={{
               display: 'inline-block',
@@ -167,7 +167,7 @@ export default function Contact() {
               e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
-            hello@indicationsmedia.com
+            indicationsmedia@protonmail.com
           </a>
         </div>
 
