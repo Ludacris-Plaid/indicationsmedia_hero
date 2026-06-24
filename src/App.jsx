@@ -8,8 +8,9 @@ import Contact from './components/Contact'
 import CustomCursor from './components/CustomCursor'
 import DataStream from './components/DataStream'
 import GlitchOverlay from './components/GlitchOverlay'
+import useIsMobile from './hooks/useIsMobile'
 
-export default function App() {
+function DesktopLayout() {
   const [activeSection, setActiveSection] = useState('hero')
   const [hoveredProject, setHoveredProject] = useState(null)
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
@@ -25,7 +26,6 @@ export default function App() {
     }
   }, [])
 
-  // Track which section is in view
   useEffect(() => {
     const container = scrollRef.current
     if (!container) return
@@ -43,10 +43,7 @@ export default function App() {
             setActiveSection(id)
           }
         },
-        {
-          root: container,
-          threshold: 0.3,
-        }
+        { root: container, threshold: 0.3 }
       )
 
       observer.observe(el)
@@ -62,7 +59,6 @@ export default function App() {
       style={{ width: '100vw', height: '100dvh', overflow: 'hidden', background: '#030806' }}
     >
       <Scene />
-
       <DataStream />
       <GlitchOverlay />
       <CustomCursor cursorPosition={cursorPosition} hoveredProject={hoveredProject} />
@@ -86,4 +82,52 @@ export default function App() {
       </div>
     </div>
   )
+}
+
+function MobileLayout() {
+  const [activeSection, setActiveSection] = useState('hero')
+  const scrollRef = useRef(null)
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'work', 'about', 'contact']
+      for (const id of sections) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.3) {
+          setActiveSection(id)
+          break
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#030806', position: 'relative' }}>
+      <Scene isMobile />
+      <DataStream />
+      <GlitchOverlay />
+
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <Navigation activeSection={activeSection} setActiveSection={setActiveSection} scrollToTop={scrollToTop} />
+        <Hero />
+        <ProjectGrid setActiveSection={setActiveSection} />
+        <About />
+        <Contact />
+      </div>
+    </div>
+  )
+}
+
+export default function App() {
+  const isMobile = useIsMobile()
+  return isMobile ? <MobileLayout /> : <DesktopLayout />
 }

@@ -9,7 +9,6 @@
 html, body, #root {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   background: #030806;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #fff;
@@ -19,6 +18,7 @@ html, body, #root {
 
 @media (hover: hover) and (pointer: fine) {
   html, body, #root {
+    overflow: hidden;
     cursor: none;
   }
 }
