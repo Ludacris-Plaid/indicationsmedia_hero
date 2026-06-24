@@ -9,7 +9,7 @@ export default function Scene({ isMobile }) {
       position: 'fixed',
       inset: 0,
       zIndex: 1,
-      pointerEvents: 'none',
+      pointerEvents: isMobile ? 'auto' : 'none',
     }}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 60 }}
