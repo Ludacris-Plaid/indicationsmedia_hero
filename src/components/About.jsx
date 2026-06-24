@@ -125,7 +125,7 @@ export default function About() {
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '11px',
-            color: 'rgba(0, 255, 102, 0.6)',
+            color: 'rgba(0, 204, 255, 0.6)',
             marginBottom: '12px',
             letterSpacing: '0.1em',
           }}>
@@ -148,8 +148,7 @@ export default function About() {
             fontFamily: "'Courier New', monospace",
             fontSize: '13px',
             lineHeight: 1.9,
-            color: 'rgba(0, 255, 102, 0.7)',
-            textShadow: '0 0 8px rgba(0, 255, 102, 0.15)',
+            color: 'rgba(255, 255, 255, 0.5)',
             marginBottom: '20px',
           }}>
             {'> Indications Media is a digital development studio'}
@@ -172,8 +171,8 @@ export default function About() {
                 fontSize: '10px',
                 padding: '6px 12px',
                 borderRadius: '2px',
-                border: '1px solid rgba(0, 255, 102, 0.1)',
-                color: 'rgba(0, 255, 102, 0.7)',
+                border: `1px solid ${i % 2 === 0 ? 'rgba(0, 255, 102, 0.12)' : 'rgba(0, 204, 255, 0.12)'}`,
+                color: i % 2 === 0 ? 'rgba(0, 255, 102, 0.7)' : 'rgba(0, 204, 255, 0.7)',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
                 transition: `all 0.5s ease ${0.3 + i * 0.05}s`,
@@ -203,40 +202,44 @@ export default function About() {
           transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
           transition: 'all 0.8s ease 0.2s',
         }}>
-          {stats.map((stat, index) => (
-            <div key={stat.label} style={{
-              padding: '28px',
-              borderRadius: '2px',
-              border: '1px solid rgba(0, 255, 102, 0.06)',
-              background: 'rgba(0, 255, 102, 0.02)',
-              textAlign: 'center',
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-              transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
-            }}>
-              <div style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: '32px',
-                fontWeight: 700,
-                letterSpacing: '-0.02em',
-                marginBottom: '6px',
-                color: '#00ff66',
-                textShadow: '0 0 15px rgba(0, 255, 102, 0.3)',
+          {stats.map((stat, index) => {
+            const isCyan = index % 2 === 1
+            const accent = isCyan ? '#00ccff' : '#00ff66'
+            return (
+              <div key={stat.label} style={{
+                padding: '28px',
+                borderRadius: '2px',
+                border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : 'rgba(0, 255, 102, 0.06)'}`,
+                background: isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
+                textAlign: 'center',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
               }}>
-                {stat.number}
+                <div style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  letterSpacing: '-0.02em',
+                  marginBottom: '6px',
+                  color: accent,
+                  textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : 'rgba(0, 255, 102, 0.3)'}`,
+                }}>
+                  {stat.number}
+                </div>
+                <div style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '10px',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  fontWeight: 500,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                }}>
+                  {stat.label}
+                </div>
               </div>
-              <div style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: '10px',
-                color: 'rgba(0, 255, 102, 0.6)',
-                fontWeight: 500,
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-              }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
