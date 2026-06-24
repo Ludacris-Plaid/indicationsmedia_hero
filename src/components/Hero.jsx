@@ -306,9 +306,9 @@ export default function Hero() {
                 padding: isMobile ? '12px 20px' : '16px 32px',
                 minWidth: isMobile ? '140px' : '200px',
                 borderRadius: '2px',
-                border: '1px solid rgba(0, 204, 255, 0.3)',
-                background: 'transparent',
-                color: 'rgba(0, 204, 255, 0.6)',
+                border: '1px solid #00ccff',
+                background: 'rgba(0, 204, 255, 0.05)',
+                color: '#00ccff',
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -316,17 +316,16 @@ export default function Hero() {
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
                 transition: 'all 0.3s ease',
+                boxShadow: '0 0 15px rgba(0, 204, 255, 0.1), inset 0 0 15px rgba(0, 204, 255, 0.05)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.6)'
-                e.currentTarget.style.color = '#00ccff'
-                e.currentTarget.style.background = 'rgba(0, 204, 255, 0.05)'
+                e.currentTarget.style.background = 'rgba(0, 204, 255, 0.15)'
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 204, 255, 0.2), inset 0 0 30px rgba(0, 204, 255, 0.1)'
                 e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.3)'
-                e.currentTarget.style.color = 'rgba(0, 204, 255, 0.6)'
-                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.background = 'rgba(0, 204, 255, 0.05)'
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.1), inset 0 0 15px rgba(0, 204, 255, 0.05)'
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
