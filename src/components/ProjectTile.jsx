@@ -121,12 +121,12 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
           <span style={{
             fontFamily: "'Courier New', monospace",
             fontSize: isMobile ? '7px' : '10px',
-            fontWeight: 600,
+            fontWeight: localHover ? 700 : 500,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: '#00ff66',
-            opacity: localHover ? 1 : 0.5,
-            transition: 'opacity 0.3s',
+            opacity: localHover ? 1 : 0.4,
+            transition: 'all 0.3s',
             textShadow: localHover ? '0 0 8px rgba(0,255,102,0.3)' : 'none',
           }}>
             {project.category}
@@ -158,7 +158,8 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
             fontFamily: "'Courier New', monospace",
             fontSize: isMobile ? '8px' : '12px',
             lineHeight: isMobile ? 1.4 : 1.7,
-            color: 'rgba(0, 255, 102, 0.7)',
+            color: localHover ? 'rgba(0, 255, 102, 0.9)' : 'rgba(0, 255, 102, 0.4)',
+            fontWeight: localHover ? 600 : 400,
             transform: localHover ? 'translateY(-6px)' : isMobile ? 'translateY(0)' : 'translateY(8px)',
             opacity: isMobile ? 1 : localHover ? 1 : 0,
             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
@@ -172,17 +173,19 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
             alignItems: 'center',
             gap: '8px',
             transform: localHover ? 'translateY(0)' : 'translateY(12px)',
-            opacity: localHover ? 1 : 0,
+            opacity: isMobile ? 0.5 : localHover ? 1 : 0,
             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
           }}>
             <span style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '11px',
-              fontWeight: 600,
+              fontSize: isMobile ? '8px' : '11px',
+              fontWeight: localHover ? 700 : 500,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: '#00ff66',
-              textShadow: '0 0 8px rgba(0,255,102,0.3)',
+              opacity: localHover ? 1 : 0.5,
+              textShadow: localHover ? '0 0 8px rgba(0,255,102,0.3)' : 'none',
+              transition: 'all 0.3s',
             }}>
               {'>>'} VIEW SITE
             </span>
