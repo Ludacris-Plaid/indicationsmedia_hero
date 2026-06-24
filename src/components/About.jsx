@@ -65,6 +65,11 @@ const testimonials = [
   { name: 'Diana L.', role: 'Founder, Prism Analytics', quote: 'The AI integration they built processes 50k documents daily. It\'s like having a team of analysts working 24/7.' },
   { name: 'James T.', role: 'VP Eng, Harbor Systems', quote: 'They found vulnerabilities our previous team missed entirely. Post-pen-test, we haven\'t had a single incident in 14 months.' },
   { name: 'Priya M.', role: 'Director, Vertex Commerce', quote: 'From concept to production in 4 months. Our e-commerce platform now does $2M monthly with 99.99% uptime.' },
+  { name: 'Alex Chen', role: 'Founder, CipherVault', quote: 'They hardened our infrastructure in under a week. What took our last team months, Indications Media shipped in days.' },
+  { name: 'Rachel W.', role: 'Head of Product, Orbit Labs', quote: 'The real-time dashboards they built give us visibility we never had. We catch issues before our customers do.' },
+  { name: 'Devon B.', role: 'CTO, NeonBridge', quote: 'Clean code, tight architecture, zero hand-holding. They delivered exactly what was spec\'d and then some.' },
+  { name: 'Kenji O.', role: 'CEO, Wavepoint Digital', quote: 'Our conversion rate jumped 40% after the redesign. The attention to performance and UX detail was unreal.' },
+  { name: 'Laura F.', role: 'VP Tech, Stratum Health', quote: 'HIPAA-compliant from day one. They understood the compliance landscape better than most security firms we\'ve worked with.' },
 ]
 
 function TestimonialBox({ isVisible }) {
