@@ -112,7 +112,7 @@ export default function TechStack() {
                   fontFamily: "'Courier New', monospace",
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#00ccff',
+                  color: '#00ff66',
                   marginBottom: '4px',
                   letterSpacing: '0.02em',
                 }}>
@@ -135,67 +135,63 @@ export default function TechStack() {
         <div>
           <div style={sectionLabel}>{'// CERTIFICATIONS'}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {certs.map((cert, i) => {
-              const isCyan = i % 2 === 1
-              const accent = isCyan ? '#00ccff' : '#ffffff'
-              return (
-                <div key={cert.abbr} style={{
+            {certs.map((cert) => (
+              <div key={cert.abbr} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '14px 16px',
+                borderRadius: '2px',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                transition: 'all 0.3s ease',
+              }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)'
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                }}
+              >
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '4px',
+                  border: '1.5px solid #00ff66',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '14px',
-                  padding: '14px 16px',
-                  borderRadius: '2px',
-                  border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'}`,
-                  background: isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)',
-                  transition: 'all 0.3s ease',
-                }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.15)' : 'rgba(255, 255, 255, 0.15)'
-                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.04)' : 'rgba(255, 255, 255, 0.04)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'
-                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)'
-                  }}
-                >
+                  justifyContent: 'center',
+                  background: 'rgba(0, 255, 102, 0.06)',
+                  boxShadow: '0 0 10px rgba(0, 255, 102, 0.12)',
+                  flexShrink: 0,
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 16l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="#00ff66" />
+                  </svg>
+                </div>
+                <div>
                   <div style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    border: '1.5px solid #00ff66',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(0, 255, 102, 0.06)',
-                    boxShadow: '0 0 10px rgba(0, 255, 102, 0.12)',
-                    flexShrink: 0,
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    letterSpacing: '0.05em',
                   }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#00ff66" />
-                    </svg>
+                    {cert.abbr}
                   </div>
-                  <div>
-                    <div style={{
-                      fontFamily: "'Courier New', monospace",
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      color: accent,
-                      letterSpacing: '0.05em',
-                    }}>
-                      {cert.abbr}
-                    </div>
-                    <div style={{
-                      fontFamily: "'Courier New', monospace",
-                      fontSize: '9px',
-                      color: isCyan ? 'rgba(0, 204, 255, 0.4)' : 'rgba(255, 255, 255, 0.35)',
-                      letterSpacing: '0.03em',
-                    }}>
-                      {cert.name}
-                    </div>
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '9px',
+                    color: 'rgba(255, 255, 255, 0.35)',
+                    letterSpacing: '0.03em',
+                  }}>
+                    {cert.name}
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
