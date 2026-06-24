@@ -226,23 +226,28 @@ export default function Contact() {
             display: 'flex',
             gap: '20px',
           }}>
-            {['Twitter', 'GitHub', 'LinkedIn'].map((link) => (
+            {[
+              { name: 'Twitter', color: '#1DA1F2' },
+              { name: 'GitHub', color: '#F05032' },
+              { name: 'LinkedIn', color: '#0A66C2' },
+            ].map((link) => (
               <a
-                key={link}
+                key={link.name}
                 href="#"
                 style={{
                   fontFamily: "'Courier New', monospace",
                   fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.4)',
+                  color: link.color,
+                  opacity: 0.7,
                   textDecoration: 'none',
-                  transition: 'color 0.3s',
+                  transition: 'opacity 0.3s',
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                 }}
-                onMouseEnter={(e) => { e.target.style.color = '#00ccff' }}
-                onMouseLeave={(e) => { e.target.style.color = 'rgba(255, 255, 255, 0.4)' }}
+                onMouseEnter={(e) => { e.target.style.opacity = '1' }}
+                onMouseLeave={(e) => { e.target.style.opacity = '0.7' }}
               >
-                {link}
+                {link.name}
               </a>
             ))}
           </div>
@@ -250,12 +255,21 @@ export default function Contact() {
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '10px',
-            color: 'rgba(255, 255, 255, 0.3)',
+            color: '#00ccff',
+            letterSpacing: '0.05em',
+            animation: 'copyrightPulse 3s ease-in-out infinite',
           }}>
-            © 2025 INDICATIONS_MEDIA
+            c.2020 INDICATIONS_MEDIA
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes copyrightPulse {
+          0%, 100% { opacity: 0.6; text-shadow: 0 0 4px rgba(0, 204, 255, 0.2); }
+          50% { opacity: 1; text-shadow: 0 0 12px rgba(0, 204, 255, 0.4); }
+        }
+      `}</style>
     </section>
   )
 }
