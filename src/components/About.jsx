@@ -94,6 +94,7 @@ export default function About() {
   const skills = [
     'Full-Stack Development', 'System Architecture', 'AI Integration',
     'Cybersecurity', 'API Development', 'Cloud & DevOps',
+    'Linux Systems', 'Database Design', 'Network Engineering',
   ]
 
   return (
