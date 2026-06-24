@@ -201,6 +201,7 @@ export default function Navigation({ activeSection, setActiveSection, scrollToTo
           alignItems: 'center',
           justifyContent: 'center',
           gap: '24px',
+          paddingTop: '80px',
           zIndex: 105,
         }}>
           {navItems.map((item) => {
