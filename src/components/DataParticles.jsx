@@ -93,7 +93,7 @@ function generateDataParticles(count) {
   return { positions, sizes, speeds, phases }
 }
 
-export default function DataParticles({ count = 800 }) {
+export default function DataParticles({ count = 800, isMobile = false }) {
   const meshRef = useRef()
   const [data] = useState(() => generateDataParticles(count))
 
@@ -105,8 +105,16 @@ export default function DataParticles({ count = 800 }) {
   useFrame((state) => {
     if (!meshRef.current) return
     const u = meshRef.current.material.uniforms
-    u.uTime.value = state.clock.getElapsedTime()
-    u.uMouse.value.lerp(new THREE.Vector2(globalMouse.x, globalMouse.y), 0.03)
+    const t = state.clock.getElapsedTime()
+    u.uTime.value = t
+
+    if (isMobile) {
+      const autoX = Math.sin(t * 0.3) * 0.8
+      const autoY = Math.cos(t * 0.2) * 0.6
+      u.uMouse.value.lerp(new THREE.Vector2(autoX, autoY), 0.02)
+    } else {
+      u.uMouse.value.lerp(new THREE.Vector2(globalMouse.x, globalMouse.y), 0.03)
+    }
   })
 
   return (

@@ -40,7 +40,7 @@ export default function Scene({ isMobile }) {
           <color attach="background" args={['#030806']} />
 
           <CircuitBoard />
-          <DataParticles count={800} />
+          <DataParticles count={800} isMobile={isMobile} />
         </Suspense>
       </Canvas>
     </div>

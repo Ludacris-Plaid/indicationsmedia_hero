@@ -95,17 +95,17 @@ export default function TechStack() {
               <div key={s.title} style={{
                 padding: '14px 16px',
                 borderRadius: '2px',
-                border: '1px solid rgba(0, 204, 255, 0.06)',
-                background: 'rgba(0, 204, 255, 0.02)',
+                border: '1px solid rgba(192, 132, 252, 0.12)',
+                background: 'rgba(192, 132, 252, 0.04)',
                 transition: 'all 0.3s ease',
               }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'
-                  e.currentTarget.style.background = 'rgba(0, 204, 255, 0.04)'
+                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.3)'
+                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.08)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.06)'
-                  e.currentTarget.style.background = 'rgba(0, 204, 255, 0.02)'
+                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.12)'
+                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.04)'
                 }}
               >
                 <div style={{
