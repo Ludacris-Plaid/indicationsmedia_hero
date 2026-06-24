@@ -187,20 +187,20 @@ export default function Contact() {
         {/* Footer */}
         <div style={{
           borderTop: '1px solid rgba(0, 255, 102, 0.06)',
-          paddingTop: '32px',
-          marginTop: '80px',
+          paddingTop: isMobile ? '24px' : '32px',
+          marginTop: isMobile ? '48px' : '80px',
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
+          gap: isMobile ? '20px' : '16px',
           opacity: isVisible ? 1 : 0,
           transition: 'opacity 0.8s ease 0.3s',
         }}>
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '11px',
-            color: 'rgba(0, 255, 102, 0.5)',
+            color: 'rgba(255, 255, 255, 0.4)',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -233,14 +233,14 @@ export default function Contact() {
                 style={{
                   fontFamily: "'Courier New', monospace",
                   fontSize: '10px',
-                  color: 'rgba(0, 255, 102, 0.6)',
+                  color: 'rgba(255, 255, 255, 0.4)',
                   textDecoration: 'none',
                   transition: 'color 0.3s',
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                 }}
-                onMouseEnter={(e) => { e.target.style.color = '#00ff66' }}
-                onMouseLeave={(e) => { e.target.style.color = 'rgba(0, 255, 102, 0.6)' }}
+                onMouseEnter={(e) => { e.target.style.color = '#00ccff' }}
+                onMouseLeave={(e) => { e.target.style.color = 'rgba(255, 255, 255, 0.4)' }}
               >
                 {link}
               </a>
@@ -250,7 +250,7 @@ export default function Contact() {
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '10px',
-            color: 'rgba(0, 255, 102, 0.5)',
+            color: 'rgba(255, 255, 255, 0.3)',
           }}>
             © 2025 INDICATIONS_MEDIA
           </div>
