@@ -158,9 +158,9 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
             fontFamily: "'Courier New', monospace",
             fontSize: isMobile ? '8px' : '12px',
             lineHeight: isMobile ? 1.4 : 1.7,
-            color: 'rgba(0, 255, 102, 0.35)',
-            transform: localHover ? 'translateY(-6px)' : 'translateY(8px)',
-            opacity: localHover ? 1 : 0,
+            color: 'rgba(0, 255, 102, 0.7)',
+            transform: localHover ? 'translateY(-6px)' : isMobile ? 'translateY(0)' : 'translateY(8px)',
+            opacity: isMobile ? 1 : localHover ? 1 : 0,
             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
           }}>
             {'> '}{project.description}
