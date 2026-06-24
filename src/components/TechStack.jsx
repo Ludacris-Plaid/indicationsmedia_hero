@@ -50,12 +50,12 @@ import useIsMobile from '../hooks/useIsMobile'
 const sectionLabel = {
   fontFamily: "'Courier New', monospace",
   fontSize: '10px',
-  color: 'rgba(0, 255, 102, 0.4)',
+  color: 'rgba(0, 204, 255, 0.5)',
   letterSpacing: '0.15em',
   textTransform: 'uppercase',
   marginBottom: '16px',
   paddingBottom: '8px',
-  borderBottom: '1px solid rgba(0, 255, 102, 0.06)',
+  borderBottom: '1px solid rgba(0, 204, 255, 0.1)',
 }
 
 const services = [
@@ -137,63 +137,67 @@ export default function TechStack() {
         <div>
           <div style={sectionLabel}>{'// CERTIFICATIONS'}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {certs.map((cert) => (
-              <div key={cert.abbr} style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                padding: '14px 16px',
-                borderRadius: '2px',
-                border: '1px solid rgba(0, 255, 102, 0.06)',
-                background: 'rgba(0, 255, 102, 0.02)',
-                transition: 'all 0.3s ease',
-              }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.15)'
-                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.04)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.06)'
-                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.02)'
-                }}
-              >
-                <div style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  border: '1.5px solid #00ff66',
+            {certs.map((cert, i) => {
+              const isCyan = i % 2 === 1
+              const accent = isCyan ? '#00ccff' : '#ffffff'
+              return (
+                <div key={cert.abbr} style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'rgba(0, 255, 102, 0.06)',
-                  boxShadow: '0 0 10px rgba(0, 255, 102, 0.12)',
-                  flexShrink: 0,
-                }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#00ff66" />
-                  </svg>
-                </div>
-                <div>
+                  gap: '14px',
+                  padding: '14px 16px',
+                  borderRadius: '2px',
+                  border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'}`,
+                  background: isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)',
+                  transition: 'all 0.3s ease',
+                }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.15)' : 'rgba(255, 255, 255, 0.15)'
+                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.04)' : 'rgba(255, 255, 255, 0.04)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'
+                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)'
+                  }}
+                >
                   <div style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    color: '#00ff66',
-                    letterSpacing: '0.05em',
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    border: `1.5px solid ${accent}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.04)',
+                    boxShadow: `0 0 10px ${isCyan ? 'rgba(0, 204, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)'}`,
+                    flexShrink: 0,
                   }}>
-                    {cert.abbr}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill={accent} />
+                    </svg>
                   </div>
-                  <div style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '9px',
-  color: 'rgba(0, 204, 255, 0.5)',
-                    letterSpacing: '0.03em',
-                  }}>
-                    {cert.name}
+                  <div>
+                    <div style={{
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      color: accent,
+                      letterSpacing: '0.05em',
+                    }}>
+                      {cert.abbr}
+                    </div>
+                    <div style={{
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: '9px',
+                      color: isCyan ? 'rgba(0, 204, 255, 0.4)' : 'rgba(255, 255, 255, 0.35)',
+                      letterSpacing: '0.03em',
+                    }}>
+                      {cert.name}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
