@@ -411,7 +411,7 @@ export default function About() {
           )}
 
           {/* Testimonial */}
-          {!isMobile && <TestimonialBox isVisible={isVisible} />}
+          <TestimonialBox isVisible={isVisible} />
         </div>
       </div>
     </section>
