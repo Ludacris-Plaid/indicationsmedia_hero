@@ -254,6 +254,53 @@ export default function TechStack() {
             <TechIcon label="Vue" color="#4FC08D">
               <path d="M2 3h3.5L12 14.5 18.5 3H22L12 21 2 3zm4.2 0L12 12.3 17.8 3h-3.3L12 6.8 9.5 3H6.2z" fill="#4FC08D" />
             </TechIcon>
+
+            {/* Java */}
+            <TechIcon label="Java" color="#ED8B00">
+              <path d="M8.5 3C7 5.5 6.5 8.5 7 11c.3 1.5 1 3 2 4 .3.3.5.5.5.8 0 .3-.2.5-.5.5-.5 0-1.5-.5-2-1-.8-.8-1.3-2-1.5-3.2-.3 1.2-.8 2.4-1.5 3.2-.5.5-1.5 1-2 1-.3 0-.5-.2-.5-.5 0-.3.2-.5.5-.8 1-1 1.7-2.5 2-4 .5-2.5 0-5.5-1.5-8h3zm7 0c-1.5 2.5-2 5.5-1.5 8 .3 1.5 1 3 2 4 .3.3.5.5.5.8 0 .3-.2.5-.5.5-.5 0-1.5-.5-2-1-.8-.8-1.3-2-1.5-3.2-.3 1.2-.8 2.4-1.5 3.2-.5.5-1.5 1-2 1-.3 0-.5-.2-.5-.5 0-.3.2-.5.5-.8 1-1 1.7-2.5 2-4 .5-2.5 0-5.5-1.5-8h3z" fill="#ED8B00" />
+            </TechIcon>
+
+            {/* Go */}
+            <TechIcon label="Go" color="#00ADD8">
+              <path d="M1.5 10c0-3.3 2.7-6 6-6h7.5v2H7.5c-2.2 0-4 1.8-4 4s1.8 4 4 4h1.5v2H7.5c-3.3 0-6-2.7-6-6zm12-4.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5-2.5-1.1-2.5-2.5zM7.5 12h7.5c2.2 0 4-1.8 4-4s-1.8-4-4-4H7.5c-2.2 0-4 1.8-4 4s1.8 4 4 4zm0-6h7.5c1.1 0 2 .9 2 2s-.9 2-2 2H7.5c-1.1 0-2-.9-2-2s.9-2 2-2z" fill="#00ADD8" />
+            </TechIcon>
+
+            {/* Rust */}
+            <TechIcon label="Rust" color="#DEA584">
+              <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.3l6.5 3.6v7.2L12 18.6l-6.5-3.6V7.8L12 4.3zm0 3.2l-3.5 2v4l3.5 2 3.5-2v-4l-3.5-2z" fill="#DEA584" />
+            </TechIcon>
+
+            {/* Bash */}
+            <TechIcon label="Bash" color="#4EAA25">
+              <path d="M2 4h20v16H2V4zm2 2v12h16V6H4zm2 2h3l2 2-2 2H6V8zm5 0h3l2 2-2 2h-3V8zm5 0h3v4h-3V8zm-5 5h3l2 2-2 2h-3v-4zm5 0h3v4h-3v-4z" fill="#4EAA25" />
+            </TechIcon>
+
+            {/* Ruby */}
+            <TechIcon label="Ruby" color="#CC342D">
+              <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.5l6 3.3v6.4L12 17.5 6 14.2V7.8l6-3.3z" fill="#CC342D" />
+              <path d="M12 6l-3 1.7v3.4L12 12.8l3-1.7V7.7L12 6z" fill="#CC342D" opacity="0.5" />
+            </TechIcon>
+
+            {/* PHP */}
+            <TechIcon label="PHP" color="#777BB4">
+              <path d="M4 3h16c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2zm3 4c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1V8c0-.6-.4-1-1-1H7zm3 0c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1V8c0-.6-.4-1-1-1h-1zm3 0c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1h1c.6 0 1-.4 1-1V8c0-.6-.4-1-1-1h-1zm4 0c-.6 0-1 .4-1 1v4c0 .6.4 1 1 1h1c.6 0 1-.4 1-1V8c0-.6-.4-1-1-1h-1zm-8 6c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-1c0-.6-.4-1-1-1h-1zm4 0c-.6 0-1 .4-1 1v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-1c0-.6-.4-1-1-1h-1zm4 0c-.6 0-1 .4-1 1v3c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-3c0-.6-.4-1-1-1h-1z" fill="#777BB4" />
+            </TechIcon>
+
+            {/* Solidity */}
+            <TechIcon label="Solidity" color="#363636">
+              <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.5l6 3.3v6.4L12 17.5 6 14.2V7.8l6-3.3z" fill="#363636" />
+              <path d="M9 9h6v2H9V9zm0 3h6v2H9v-2z" fill="#363636" opacity="0.5" />
+            </TechIcon>
+
+            {/* Swift */}
+            <TechIcon label="Swift" color="#FA7343">
+              <path d="M17.5 14.5c-.3 1.5-1.5 3.5-4 5.5-2.5-2-3.7-4-4-5.5-.3-1.5.3-3 2-4.5 1.7 1.5 2.3 3 2 4.5zm-5.5-8c3.5 0 6.5 2.5 8 6-1.5-3.5-4.5-6-8-6-3.5 0-6.5 2.5-8 6 1.5-3.5 4.5-6 8-6z" fill="#FA7343" />
+            </TechIcon>
+
+            {/* Kotlin */}
+            <TechIcon label="Kotlin" color="#7F52FF">
+              <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2l10 5-10 5V7z" fill="#7F52FF" />
+            </TechIcon>
           </div>
         </div>
 
@@ -347,6 +394,11 @@ export default function TechStack() {
               <circle cx="17.2" cy="15" r="2" fill="#E95420" />
               <circle cx="6.8" cy="15" r="2" fill="#E95420" />
               <circle cx="12" cy="12" r="2.5" fill="#E95420" />
+            </TechIcon>
+
+            {/* Next.js */}
+            <TechIcon label="Next.js" color="#FFFFFF">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z" fill="#FFFFFF" />
             </TechIcon>
           </div>
         </div>
@@ -452,11 +504,6 @@ export default function TechStack() {
               <path d="M6.5 14.5a2 2 0 11-4 0v-6a2 2 0 114 0v6zm6.5 0a2 2 0 11-4 0v-6a2 2 0 114 0v6z" fill="#ECB22E" />
             </TechIcon>
 
-            {/* Obsidian */}
-            <TechIcon label="Obsidian" color="#7C3AED">
-              <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.5l6 3.3v6.4l-6 3.3-6-3.3V7.8l6-3.3z" fill="#7C3AED" />
-              <path d="M12 6l-4 2.2v4.4l4 2.2 4-2.2V8.2L12 6z" fill="#7C3AED" opacity="0.5" />
-            </TechIcon>
           </div>
         </div>
       </div>
