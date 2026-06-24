@@ -23,6 +23,18 @@ html, body, #root {
   }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  html, body {
+    touch-action: pan-y;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  canvas {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
+}
+
 ::selection {
   background: rgba(0, 255, 102, 0.2);
 }
