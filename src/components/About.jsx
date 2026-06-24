@@ -2,6 +2,36 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
 import useIsMobile from '../hooks/useIsMobile'
 
+const useCounterAnimation = (endValue, duration = 2000) => {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    let startTime = null
+    let animationFrameId = null
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      
+      const ease = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(2 - 2 * progress, 2)
+      
+      setCount(Math.floor(ease * endValue))
+      
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate)
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [endValue, duration])
+
+  return count
+}
+
 const ROTATING_WORDS = ['code', 'craft', 'design', 'precision', 'vision', 'execution', 'strategy', 'innovation', 'systems', 'architecture']
 
 function TypewriterWord({ words, typeSpeed = 60, deleteSpeed = 35, pauseMs = 2500, color = '#00ff66' }) {
@@ -190,10 +220,10 @@ export default function About() {
   }, [])
 
   const stats = [
-    { number: '50+', label: 'Projects Deployed' },
-    { number: '8+', label: 'Years Runtime' },
-    { number: '30+', label: 'Active Clients' },
-    { number: '15+', label: 'Awards Compiled' },
+    { number: 50, label: 'Projects Deployed' },
+    { number: 8, label: 'Years Runtime' },
+    { number: 30, label: 'Active Clients' },
+    { number: 15, label: 'Awards Compiled' },
   ]
 
   const skills = [
@@ -323,7 +353,7 @@ export default function About() {
                   padding: '28px',
                   borderRadius: '2px',
                   border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : isWhite ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 255, 102, 0.06)'}`,
-                  background: isCyan ? 'rgba(0, 204, 255, 0.02)' : isWhite ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
+                  background: 'rgba(255, 255, 255, 0.02)',
                   textAlign: 'center',
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
@@ -338,7 +368,21 @@ export default function About() {
                     color: accent,
                     textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : isWhite ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 255, 102, 0.3)'}`,
                   }}>
-                    {stat.number}
+                    <span style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '32px',
+                      fontWeight: 700,
+                      color: accent,
+                    }}>
+                      {useCounterAnimation(stat.number, 2000)}
+                    </span>
+                    <span style={{
+                      fontSize: '32px',
+                      fontWeight: 700,
+                      color: accent,
+                    }}>
+                      +
+                    </span>
                   </div>
                   <div style={{
                     fontFamily: "'Courier New', monospace",
@@ -355,61 +399,51 @@ export default function About() {
             })}
           </div>
 
-          {/* How We Work */}
-          {!isMobile && (
-          <div style={{
-            padding: '20px',
-            borderRadius: '2px',
-            border: '1px solid rgba(192, 132, 252, 0.15)',
-            background: 'rgba(192, 132, 252, 0.03)',
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-            transition: 'all 0.8s ease 0.5s',
-          }}>
-            <div style={{
-              fontFamily: "'Courier New', monospace",
-              fontSize: '10px',
-              color: '#c084fc',
-              letterSpacing: '0.1em',
-              marginBottom: '14px',
-              textTransform: 'uppercase',
-            }}>
-              {'// HOW WE WORK'}
-            </div>
-            {[
-              { step: '01', text: 'Discovery & Threat Modeling' },
-              { step: '02', text: 'Architecture & Prototyping' },
-              { step: '03', text: 'Secure Development' },
-              { step: '04', text: 'Deploy & Monitor' },
-            ].map((item, i) => (
-              <div key={item.step} style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '8px 0',
-                borderBottom: i < 3 ? '1px solid rgba(192, 132, 252, 0.08)' : 'none',
-              }}>
-                <span style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  color: '#c084fc',
-                  minWidth: '24px',
-                }}>
-                  {item.step}
-                </span>
-                <span style={{
-                  fontFamily: "'Courier New', monospace",
-                  fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.45)',
-                  letterSpacing: '0.03em',
-                }}>
-                  {item.text}
-                </span>
-              </div>
-            ))}
-          </div>
-          )}
+           {/* Digital Manifesto */}
+           <div style={{
+             padding: '20px',
+             borderRadius: '2px',
+             border: '1px solid rgba(0, 255, 102, 0.3)',
+             background: 'rgba(0, 255, 102, 0.03)',
+             opacity: isVisible ? 1 : 0,
+             transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+             transition: 'all 0.8s ease 0.5s',
+             position: 'relative',
+             overflow: 'hidden',
+           }}>
+             <div style={{
+               fontFamily: "'Courier New', monospace",
+               fontSize: '10px',
+               color: '#00ff66',
+               letterSpacing: '0.1em',
+               marginBottom: '14px',
+               textTransform: 'uppercase',
+               display: 'flex',
+               justifyContent: 'space-between',
+             }}>
+               {'// SYSTEM_MANIFESTO'}
+               <span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>v1.0.4_stable</span>
+             </div>
+             <div style={{
+               fontFamily: "'Space Grotesk', sans-serif",
+               fontSize: '13px',
+               lineHeight: 1.6,
+               color: 'rgba(255, 255, 255, 0.7)',
+               fontStyle: 'italic',
+             }}>
+               "We operate at the intersection of security and curiosity. Born from the <span style={{ color: '#00ff66', fontWeight: 'bold' }}>grey-hat</span> ethos, we believe that true stability is only found by understanding the breaks. Our philosophy is simple: <span style={{ color: '#00ff66' }}>open source</span> is the only path forward, and information wants to be free. We don't just build walls; we know exactly how to climb them—which is why our walls are the only ones that actually hold."
+             </div>
+             <div style={{
+               marginTop: '16px',
+               display: 'flex',
+               gap: '10px',
+               opacity: 0.5
+             }}>
+               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[TOR_ENABLED]</span>
+               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[DECENTRALIZED]</span>
+               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[ROOT_ACCESS]</span>
+             </div>
+           </div>
 
           {/* Testimonial */}
           <TestimonialBox isVisible={isVisible} />
