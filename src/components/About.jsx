@@ -446,7 +446,7 @@ export default function About() {
                whiteSpace: 'nowrap'
              }}>
                <marquee scrollamount="3" style={{ width: '100%' }}>
-                 [INFO_WANTS_TO_BE_FREE] &nbsp;&nbsp; [CODE_IS_LAW] &nbsp;&nbsp; [DIGITAL_SOVEREIGNTY] &nbsp;&nbsp; [BREAK_THE_GATEKEEPERS] &nbsp;&nbsp; [PRIVACY_IS_A_RIGHT] &nbsp;&nbsp; [DECENTRALIZE_EVERYTHING] &nbsp;&nbsp; [OPEN_SOURCE_OR_DIE] &nbsp;&nbsp; [RESIST_THE_ALGORITHM] &nbsp;&nbsp; [KNOWLEDGE_FOR_ALL] &nbsp;&nbsp; [ENCRYPT_YOUR_LIFE]
+                 [INFO_WANTS_TO_BE_FREE] &nbsp;&nbsp; [CYBER_AUTONOMY] &nbsp;&nbsp; [DIGITAL_SOVEREIGNTY] &nbsp;&nbsp; [VOID_THE_WARRANTY] &nbsp;&nbsp; [PRIVACY_IS_A_RIGHT] &nbsp;&nbsp; [DECENTRALIZE_EVERYTHING] &nbsp;&nbsp; [OPEN_SOURCE_OR_DIE] &nbsp;&nbsp; [RESIST_THE_ALGORITHM] &nbsp;&nbsp; [KNOWLEDGE_FOR_ALL] &nbsp;&nbsp; [ENCRYPT_YOUR_LIFE] &nbsp;&nbsp; [NO_MASTERS_NO_ROOTS]
                </marquee>
              </div>
            </div>
