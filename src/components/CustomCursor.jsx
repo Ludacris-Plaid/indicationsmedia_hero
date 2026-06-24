@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
+import useIsMobile from '../hooks/useIsMobile'
 
 export default function CustomCursor({ cursorPosition, hoveredProject }) {
+  const isMobile = useIsMobile()
   const cursorRef = useRef(null)
   const dotRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -23,6 +25,8 @@ export default function CustomCursor({ cursorPosition, hoveredProject }) {
   }, [cursorPosition])
 
   const color = hoveredProject ? '#00ff66' : '#00ff66'
+
+  if (isMobile) return null
 
   return (
     <>

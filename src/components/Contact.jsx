@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import useIsMobile from '../hooks/useIsMobile'
 
 const CYCLE_WORDS = [
   'execute',
@@ -60,6 +61,7 @@ function RotatingWord({ words = CYCLE_WORDS, typeSpeed = 60, deleteSpeed = 40, p
 }
 
 export default function Contact() {
+  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef(null)
 
@@ -80,7 +82,7 @@ export default function Contact() {
         position: 'relative',
         width: '100%',
         minHeight: '70vh',
-        padding: '120px 40px 60px',
+        padding: isMobile ? '80px 16px 40px' : '120px 40px 60px',
         pointerEvents: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -141,8 +143,8 @@ export default function Contact() {
             className="btn-redraw"
             style={{
               display: 'inline-block',
-              padding: '16px 36px',
-              minWidth: '200px',
+              padding: isMobile ? '12px 16px' : '16px 36px',
+              wordBreak: 'break-all',
               borderRadius: '2px',
               border: '1px solid #00ff66',
               background: 'rgba(0, 255, 102, 0.05)',

@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import ProjectTile from './ProjectTile'
 import projects from '../data/projects'
+import useIsMobile from '../hooks/useIsMobile'
 
 export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveSection }) {
+  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
   const gridRef = useRef(null)
 
@@ -32,7 +34,7 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
         position: 'relative',
         width: '100%',
         minHeight: '100vh',
-        padding: '120px 40px 80px',
+        padding: isMobile ? '80px 16px 40px' : '120px 40px 80px',
         pointerEvents: 'auto',
       }}
     >
@@ -71,7 +73,7 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(340px, 1fr))',
           gap: '24px',
         }}>
           {projects.map((project, index) => (

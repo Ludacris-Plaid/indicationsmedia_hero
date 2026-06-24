@@ -15,7 +15,12 @@ html, body, #root {
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html, body, #root {
+    cursor: none;
+  }
 }
 
 ::selection {
@@ -36,7 +41,13 @@ html, body, #root {
 }
 
 a, button {
-  cursor: none;
+  min-height: 44px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a, button {
+    cursor: none;
+  }
 }
 
 @keyframes blink {

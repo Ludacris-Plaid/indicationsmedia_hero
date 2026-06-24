@@ -59,7 +59,7 @@ export default function App() {
   return (
     <div
       onMouseMove={handleMouseMove}
-      style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#030806', cursor: 'none' }}
+      style={{ width: '100vw', height: '100dvh', overflow: 'hidden', background: '#030806' }}
     >
       <Scene />
 

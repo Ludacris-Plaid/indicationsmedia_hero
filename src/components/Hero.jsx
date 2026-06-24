@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useIsMobile from '../hooks/useIsMobile'
 
 const CYCLE_PHRASES = [
   'push boundaries',
@@ -147,6 +148,7 @@ function BootSequence({ onComplete }) {
 }
 
 export default function Hero() {
+  const isMobile = useIsMobile()
   const [phase, setPhase] = useState(0)
   const [bootDone, setBootDone] = useState(false)
 
@@ -175,7 +177,7 @@ export default function Hero() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '0 40px',
+          padding: isMobile ? '0 16px' : '0 40px',
           pointerEvents: 'auto',
           overflow: 'hidden',
           opacity: bootDone ? 1 : 0,
@@ -258,7 +260,8 @@ export default function Hero() {
           {/* CTAs */}
           <div style={{
             display: 'flex',
-            gap: '16px',
+            flexWrap: 'wrap',
+            gap: isMobile ? '12px' : '16px',
             opacity: phase >= 4 ? 1 : 0,
             transform: phase >= 4 ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -267,8 +270,8 @@ export default function Hero() {
               onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
               className="btn-redraw"
               style={{
-                padding: '16px 32px',
-                minWidth: '200px',
+                padding: isMobile ? '12px 20px' : '16px 32px',
+                minWidth: isMobile ? '140px' : '200px',
                 borderRadius: '2px',
                 border: '1px solid #00ff66',
                 background: 'rgba(0, 255, 102, 0.05)',
@@ -300,8 +303,8 @@ export default function Hero() {
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="btn-redraw btn-redraw-cyan"
               style={{
-                padding: '16px 32px',
-                minWidth: '200px',
+                padding: isMobile ? '12px 20px' : '16px 32px',
+                minWidth: isMobile ? '140px' : '200px',
                 borderRadius: '2px',
                 border: '1px solid rgba(0, 204, 255, 0.3)',
                 background: 'transparent',

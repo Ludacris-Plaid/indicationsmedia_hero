@@ -45,6 +45,8 @@ const Icon = ({ children, label }) => (
   </div>
 )
 
+import useIsMobile from '../hooks/useIsMobile'
+
 const sectionLabel = {
   fontFamily: "'Courier New', monospace",
   fontSize: '10px',
@@ -66,6 +68,7 @@ const services = [
 ]
 
 export default function TechStack() {
+  const isMobile = useIsMobile()
   const certs = [
     { abbr: 'A+', name: 'CompTIA A+' },
     { abbr: 'Network+', name: 'CompTIA Network+' },
@@ -78,8 +81,8 @@ export default function TechStack() {
       {/* Services + Certifications side by side */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '32px',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? '24px' : '32px',
         marginBottom: '36px',
       }}>
         {/* Services */}
@@ -195,8 +198,8 @@ export default function TechStack() {
       <div style={sectionLabel}>{'// STACK'}</div>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '32px',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? '24px' : '32px',
       }}>
         {/* Left Column - Languages */}
         <div>

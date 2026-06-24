@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import TechStack from './TechStack'
+import useIsMobile from '../hooks/useIsMobile'
 
 const ROTATING_WORDS = ['code', 'craft', 'design', 'precision', 'vision', 'execution', 'strategy', 'innovation', 'systems', 'architecture']
 
@@ -59,6 +60,7 @@ function TypewriterWord({ words, typeSpeed = 60, deleteSpeed = 35, pauseMs = 250
 }
 
 export default function About() {
+  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef(null)
 
@@ -91,7 +93,7 @@ export default function About() {
         position: 'relative',
         width: '100%',
         minHeight: '100vh',
-        padding: '120px 40px',
+        padding: isMobile ? '80px 16px' : '120px 40px',
         pointerEvents: 'auto',
       }}
     >
@@ -99,8 +101,8 @@ export default function About() {
         maxWidth: '1200px',
         margin: '0 auto',
         display: 'grid',
-        gridTemplateColumns: '55% 45%',
-        gap: '60px',
+        gridTemplateColumns: isMobile ? '1fr' : '55% 45%',
+        gap: isMobile ? '32px' : '60px',
         alignItems: 'start',
       }}>
         {/* Left */}
@@ -126,7 +128,7 @@ export default function About() {
             lineHeight: 1.15,
             margin: '0 0 20px 0',
             color: 'rgba(255, 255, 255, 0.9)',
-            whiteSpace: 'nowrap',
+            whiteSpace: isMobile ? 'normal' : 'nowrap',
           }}>
             A studio built on{' '}
             <TypewriterWord words={ROTATING_WORDS} color="#00ccff" />
