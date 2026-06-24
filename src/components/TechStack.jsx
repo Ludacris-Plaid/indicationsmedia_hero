@@ -95,24 +95,24 @@ export default function TechStack() {
               <div key={s.title} style={{
                 padding: '14px 16px',
                 borderRadius: '2px',
-                border: '1px solid rgba(192, 132, 252, 0.12)',
-                background: 'rgba(192, 132, 252, 0.04)',
+                border: '1px solid rgba(192, 132, 252, 0.25)',
+                background: 'rgba(192, 132, 252, 0.08)',
                 transition: 'all 0.3s ease',
               }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.3)'
-                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.08)'
+                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.5)'
+                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.15)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.12)'
-                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.04)'
+                  e.currentTarget.style.borderColor = 'rgba(192, 132, 252, 0.25)'
+                  e.currentTarget.style.background = 'rgba(192, 132, 252, 0.08)'
                 }}
               >
                 <div style={{
                   fontFamily: "'Courier New', monospace",
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#00ff66',
+                  color: '#c084fc',
                   marginBottom: '4px',
                   letterSpacing: '0.02em',
                 }}>
