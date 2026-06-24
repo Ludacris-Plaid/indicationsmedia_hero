@@ -400,6 +400,12 @@ export default function TechStack() {
             <TechIcon label="Next.js" color="#FFFFFF">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l7 4.5-7 4.5z" fill="#FFFFFF" />
             </TechIcon>
+
+            {/* Django */}
+            <TechIcon label="Django" color="#092E20">
+              <path d="M7 3c-1.5 0-2.5.5-2.5 2v3c0 1.5 1 2 2.5 2h1v2H4.5C2.5 12 1 10.5 1 8.5V5c0-2.5 2-4 4.5-4H7v2zm5 0c2.5 0 4.5 1.5 4.5 4v3.5c0 2-1.5 3.5-3.5 3.5h-1v-2h1c1 0 1.5-.5 1.5-1.5V5c0-1.5-1-2-2.5-2h-1V3h1z" fill="#092E20" />
+              <circle cx="4" cy="16" r="2" fill="#092E20" />
+            </TechIcon>
           </div>
         </div>
       </div>
