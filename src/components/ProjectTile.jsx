@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 
-export default function ProjectTile({ project, index, isVisible, onHover }) {
+export default function ProjectTile({ project, index, isVisible, onHover, isMobile }) {
   const [localHover, setLocalHover] = useState(false)
   const tileRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -31,7 +31,7 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
           ? `translateY(0) perspective(1000px) rotateX(${localHover ? mousePos.y * 1.5 : 0}deg) rotateY(${localHover ? -mousePos.x * 1.5 : 0}deg)`
           : 'translateY(40px)',
         transition: `opacity 0.6s ease ${index * 0.08}s, transform 0.6s ease ${index * 0.08}s`,
-        aspectRatio: '4/3',
+        aspectRatio: isMobile ? '3/2' : '4/3',
         background: '#0a0c0a',
         border: `1px solid ${localHover ? 'rgba(0, 255, 102, 0.3)' : 'rgba(0, 255, 102, 0.06)'}`,
         boxShadow: localHover
@@ -107,7 +107,7 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
       <div style={{
         position: 'absolute',
         inset: 0,
-        padding: '24px',
+        padding: isMobile ? '12px' : '24px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -120,7 +120,7 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
         }}>
           <span style={{
             fontFamily: "'Courier New', monospace",
-            fontSize: '10px',
+            fontSize: isMobile ? '7px' : '10px',
             fontWeight: 600,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
@@ -133,7 +133,7 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
           </span>
           <span style={{
             fontFamily: "'Courier New', monospace",
-            fontSize: '10px',
+            fontSize: isMobile ? '7px' : '10px',
             color: 'rgba(0, 255, 102, 0.2)',
             fontWeight: 500,
           }}>
@@ -144,10 +144,10 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
         <div>
           <h3 style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: '22px',
+            fontSize: isMobile ? '13px' : '22px',
             fontWeight: 700,
             letterSpacing: '-0.02em',
-            marginBottom: '8px',
+            marginBottom: isMobile ? '4px' : '8px',
             color: 'rgba(255, 255, 255, 0.9)',
             transform: localHover ? 'translateY(-6px)' : 'translateY(0)',
             transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -156,8 +156,8 @@ export default function ProjectTile({ project, index, isVisible, onHover }) {
           </h3>
           <p style={{
             fontFamily: "'Courier New', monospace",
-            fontSize: '12px',
-            lineHeight: 1.7,
+            fontSize: isMobile ? '8px' : '12px',
+            lineHeight: isMobile ? 1.4 : 1.7,
             color: 'rgba(0, 255, 102, 0.35)',
             transform: localHover ? 'translateY(-6px)' : 'translateY(8px)',
             opacity: localHover ? 1 : 0,

@@ -84,8 +84,8 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '24px',
+          gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fill, minmax(340px, 1fr))',
+          gap: isMobile ? '12px' : '24px',
         }}>
           {projects.map((project, index) => (
             <ProjectTile
@@ -95,6 +95,7 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
               isVisible={isVisible}
               onHover={onProjectHover}
               isHovered={hoveredProject?.id === project.id}
+              isMobile={isMobile}
             />
           ))}
         </div>
