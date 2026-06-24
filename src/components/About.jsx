@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
 import useIsMobile from '../hooks/useIsMobile'
 
@@ -56,6 +56,106 @@ function TypewriterWord({ words, typeSpeed = 60, deleteSpeed = 35, pauseMs = 250
       {displayed}
       <span style={{ opacity: showCursor ? 1 : 0 }}>_</span>
     </span>
+  )
+}
+
+const testimonials = [
+  { name: 'Sarah K.', role: 'CEO, NovaTech Solutions', quote: 'They built our entire platform in 6 weeks. Zero downtime since launch. Our security posture went from nonexistent to SOC 2 compliant.' },
+  { name: 'Marcus R.', role: 'CTO, Flux Dynamics', quote: 'Indications Media doesn\'t just write code — they architect systems. Our API handles 10x the traffic now with half the latency.' },
+  { name: 'Diana L.', role: 'Founder, Prism Analytics', quote: 'The AI integration they built processes 50k documents daily. It\'s like having a team of analysts working 24/7.' },
+  { name: 'James T.', role: 'VP Eng, Harbor Systems', quote: 'They found vulnerabilities our previous team missed entirely. Post-pen-test, we haven\'t had a single incident in 14 months.' },
+  { name: 'Priya M.', role: 'Director, Vertex Commerce', quote: 'From concept to production in 4 months. Our e-commerce platform now does $2M monthly with 99.99% uptime.' },
+]
+
+function TestimonialBox({ isVisible }) {
+  const [index, setIndex] = useState(0)
+  const [displayed, setDisplayed] = useState('')
+  const [phase, setPhase] = useState('typing')
+  const [showCursor, setShowCursor] = useState(true)
+
+  useEffect(() => {
+    const blink = setInterval(() => setShowCursor(c => !c), 530)
+    return () => clearInterval(blink)
+  }, [])
+
+  useEffect(() => {
+    const t = testimonials[index]
+    const fullText = `"${t.quote}" — ${t.name}, ${t.role}`
+
+    if (phase === 'typing') {
+      if (displayed.length < fullText.length) {
+        const timer = setTimeout(() => {
+          setDisplayed(fullText.slice(0, displayed.length + 1))
+        }, 18)
+        return () => clearTimeout(timer)
+      } else {
+        const timer = setTimeout(() => setPhase('pausing'), 4000)
+        return () => clearTimeout(timer)
+      }
+    }
+
+    if (phase === 'pausing') {
+      const timer = setTimeout(() => setPhase('deleting'), 10)
+      return () => clearTimeout(timer)
+    }
+
+    if (phase === 'deleting') {
+      if (displayed.length > 0) {
+        const timer = setTimeout(() => {
+          setDisplayed(displayed.slice(0, -1))
+        }, 8)
+        return () => clearTimeout(timer)
+      } else {
+        const timer = setTimeout(() => {
+          setIndex((prev) => (prev + 1) % testimonials.length)
+          setPhase('typing')
+        }, 300)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [displayed, phase, index])
+
+  const t = testimonials[index]
+
+  return (
+    <div style={{
+      padding: '20px',
+      borderRadius: '2px',
+      border: '1px solid rgba(0, 255, 102, 0.1)',
+      background: 'rgba(0, 255, 102, 0.02)',
+      opacity: isVisible ? 1 : 0,
+      transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+      transition: 'all 0.8s ease 0.6s',
+    }}>
+      <div style={{
+        fontFamily: "'Courier New', monospace",
+        fontSize: '10px',
+        color: 'rgba(0, 255, 102, 0.5)',
+        letterSpacing: '0.1em',
+        marginBottom: '14px',
+        textTransform: 'uppercase',
+      }}>
+        {'// CLIENT_LOG'}
+        <span style={{
+          float: 'right',
+          color: 'rgba(0, 255, 102, 0.3)',
+          fontSize: '9px',
+        }}>
+          [{String(index + 1).padStart(2, '0')}/{String(testimonials.length).padStart(2, '0')}]
+        </span>
+      </div>
+      <div style={{
+        fontFamily: "'Courier New', monospace",
+        fontSize: '11px',
+        lineHeight: 1.7,
+        color: 'rgba(255, 255, 255, 0.55)',
+        minHeight: '60px',
+      }}>
+        <span style={{ color: '#00ff66' }}>{'>'} </span>
+        {displayed}
+        <span style={{ opacity: showCursor ? 1 : 0, color: '#00ff66' }}>_</span>
+      </div>
+    </div>
   )
 }
 
@@ -302,6 +402,9 @@ export default function About() {
               </div>
             ))}
           </div>
+
+          {/* Testimonial */}
+          <TestimonialBox isVisible={isVisible} />
         </div>
       </div>
     </section>
