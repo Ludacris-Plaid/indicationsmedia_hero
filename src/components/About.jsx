@@ -355,6 +355,7 @@ export default function About() {
           </div>
 
           {/* How We Work */}
+          {!isMobile && (
           <div style={{
             padding: '20px',
             borderRadius: '2px',
@@ -407,9 +408,10 @@ export default function About() {
               </div>
             ))}
           </div>
+          )}
 
           {/* Testimonial */}
-          <TestimonialBox isVisible={isVisible} />
+          {!isMobile && <TestimonialBox isVisible={isVisible} />}
         </div>
       </div>
     </section>
