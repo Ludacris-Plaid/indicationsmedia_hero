@@ -65,11 +65,22 @@ export default function About() {
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    let root = null
+    let parent = el.parentElement
+    while (parent) {
+      if (parent.style && parent.style.overflowY === 'auto') {
+        root = parent
+        break
+      }
+      parent = parent.parentElement
+    }
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setIsVisible(true) },
-      { threshold: 0.3 }
+      { root, threshold: 0.1 }
     )
-    if (sectionRef.current) observer.observe(sectionRef.current)
+    observer.observe(el)
     return () => observer.disconnect()
   }, [])
 

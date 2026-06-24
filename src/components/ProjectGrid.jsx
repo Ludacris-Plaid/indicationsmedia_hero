@@ -9,6 +9,20 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
   const gridRef = useRef(null)
 
   useEffect(() => {
+    const el = gridRef.current
+    if (!el) return
+
+    // Find the custom scroll container (the div with overflowY: auto)
+    let root = null
+    let parent = el.parentElement
+    while (parent) {
+      if (parent.style && parent.style.overflowY === 'auto') {
+        root = parent
+        break
+      }
+      parent = parent.parentElement
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -16,13 +30,10 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
           setActiveSection('work')
         }
       },
-      { threshold: 0.2 }
+      { root, threshold: 0.1 }
     )
 
-    if (gridRef.current) {
-      observer.observe(gridRef.current)
-    }
-
+    observer.observe(el)
     return () => observer.disconnect()
   }, [setActiveSection])
 
