@@ -171,8 +171,8 @@ export default function About() {
                 fontSize: '10px',
                 padding: '6px 12px',
                 borderRadius: '2px',
-                border: `1px solid ${i % 2 === 0 ? 'rgba(0, 255, 102, 0.12)' : 'rgba(0, 204, 255, 0.12)'}`,
-                color: i % 2 === 0 ? 'rgba(0, 255, 102, 0.7)' : 'rgba(0, 204, 255, 0.7)',
+                border: `1px solid ${i % 2 === 0 ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 204, 255, 0.12)'}`,
+                color: i % 2 === 0 ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 204, 255, 0.7)',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
                 transition: `all 0.5s ease ${0.3 + i * 0.05}s`,
@@ -204,13 +204,14 @@ export default function About() {
         }}>
           {stats.map((stat, index) => {
             const isCyan = index % 2 === 1
-            const accent = isCyan ? '#00ccff' : '#00ff66'
+            const isWhite = index === 0 || index === 2
+            const accent = isCyan ? '#00ccff' : isWhite ? '#ffffff' : '#00ff66'
             return (
               <div key={stat.label} style={{
                 padding: '28px',
                 borderRadius: '2px',
-                border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : 'rgba(0, 255, 102, 0.06)'}`,
-                background: isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
+                border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : isWhite ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 255, 102, 0.06)'}`,
+                background: isCyan ? 'rgba(0, 204, 255, 0.02)' : isWhite ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
                 textAlign: 'center',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
@@ -223,7 +224,7 @@ export default function About() {
                   letterSpacing: '-0.02em',
                   marginBottom: '6px',
                   color: accent,
-                  textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : 'rgba(0, 255, 102, 0.3)'}`,
+                  textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : isWhite ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 255, 102, 0.3)'}`,
                 }}>
                   {stat.number}
                 </div>

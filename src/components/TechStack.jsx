@@ -89,43 +89,47 @@ export default function TechStack() {
         <div>
           <div style={sectionLabel}>{'// SERVICES'}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {services.map((s) => (
-              <div key={s.title} style={{
-                padding: '14px 16px',
-                borderRadius: '2px',
-                border: '1px solid rgba(0, 255, 102, 0.06)',
-                background: 'rgba(0, 255, 102, 0.02)',
-                transition: 'all 0.3s ease',
-              }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.15)'
-                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.04)'
+            {services.map((s, i) => {
+              const isCyan = i % 2 === 1
+              const accent = isCyan ? '#00ccff' : '#ffffff'
+              return (
+                <div key={s.title} style={{
+                  padding: '14px 16px',
+                  borderRadius: '2px',
+                  border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'}`,
+                  background: isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)',
+                  transition: 'all 0.3s ease',
                 }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.06)'
-                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.02)'
-                }}
-              >
-                <div style={{
-                  fontFamily: "'Courier New', monospace",
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  color: '#00ff66',
-                  marginBottom: '4px',
-                  letterSpacing: '0.02em',
-                }}>
-                  {'> '}{s.title}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.15)' : 'rgba(255, 255, 255, 0.15)'
+                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.04)' : 'rgba(255, 255, 255, 0.04)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.06)'
+                    e.currentTarget.style.background = isCyan ? 'rgba(0, 204, 255, 0.02)' : 'rgba(255, 255, 255, 0.02)'
+                  }}
+                >
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: accent,
+                    marginBottom: '4px',
+                    letterSpacing: '0.02em',
+                  }}>
+                    {'> '}{s.title}
+                  </div>
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '10px',
+                    color: isCyan ? 'rgba(0, 204, 255, 0.4)' : 'rgba(255, 255, 255, 0.35)',
+                    lineHeight: 1.5,
+                  }}>
+                    {s.desc}
+                  </div>
                 </div>
-                <div style={{
-                  fontFamily: "'Courier New', monospace",
-                  fontSize: '10px',
-                  color: 'rgba(0, 255, 102, 0.4)',
-                  lineHeight: 1.5,
-                }}>
-                  {s.desc}
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 
