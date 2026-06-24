@@ -76,6 +76,9 @@ export default function TechStack() {
     { abbr: 'Network+', name: 'CompTIA Network+' },
     { abbr: 'Security+', name: 'CompTIA Security+' },
     { abbr: 'Linux+', name: 'CompTIA Linux+' },
+    { abbr: 'C#', name: 'C# Diploma' },
+    { abbr: 'DevOps', name: 'DevOps Diploma' },
+    { abbr: 'PenTest+', name: 'CompTIA PenTest+' },
   ]
 
   return (

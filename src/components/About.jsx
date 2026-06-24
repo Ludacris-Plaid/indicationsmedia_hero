@@ -196,52 +196,112 @@ export default function About() {
 
         {/* Right - Stats */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          display: 'flex',
+          flexDirection: 'column',
           gap: '20px',
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
           transition: 'all 0.8s ease 0.2s',
         }}>
-          {stats.map((stat, index) => {
-            const isCyan = index % 2 === 1
-            const isWhite = index === 0 || index === 2
-            const accent = isCyan ? '#00ccff' : isWhite ? '#ffffff' : '#00ff66'
-            return (
-              <div key={stat.label} style={{
-                padding: '28px',
-                borderRadius: '2px',
-                border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : isWhite ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 255, 102, 0.06)'}`,
-                background: isCyan ? 'rgba(0, 204, 255, 0.02)' : isWhite ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
-                textAlign: 'center',
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-                transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
-              }}>
-                <div style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: '32px',
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  marginBottom: '6px',
-                  color: accent,
-                  textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : isWhite ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 255, 102, 0.3)'}`,
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '20px',
+          }}>
+            {stats.map((stat, index) => {
+              const isCyan = index % 2 === 1
+              const isWhite = index === 0 || index === 2
+              const accent = isCyan ? '#00ccff' : isWhite ? '#ffffff' : '#00ff66'
+              return (
+                <div key={stat.label} style={{
+                  padding: '28px',
+                  borderRadius: '2px',
+                  border: `1px solid ${isCyan ? 'rgba(0, 204, 255, 0.08)' : isWhite ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 255, 102, 0.06)'}`,
+                  background: isCyan ? 'rgba(0, 204, 255, 0.02)' : isWhite ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 255, 102, 0.02)',
+                  textAlign: 'center',
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                  transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
                 }}>
-                  {stat.number}
+                  <div style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '32px',
+                    fontWeight: 700,
+                    letterSpacing: '-0.02em',
+                    marginBottom: '6px',
+                    color: accent,
+                    textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : isWhite ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 255, 102, 0.3)'}`,
+                  }}>
+                    {stat.number}
+                  </div>
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '10px',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    fontWeight: 500,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                  }}>
+                    {stat.label}
+                  </div>
                 </div>
-                <div style={{
+              )
+            })}
+          </div>
+
+          {/* How We Work */}
+          <div style={{
+            padding: '20px',
+            borderRadius: '2px',
+            border: '1px solid rgba(192, 132, 252, 0.15)',
+            background: 'rgba(192, 132, 252, 0.03)',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+            transition: 'all 0.8s ease 0.5s',
+          }}>
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '10px',
+              color: '#c084fc',
+              letterSpacing: '0.1em',
+              marginBottom: '14px',
+              textTransform: 'uppercase',
+            }}>
+              {'// HOW WE WORK'}
+            </div>
+            {[
+              { step: '01', text: 'Discovery & Threat Modeling' },
+              { step: '02', text: 'Architecture & Prototyping' },
+              { step: '03', text: 'Secure Development' },
+              { step: '04', text: 'Deploy & Monitor' },
+            ].map((item, i) => (
+              <div key={item.step} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '8px 0',
+                borderBottom: i < 3 ? '1px solid rgba(192, 132, 252, 0.08)' : 'none',
+              }}>
+                <span style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: '#c084fc',
+                  minWidth: '24px',
+                }}>
+                  {item.step}
+                </span>
+                <span style={{
                   fontFamily: "'Courier New', monospace",
                   fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontWeight: 500,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
+                  color: 'rgba(255, 255, 255, 0.45)',
+                  letterSpacing: '0.03em',
                 }}>
-                  {stat.label}
-                </div>
+                  {item.text}
+                </span>
               </div>
-            )
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>

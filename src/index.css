@@ -29,10 +29,6 @@ html, body, #root {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  canvas {
-    pointer-events: none !important;
-    touch-action: none !important;
-  }
 }
 
 ::selection {
