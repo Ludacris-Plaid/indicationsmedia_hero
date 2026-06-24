@@ -194,7 +194,7 @@ export default function Navigation({ activeSection, setActiveSection, scrollToTo
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(3, 8, 6, 0.95)',
+          background: 'rgba(3, 8, 6, 1)',
           backdropFilter: 'blur(20px)',
           display: 'flex',
           flexDirection: 'column',
