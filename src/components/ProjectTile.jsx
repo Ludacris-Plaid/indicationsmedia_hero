@@ -107,7 +107,7 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
       <div style={{
         position: 'absolute',
         inset: 0,
-        padding: isMobile ? '12px' : '24px',
+        padding: isMobile ? '18px 10px 10px 14px' : '24px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
