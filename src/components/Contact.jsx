@@ -114,7 +114,7 @@ export default function Contact() {
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '11px',
-            color: 'rgba(0, 255, 102, 0.6)',
+            color: 'rgba(0, 204, 255, 0.5)',
             marginBottom: '16px',
             letterSpacing: '0.1em',
           }}>

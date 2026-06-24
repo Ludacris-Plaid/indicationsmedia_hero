@@ -186,7 +186,7 @@ export default function TechStack() {
                   <div style={{
                     fontFamily: "'Courier New', monospace",
                     fontSize: '9px',
-                    color: 'rgba(0, 255, 102, 0.4)',
+  color: 'rgba(0, 204, 255, 0.5)',
                     letterSpacing: '0.03em',
                   }}>
                     {cert.name}
