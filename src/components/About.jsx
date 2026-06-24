@@ -436,12 +436,18 @@ export default function About() {
              <div style={{
                marginTop: '16px',
                display: 'flex',
-               gap: '10px',
-               opacity: 0.5
+               flexWrap: 'wrap',
+               gap: '8px',
+               opacity: 0.6,
+               fontFamily: 'monospace',
+               fontSize: '8px',
+               color: '#00ff66',
+               overflow: 'hidden',
+               whiteSpace: 'nowrap'
              }}>
-               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[TOR_ENABLED]</span>
-               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[DECENTRALIZED]</span>
-               <span style={{ fontSize: '8px', color: '#00ff66', fontFamily: 'monospace' }}>[ROOT_ACCESS]</span>
+               <marquee scrollamount="3" style={{ width: '100%' }}>
+                 [TOR_ENABLED] &nbsp;&nbsp; [DECENTRALIZED] &nbsp;&nbsp; [ROOT_ACCESS] &nbsp;&nbsp; [PACKET_SNOOPING] &nbsp;&nbsp; [ZERO_DAY_EXPLOIT] &nbsp;&nbsp; [SSH_TUNNEL_ACTIVE] &nbsp;&nbsp; [BUFFER_OVERFLOW] &nbsp;&nbsp; [KERNEL_PANIC] &nbsp;&nbsp; [SUDO_SUDO_SUDO] &nbsp;&nbsp; [ENCRYPTED_PAYLOAD] &nbsp;&nbsp; [SATELLITE_UPLINK] &nbsp;&nbsp; [PROXY_CHAIN_ACTIVE] &nbsp;&nbsp; [BYPASS_FIREWALL] &nbsp;&nbsp; [LOGS_PURGED]
+               </marquee>
              </div>
            </div>
 
