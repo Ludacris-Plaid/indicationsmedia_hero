@@ -446,7 +446,7 @@ export default function About() {
                whiteSpace: 'nowrap'
              }}>
                <marquee scrollamount="3" style={{ width: '100%' }}>
-                 [TOR_ENABLED] &nbsp;&nbsp; [DECENTRALIZED] &nbsp;&nbsp; [ROOT_ACCESS] &nbsp;&nbsp; [PACKET_SNOOPING] &nbsp;&nbsp; [ZERO_DAY_EXPLOIT] &nbsp;&nbsp; [SSH_TUNNEL_ACTIVE] &nbsp;&nbsp; [BUFFER_OVERFLOW] &nbsp;&nbsp; [KERNEL_PANIC] &nbsp;&nbsp; [SUDO_SUDO_SUDO] &nbsp;&nbsp; [ENCRYPTED_PAYLOAD] &nbsp;&nbsp; [SATELLITE_UPLINK] &nbsp;&nbsp; [PROXY_CHAIN_ACTIVE] &nbsp;&nbsp; [BYPASS_FIREWALL] &nbsp;&nbsp; [LOGS_PURGED]
+                 [INFO_WANTS_TO_BE_FREE] &nbsp;&nbsp; [CODE_IS_LAW] &nbsp;&nbsp; [DIGITAL_SOVEREIGNTY] &nbsp;&nbsp; [BREAK_THE_GATEKEEPERS] &nbsp;&nbsp; [PRIVACY_IS_A_RIGHT] &nbsp;&nbsp; [DECENTRALIZE_EVERYTHING] &nbsp;&nbsp; [OPEN_SOURCE_OR_DIE] &nbsp;&nbsp; [RESIST_THE_ALGORITHM] &nbsp;&nbsp; [KNOWLEDGE_FOR_ALL] &nbsp;&nbsp; [ENCRYPT_YOUR_LIFE]
                </marquee>
              </div>
            </div>
