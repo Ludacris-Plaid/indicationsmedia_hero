@@ -164,16 +164,16 @@ export default function TechStack() {
                     width: '36px',
                     height: '36px',
                     borderRadius: '50%',
-                    border: `1.5px solid ${accent}`,
+                    border: '1.5px solid #00ff66',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: isCyan ? 'rgba(0, 204, 255, 0.06)' : 'rgba(255, 255, 255, 0.04)',
-                    boxShadow: `0 0 10px ${isCyan ? 'rgba(0, 204, 255, 0.12)' : 'rgba(255, 255, 255, 0.08)'}`,
+                    background: 'rgba(0, 255, 102, 0.06)',
+                    boxShadow: '0 0 10px rgba(0, 255, 102, 0.12)',
                     flexShrink: 0,
                   }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill={accent} />
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#00ff66" />
                     </svg>
                   </div>
                   <div>
