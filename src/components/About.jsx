@@ -234,6 +234,7 @@ export default function About() {
             color: 'rgba(0, 204, 255, 0.6)',
             marginBottom: '12px',
             letterSpacing: '0.1em',
+            animation: 'labelPulse 3s ease-in-out infinite',
           }}>
             {'// ABOUT US'}
           </div>

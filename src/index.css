@@ -89,6 +89,11 @@ a, button {
   border-color: #00ccff;
 }
 
+@keyframes labelPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 @keyframes redrawBorder {
   0% {
     clip-path: polygon(0 0, 0 0, 0 0, 0 0);

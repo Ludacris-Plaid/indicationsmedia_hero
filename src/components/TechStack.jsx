@@ -9,6 +9,7 @@ const sectionLabel = {
   marginBottom: '16px',
   paddingBottom: '8px',
   borderBottom: '1px solid rgba(0, 204, 255, 0.1)',
+  animation: 'labelPulse 3s ease-in-out infinite',
 }
 
 const services = [
