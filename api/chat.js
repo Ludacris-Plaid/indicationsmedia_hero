@@ -26,10 +26,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 8000)
-
-    const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+    const aiFetch = fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,10 +38,13 @@ export default async function handler(req, res) {
         temperature: 0.7,
         max_tokens: 500,
       }),
-      signal: controller.signal,
     })
 
-    clearTimeout(timeout)
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('TIMEOUT')), 8000)
+    )
+
+    const response = await Promise.race([aiFetch, timeout])
     const data = await response.json()
 
     if (!response.ok) {
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       message: data.choices?.[0]?.message?.content || '',
     })
   } catch (err) {
-    if (err?.name === 'AbortError') {
+    if (err?.message === 'TIMEOUT') {
       return res.status(504).json({ error: 'AI service timeout' })
     }
     return res.status(500).json({ error: 'Internal error' })
