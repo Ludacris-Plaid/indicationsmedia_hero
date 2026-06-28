@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
-import ChatBot from './ChatBot'
+import LiveTerminal from './LiveTerminal'
 import useIsMobile from '../hooks/useIsMobile'
 
 const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
@@ -454,8 +454,8 @@ export default function About() {
           {/* Testimonial */}
           <TestimonialBox isVisible={isVisible} />
 
-          {/* Chat Assistant */}
-          <ChatBot isVisible={isVisible} />
+          {/* Live Terminal */}
+          <LiveTerminal isVisible={isVisible} />
         </div>
       </div>
     </section>
