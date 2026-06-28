@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
+import ChatBot from './ChatBot'
 import useIsMobile from '../hooks/useIsMobile'
 
-const useCounterAnimation = (endValue, duration = 2000) => {
+const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    if (!shouldAnimate) return
+
     let startTime = null
     let animationFrameId = null
 
@@ -13,13 +16,13 @@ const useCounterAnimation = (endValue, duration = 2000) => {
       if (!startTime) startTime = timestamp
       const elapsed = timestamp - startTime
       const progress = Math.min(elapsed / duration, 1)
-      
-      const ease = progress < 0.5 
-        ? 2 * progress * progress 
+
+      const ease = progress < 0.5
+        ? 2 * progress * progress
         : 1 - Math.pow(2 - 2 * progress, 2)
-      
+
       setCount(Math.floor(ease * endValue))
-      
+
       if (progress < 1) {
         animationFrameId = requestAnimationFrame(animate)
       }
@@ -27,7 +30,7 @@ const useCounterAnimation = (endValue, duration = 2000) => {
 
     animationFrameId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animationFrameId)
-  }, [endValue, duration])
+  }, [endValue, shouldAnimate, duration])
 
   return count
 }
@@ -344,46 +347,42 @@ export default function About() {
             gridTemplateColumns: '1fr 1fr',
             gap: '20px',
           }}>
-            {stats.map((stat, index) => {
-              const isCyan = index % 2 === 1
-              const isWhite = index === 0 || index === 2
-              const accent = isCyan ? '#00ccff' : isWhite ? '#ffffff' : '#00ff66'
-              return (
-                <div key={stat.label} style={{
-                  padding: '28px',
-                  borderRadius: '2px',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  textAlign: 'center',
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-                  transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
+            {stats.map((stat, index) => (
+              <div key={stat.label} style={{
+                padding: '28px',
+                borderRadius: '2px',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                textAlign: 'center',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+                transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
+              }}>
+                <div style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  letterSpacing: '-0.02em',
+                  marginBottom: '6px',
+                  color: '#ffffff',
+                  textShadow: '0 0 15px rgba(255, 255, 255, 0.2)',
                 }}>
-                  <div style={{
+                  <span style={{
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: '32px',
                     fontWeight: 700,
-                    letterSpacing: '-0.02em',
-                    marginBottom: '6px',
-                    color: accent,
-                    textShadow: `0 0 15px ${isCyan ? 'rgba(0, 204, 255, 0.3)' : isWhite ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 255, 102, 0.3)'}`,
+                    color: '#ffffff',
                   }}>
-                    <span style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontSize: '32px',
-                      fontWeight: 700,
-                      color: accent,
-                    }}>
-                      {useCounterAnimation(stat.number, 2000)}
-                    </span>
-                    <span style={{
-                      fontSize: '32px',
-                      fontWeight: 700,
-                      color: accent,
-                    }}>
-                      +
-                    </span>
-                  </div>
+                    {useCounterAnimation(stat.number, isVisible, 2000)}
+                  </span>
+                  <span style={{
+                    fontSize: '32px',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                  }}>
+                    +
+                  </span>
+                </div>
                   <div style={{
                     fontFamily: "'Courier New', monospace",
                     fontSize: '10px',
@@ -396,7 +395,7 @@ export default function About() {
                   </div>
                 </div>
               )
-            })}
+            )}
           </div>
 
            {/* Digital Manifesto */}
@@ -410,6 +409,7 @@ export default function About() {
              transition: 'all 0.8s ease 0.5s',
              position: 'relative',
              overflow: 'hidden',
+             display: isMobile ? 'block' : 'block', 
            }}>
              <div style={{
                fontFamily: "'Courier New', monospace",
@@ -421,8 +421,8 @@ export default function About() {
                display: 'flex',
                justifyContent: 'space-between',
              }}>
-               {'// SYSTEM_MANIFESTO'}
-               <span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>v1.0.4_stable</span>
+               {'// MISSION'}
+               <span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>v2.0.0_stable</span>
              </div>
              <div style={{
                fontFamily: "'Space Grotesk', sans-serif",
@@ -431,7 +431,7 @@ export default function About() {
                color: 'rgba(255, 255, 255, 0.7)',
                fontStyle: 'italic',
              }}>
-               "We operate at the intersection of security and curiosity. Born from the <span style={{ color: '#00ff66', fontWeight: 'bold' }}>grey-hat</span> ethos, we believe that true stability is only found by understanding the breaks. Our philosophy is simple: <span style={{ color: '#00ff66' }}>open source</span> is the only path forward, and information wants to be free. We don't just build walls; we know exactly how to climb them—which is why our walls are the only ones that actually hold."
+               "At Indications Media, we believe great technology begins with a commitment to <span style={{ color: '#00ff66', fontWeight: 'bold' }}>security</span> and a passion for <span style={{ color: '#00ff66' }}>excellence</span>. Every project we deliver is built on a foundation of rigorous engineering, proactive threat awareness, and an unwavering focus on our clients' success. We don't just solve problems — we architect durable, scalable systems that perform under pressure and earn trust over time. Our standards are high because yours should be too."
              </div>
              <div style={{
                marginTop: '16px',
@@ -446,13 +446,16 @@ export default function About() {
                whiteSpace: 'nowrap'
              }}>
                <marquee scrollamount="3" style={{ width: '100%' }}>
-                 [INFO_WANTS_TO_BE_FREE] &nbsp;&nbsp; [CYBER_AUTONOMY] &nbsp;&nbsp; [DIGITAL_SOVEREIGNTY] &nbsp;&nbsp; [VOID_THE_WARRANTY] &nbsp;&nbsp; [PRIVACY_IS_A_RIGHT] &nbsp;&nbsp; [DECENTRALIZE_EVERYTHING] &nbsp;&nbsp; [OPEN_SOURCE_OR_DIE] &nbsp;&nbsp; [RESIST_THE_ALGORITHM] &nbsp;&nbsp; [KNOWLEDGE_FOR_ALL] &nbsp;&nbsp; [ENCRYPT_YOUR_LIFE] &nbsp;&nbsp; [NO_MASTERS_NO_ROOTS]
+                 [SECURE_BY_DEFAULT] &nbsp;&nbsp; [BUILT_TO_LAST] &nbsp;&nbsp; [ZERO_SHORTCUTS] &nbsp;&nbsp; [CLIENTS_NOT_CONTRACTS] &nbsp;&nbsp; [EVERY_COMMIT_COUNTS] &nbsp;&nbsp; [ARCHITECTED_FOR_SCALE] &nbsp;&nbsp; [DEFENSE_IN_DEPTH] &nbsp;&nbsp; [NO_SURPRISES_DELIVERY] &nbsp;&nbsp; [CLEAN_CODE_ALWAYS] &nbsp;&nbsp; [SOLUTIONS_NOT_SLOGANS] &nbsp;&nbsp; [PERFORMANCE_IS_POLICY] &nbsp;&nbsp; [OWNERSHIP_OVER_EGO] &nbsp;&nbsp; [SHIPPED_MEANS_STABLE] &nbsp;&nbsp; [DESIGNED_FOR_REALITY] &nbsp;&nbsp; [PRECISION_AT_SPEED] &nbsp;&nbsp; [TRUST_BUILT_DAILY] &nbsp;&nbsp; [THINK_LONG_BUILD_RIGHT] &nbsp;&nbsp; [SECURITY_ISN'T_OPTIONAL]
                </marquee>
              </div>
            </div>
 
           {/* Testimonial */}
           <TestimonialBox isVisible={isVisible} />
+
+          {/* Chat Assistant */}
+          <ChatBot isVisible={isVisible} />
         </div>
       </div>
     </section>

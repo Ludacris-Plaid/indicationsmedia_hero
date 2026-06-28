@@ -1,34 +1,20 @@
-import { defineConfig, loadEnv } from 'vite'
-import react from '@vitejs/plugin-react'
+export const config = {
+  runtime: 'edge',
+}
 
-// https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
-  const apiKey = env.NVIDIA_API_KEY
+export default async function handler(req) {
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
-  return {
-    plugins: [
-      react(),
-      {
-        name: 'chat-api',
-        configureServer(server) {
-          server.middlewares.use('/api/chat', async (req, res) => {
-            if (req.method !== 'POST') {
-              res.statusCode = 405
-              res.end(JSON.stringify({ error: 'Method not allowed' }))
-              return
-            }
+  const { messages } = await req.json()
 
-            const body = await new Promise((resolve) => {
-              let data = ''
-              req.on('data', (chunk) => { data += chunk })
-              req.on('end', () => resolve(data))
-            })
-
-            try {
-              const { messages } = JSON.parse(body)
-
-              const SYSTEM_PROMPT = `You are the AI assistant for Indications Media, a premium software development and cybersecurity studio founded by a senior full-stack engineer.
+  const systemMessage = {
+    role: 'system',
+    content: `You are the AI assistant for Indications Media, a premium software development and cybersecurity studio founded by a senior full-stack engineer.
 
 --- OUR SERVICES ---
 We offer six core services: Custom Web Applications (full-stack solutions tailored to business needs), System Architecture (scalable infrastructure and microservices design), AI Integration (LLM pipelines, automation, and intelligent agents), Cybersecurity (vulnerability assessment, hardening, and monitoring), API Development (REST, GraphQL, and real-time WebSocket endpoints), and Cloud & DevOps (CI/CD, containerization, and cloud deployment).
@@ -76,41 +62,45 @@ We don't publish pricing — every project is scoped individually based on requi
 
 --- HOW TO ANSWER ---
 You are professional, knowledgeable, and speak like a senior engineer who enjoys their craft. Be concise and helpful — keep responses under 3 sentences unless the visitor asks for detail. If someone asks about pricing, timelines, or project specifics, suggest they use the contact form so we can scope it properly. Never mention other AI companies or models. You ARE Indications Media's assistant.`
-
-              const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                  model: 'deepseek-ai/deepseek-v4-flash',
-                  messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-                  temperature: 0.7,
-                  max_tokens: 500,
-                  stream: false,
-                }),
-              })
-
-              const data = await response.json()
-
-              if (!response.ok) {
-                res.statusCode = response.status
-                res.end(JSON.stringify({ error: data.error?.message || 'API error' }))
-                return
-              }
-
-              res.setHeader('Content-Type', 'application/json')
-              res.end(JSON.stringify({
-                message: data.choices?.[0]?.message?.content || 'No response',
-              }))
-            } catch (err) {
-              res.statusCode = 500
-              res.end(JSON.stringify({ error: 'Failed to reach AI service' }))
-            }
-          })
-        },
-      },
-    ],
   }
-})
+
+  const body = {
+    model: 'deepseek-ai/deepseek-v4-flash',
+    messages: [systemMessage, ...messages],
+    temperature: 0.7,
+    max_tokens: 500,
+    stream: false,
+  }
+
+  try {
+    const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
+      },
+      body: JSON.stringify(body),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      return new Response(JSON.stringify({ error: data.error?.message || 'API error' }), {
+        status: response.status,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    return new Response(JSON.stringify({
+      message: data.choices?.[0]?.message?.content || 'No response',
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Failed to reach AI service' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+}
