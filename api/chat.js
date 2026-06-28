@@ -3,23 +3,23 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Parse body with timeout safety
+  // Read body
   let messages
   try {
     const raw = await new Promise((resolve, reject) => {
       let data = ''
-      const timer = setTimeout(() => {
+      const fail = setTimeout(() => {
         try { resolve(JSON.parse(data || '{}')) }
         catch (e) { reject(e) }
       }, 3000)
       req.on('data', (chunk) => { data += chunk })
       req.on('end', () => {
-        clearTimeout(timer)
+        clearTimeout(fail)
         try { resolve(JSON.parse(data || '{}')) }
         catch (e) { reject(e) }
       })
       req.on('error', (e) => {
-        clearTimeout(timer)
+        clearTimeout(fail)
         reject(e)
       })
     })
@@ -92,7 +92,7 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
   let timer
   try {
     const controller = new AbortController()
-    timer = setTimeout(() => controller.abort(), 10000)
+    timer = setTimeout(() => controller.abort(), 12000)
 
     const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
       method: 'POST',
@@ -115,7 +115,9 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
       message: data.choices?.[0]?.message?.content || 'No response',
     })
   } catch (error) {
-    clearTimeout(timer)
-    return res.status(500).json({ error: error?.name === 'AbortError' ? 'AI service timeout' : 'Failed to reach AI service' })
+    if (timer) clearTimeout(timer)
+    return res.status(500).json({
+      error: error?.name === 'AbortError' ? 'AI service timeout' : 'Failed to reach AI service',
+    })
   }
 }
