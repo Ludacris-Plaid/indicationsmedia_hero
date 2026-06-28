@@ -89,7 +89,11 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
     stream: false,
   }
 
+  let timer
   try {
+    const controller = new AbortController()
+    timer = setTimeout(() => controller.abort(), 10000)
+
     const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -97,8 +101,10 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
         'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
       },
       body: JSON.stringify(body),
+      signal: controller.signal,
     })
 
+    clearTimeout(timer)
     const data = await response.json()
 
     if (!response.ok) {
@@ -109,6 +115,7 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
       message: data.choices?.[0]?.message?.content || 'No response',
     })
   } catch (error) {
-    return res.status(500).json({ error: 'Failed to reach AI service' })
+    clearTimeout(timer)
+    return res.status(500).json({ error: error?.name === 'AbortError' ? 'AI service timeout' : 'Failed to reach AI service' })
   }
 }
