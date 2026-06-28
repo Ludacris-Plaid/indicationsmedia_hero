@@ -1,52 +1,35 @@
-export default async function handler(request) {
-  // CORS and method check
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    })
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-
-  // Parse body — Vercel may pre-consume the stream
+  // Parse body with timeout safety
   let messages
   try {
-    if (request.body && typeof request.body === 'object') {
-      messages = request.body.messages || request.body
-    } else {
-      const raw = await new Promise((resolve, reject) => {
-        let data = ''
-        const fail = setTimeout(() => resolve(data || '{}'), 3000)
-        request.on('data', (chunk) => { data += chunk })
-        request.on('end', () => { clearTimeout(fail); resolve(data || '{}') })
-        request.on('error', (e) => { clearTimeout(fail); reject(e) })
-        if (request.readableEnded) { clearTimeout(fail); resolve(data || '{}') }
+    const raw = await new Promise((resolve, reject) => {
+      let data = ''
+      const timer = setTimeout(() => {
+        try { resolve(JSON.parse(data || '{}')) }
+        catch (e) { reject(e) }
+      }, 3000)
+      req.on('data', (chunk) => { data += chunk })
+      req.on('end', () => {
+        clearTimeout(timer)
+        try { resolve(JSON.parse(data || '{}')) }
+        catch (e) { reject(e) }
       })
-      const body = typeof raw === 'string' ? JSON.parse(raw) : raw
-      messages = body.messages || []
-    }
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid request body' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      req.on('error', (e) => {
+        clearTimeout(timer)
+        reject(e)
+      })
     })
+    messages = raw.messages
+  } catch {
+    return res.status(400).json({ error: 'Invalid request body' })
   }
 
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return new Response(JSON.stringify({ error: 'No messages provided' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    })
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: 'No messages provided' })
   }
 
   const SYSTEM_PROMPT = `You are the AI assistant for Indications Media, a premium software development and cybersecurity studio founded by a senior full-stack engineer.
@@ -119,25 +102,13 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
     const data = await response.json()
 
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: data.error?.message || 'API error' }), {
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return res.status(response.status).json({ error: data.error?.message || 'API error' })
     }
 
-    return new Response(JSON.stringify({
+    return res.status(200).json({
       message: data.choices?.[0]?.message?.content || 'No response',
-    }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
     })
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to reach AI service' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return res.status(500).json({ error: 'Failed to reach AI service' })
   }
 }
