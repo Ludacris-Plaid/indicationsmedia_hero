@@ -8,7 +8,15 @@ export default async function handler(request) {
 
   let messages
   try {
-    const body = await request.json()
+    const body = await new Promise((resolve, reject) => {
+      let data = ''
+      request.on('data', (chunk) => { data += chunk })
+      request.on('end', () => {
+        try { resolve(JSON.parse(data)) }
+        catch (e) { reject(e) }
+      })
+      request.on('error', reject)
+    })
     messages = body.messages
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid request body' }), {
