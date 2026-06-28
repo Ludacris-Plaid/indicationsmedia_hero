@@ -1,68 +1,79 @@
-export const config = { runtime: 'edge' }
+const https = require('https')
 
-export default async function handler(request) {
-  if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    })
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   let messages = []
   try {
-    const body = await request.json()
-    messages = body.messages || []
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid body' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
+    const raw = await new Promise((resolve) => {
+      let data = ''
+      const fail = setTimeout(() => resolve('{}'), 2000)
+      req.on('data', (c) => { data += c })
+      req.on('end', () => { clearTimeout(fail); resolve(data || '{}') })
     })
+    messages = JSON.parse(raw).messages || []
+  } catch {
+    return res.status(400).json({ error: 'Invalid body' })
   }
 
   if (!messages.length) {
-    return new Response(JSON.stringify({ error: 'No messages' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return res.status(400).json({ error: 'No messages' })
   }
 
+  const postData = JSON.stringify({
+    model: 'deepseek-ai/deepseek-v4-flash',
+    messages: [
+      { role: 'system', content: 'You are the Indications Media assistant. Be concise and professional.' },
+      ...messages,
+    ],
+    temperature: 0.7,
+    max_tokens: 500,
+  })
+
   try {
-    const response = await fetch('https://api.nvidia.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + (process.env.NVIDIA_API_KEY || ''),
-      },
-      body: JSON.stringify({
-        model: 'deepseek-ai/deepseek-v4-flash',
-        messages: [
-          { role: 'system', content: 'You are the Indications Media assistant. Be concise and professional.' },
-          ...messages,
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-      }),
+    const data = await new Promise((resolve, reject) => {
+      const apiReq = https.request({
+        hostname: 'integrate.api.nvidia.com',
+        path: '/v1/chat/completions',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + process.env.NVIDIA_API_KEY,
+          'Content-Length': Buffer.byteLength(postData),
+        },
+        timeout: 10000,
+        family: 4,
+      }, (apiRes) => {
+        let body = ''
+        apiRes.on('data', (c) => { body += c })
+        apiRes.on('end', () => {
+          try { resolve(JSON.parse(body)) }
+          catch { resolve({}) }
+        })
+      })
+
+      apiReq.on('timeout', () => {
+        apiReq.destroy()
+        reject(new Error('TIMEOUT'))
+      })
+      apiReq.on('error', (e) => reject(e))
+      apiReq.write(postData)
+      apiReq.end()
     })
 
-    const data = await response.json()
-
-    if (!response.ok) {
-      return new Response(JSON.stringify({ error: data.error?.message || 'API error' }), {
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' },
-      })
+    if (data.error) {
+      return res.status(400).json({ error: data.error.message || 'API error' })
     }
 
-    return new Response(JSON.stringify({
+    return res.status(200).json({
       message: data.choices?.[0]?.message?.content || 'No response',
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
     })
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message || 'Internal error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    if (err.message === 'TIMEOUT') {
+      return res.status(504).json({ error: 'AI service timeout' })
+    }
+    return res.status(500).json({ error: err.message || 'Internal error' })
   }
 }

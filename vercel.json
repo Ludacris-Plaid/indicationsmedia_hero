@@ -1,7 +1,11 @@
 {
   "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs20.x"
+    "api/chat.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30,
+      "environment": {
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+      }
     }
   }
 }
