@@ -1,7 +1,4 @@
 const https = require('https')
-const dns = require('dns')
-const { promisify } = require('util')
-const lookup = promisify(dns.lookup)
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -36,23 +33,17 @@ module.exports = async (req, res) => {
   })
 
   try {
-    // Resolve DNS with timeout
-    const address = await Promise.race([
-      lookup('integrate.api.nvidia.com'),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('DNS_TIMEOUT')), 5000)),
-    ])
-
     const data = await new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('TIMEOUT')), 10000)
 
       const apiReq = https.request({
-        hostname: address.address,
-        servername: 'integrate.api.nvidia.com',
+        hostname: 'integrate.api.nvidia.com',
         path: '/v1/chat/completions',
         method: 'POST',
+        family: 4,
+        agent: false,
         headers: {
           'Content-Type': 'application/json',
-          'Host': 'integrate.api.nvidia.com',
           Authorization: 'Bearer ' + process.env.NVIDIA_API_KEY,
           'Content-Length': Buffer.byteLength(postData),
         },
