@@ -26,18 +26,27 @@ export default function ChatBot({ isVisible }) {
     setLoading(true)
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + import.meta.env.VITE_NVIDIA_API_KEY,
+        },
         body: JSON.stringify({
-          messages: updatedMessages.map(({ role, content }) => ({ role, content })),
+          model: 'deepseek-ai/deepseek-v4-flash',
+          messages: [
+            { role: 'system', content: 'You are the AI assistant for Indications Media, a premium software development and cybersecurity studio. Be concise and professional.' },
+            ...updatedMessages.map(({ role, content }) => ({ role, content })),
+          ],
+          temperature: 0.7,
+          max_tokens: 500,
         }),
       })
 
       const data = await res.json()
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.message || data.error || 'No response' },
+        { role: 'assistant', content: data.choices?.[0]?.message?.content || data.error?.message || 'No response' },
       ])
     } catch {
       setMessages((prev) => [
