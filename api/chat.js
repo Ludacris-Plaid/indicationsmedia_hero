@@ -18,20 +18,15 @@ export default async function handler(request) {
     })
   }
 
-  // Parse body — try all possible formats
+  // Parse body — Vercel uses Web Request, dev uses IncomingMessage
   let messages
   try {
-    // Vercel pre-parsed body or Express middleware
-    if (request.body?.messages) {
-      messages = request.body.messages
-    }
-    // Web Request API
-    else if (typeof request.json === 'function') {
+    if (typeof request.json === 'function') {
       const body = await request.json()
       messages = body.messages
-    }
-    // Node.js IncomingMessage event-based
-    else {
+    } else if (request.body?.messages) {
+      messages = request.body.messages
+    } else {
       const body = await new Promise((resolve, reject) => {
         let data = ''
         request.on('data', (chunk) => { data += chunk })
