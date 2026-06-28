@@ -1,9 +1,11 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/chat",
+      "destination": "https://integrate.api.nvidia.com/v1/chat/completions"
+    }
+  ],
   "functions": {
-    "api/chat.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 30
-    },
     "api/test.js": {
       "runtime": "nodejs20.x",
       "maxDuration": 15

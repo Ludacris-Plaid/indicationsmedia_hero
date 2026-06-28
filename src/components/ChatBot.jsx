@@ -26,7 +26,7 @@ export default function ChatBot({ isVisible }) {
     setLoading(true)
 
     try {
-      const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
