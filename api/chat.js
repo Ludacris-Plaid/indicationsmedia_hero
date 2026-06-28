@@ -1,4 +1,16 @@
 export default async function handler(request) {
+  // CORS and method check
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    })
+  }
+
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
@@ -6,18 +18,31 @@ export default async function handler(request) {
     })
   }
 
+  // Parse body — try all possible formats
   let messages
   try {
-    const body = await new Promise((resolve, reject) => {
-      let data = ''
-      request.on('data', (chunk) => { data += chunk })
-      request.on('end', () => {
-        try { resolve(JSON.parse(data)) }
-        catch (e) { reject(e) }
+    // Vercel pre-parsed body or Express middleware
+    if (request.body?.messages) {
+      messages = request.body.messages
+    }
+    // Web Request API
+    else if (typeof request.json === 'function') {
+      const body = await request.json()
+      messages = body.messages
+    }
+    // Node.js IncomingMessage event-based
+    else {
+      const body = await new Promise((resolve, reject) => {
+        let data = ''
+        request.on('data', (chunk) => { data += chunk })
+        request.on('end', () => {
+          try { resolve(JSON.parse(data)) }
+          catch (e) { reject(e) }
+        })
+        request.on('error', reject)
       })
-      request.on('error', reject)
-    })
-    messages = body.messages
+      messages = body.messages
+    }
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid request body' }), {
       status: 400,
@@ -25,9 +50,14 @@ export default async function handler(request) {
     })
   }
 
-  const systemMessage = {
-    role: 'system',
-    content: `You are the AI assistant for Indications Media, a premium software development and cybersecurity studio founded by a senior full-stack engineer.
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return new Response(JSON.stringify({ error: 'No messages provided' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const SYSTEM_PROMPT = `You are the AI assistant for Indications Media, a premium software development and cybersecurity studio founded by a senior full-stack engineer.
 
 --- OUR SERVICES ---
 We offer six core services: Custom Web Applications (full-stack solutions tailored to business needs), System Architecture (scalable infrastructure and microservices design), AI Integration (LLM pipelines, automation, and intelligent agents), Cybersecurity (vulnerability assessment, hardening, and monitoring), API Development (REST, GraphQL, and real-time WebSocket endpoints), and Cloud & DevOps (CI/CD, containerization, and cloud deployment).
@@ -75,11 +105,10 @@ We don't publish pricing — every project is scoped individually based on requi
 
 --- HOW TO ANSWER ---
 You are professional, knowledgeable, and speak like a senior engineer who enjoys their craft. Be concise and helpful — keep responses under 3 sentences unless the visitor asks for detail. If someone asks about pricing, timelines, or project specifics, suggest they use the contact form so we can scope it properly. Never mention other AI companies or models. You ARE Indications Media's assistant.`
-  }
 
   const body = {
     model: 'deepseek-ai/deepseek-v4-flash',
-    messages: [systemMessage, ...messages],
+    messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
     temperature: 0.7,
     max_tokens: 500,
     stream: false,
@@ -108,7 +137,10 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
       message: data.choices?.[0]?.message?.content || 'No response',
     }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     })
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Failed to reach AI service' }), {
