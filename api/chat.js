@@ -1,4 +1,4 @@
-import https from 'https'
+import https from 'node:https'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
