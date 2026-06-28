@@ -1,35 +1,15 @@
 const https = require('https')
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
-
-  let messages = []
-  try {
-    const raw = await new Promise((resolve) => {
-      let data = ''
-      const fail = setTimeout(() => resolve('{}'), 2000)
-      req.on('data', (c) => { data += c })
-      req.on('end', () => { clearTimeout(fail); resolve(data || '{}') })
-    })
-    messages = JSON.parse(raw).messages || []
-  } catch {
-    return res.status(400).json({ error: 'Invalid body' })
-  }
-
-  if (!messages.length) {
-    return res.status(400).json({ error: 'No messages' })
-  }
-
+  // Simple hardcoded test — does the function infrastructure even work?
   const postData = JSON.stringify({
     model: 'deepseek-ai/deepseek-v4-flash',
     messages: [
-      { role: 'system', content: 'You are the Indications Media assistant. Be concise and professional.' },
-      ...messages,
+      { role: 'system', content: 'Say exactly "ok".' },
+      { role: 'user', content: 'test' },
     ],
-    temperature: 0.7,
-    max_tokens: 500,
+    temperature: 0,
+    max_tokens: 10,
   })
 
   try {
@@ -43,7 +23,7 @@ module.exports = async (req, res) => {
           Authorization: 'Bearer ' + process.env.NVIDIA_API_KEY,
           'Content-Length': Buffer.byteLength(postData),
         },
-        timeout: 10000,
+        timeout: 5000,
         family: 4,
       }, (apiRes) => {
         let body = ''
@@ -54,26 +34,14 @@ module.exports = async (req, res) => {
         })
       })
 
-      apiReq.on('timeout', () => {
-        apiReq.destroy()
-        reject(new Error('TIMEOUT'))
-      })
+      apiReq.on('timeout', () => { apiReq.destroy(); reject(new Error('TIMEOUT')) })
       apiReq.on('error', (e) => reject(e))
       apiReq.write(postData)
       apiReq.end()
     })
 
-    if (data.error) {
-      return res.status(400).json({ error: data.error.message || 'API error' })
-    }
-
-    return res.status(200).json({
-      message: data.choices?.[0]?.message?.content || 'No response',
-    })
+    return res.status(200).json({ ok: true, message: data.choices?.[0]?.message?.content })
   } catch (err) {
-    if (err.message === 'TIMEOUT') {
-      return res.status(504).json({ error: 'AI service timeout' })
-    }
-    return res.status(500).json({ error: err.message || 'Internal error' })
+    return res.status(500).json({ ok: false, error: err.message })
   }
 }
