@@ -18,25 +18,22 @@ export default async function handler(request) {
     })
   }
 
-  // Parse body — Vercel uses Web Request, dev uses IncomingMessage
+  // Parse body — Vercel may pre-consume the stream
   let messages
   try {
-    if (typeof request.json === 'function') {
-      const body = await request.json()
-      messages = body.messages
-    } else if (request.body?.messages) {
-      messages = request.body.messages
+    if (request.body && typeof request.body === 'object') {
+      messages = request.body.messages || request.body
     } else {
-      const body = await new Promise((resolve, reject) => {
+      const raw = await new Promise((resolve, reject) => {
         let data = ''
+        const fail = setTimeout(() => resolve(data || '{}'), 3000)
         request.on('data', (chunk) => { data += chunk })
-        request.on('end', () => {
-          try { resolve(JSON.parse(data)) }
-          catch (e) { reject(e) }
-        })
-        request.on('error', reject)
+        request.on('end', () => { clearTimeout(fail); resolve(data || '{}') })
+        request.on('error', (e) => { clearTimeout(fail); reject(e) })
+        if (request.readableEnded) { clearTimeout(fail); resolve(data || '{}') }
       })
-      messages = body.messages
+      const body = typeof raw === 'string' ? JSON.parse(raw) : raw
+      messages = body.messages || []
     }
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid request body' }), {
