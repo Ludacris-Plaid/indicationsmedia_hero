@@ -84,7 +84,7 @@ export default function App() {
           overflowY: 'auto',
           WebkitOverflowScrolling: 'touch',
           overscrollBehavior: 'contain',
-          pointerEvents: 'none',
+
         }}
       >
         <Navigation activeSection={activeSection} setActiveSection={setActiveSection} scrollToTop={scrollToTop} />
