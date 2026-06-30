@@ -10,6 +10,18 @@ if (typeof window !== 'undefined') {
     globalMouse.x = e.clientX / window.innerWidth
     globalMouse.y = 1.0 - e.clientY / window.innerHeight
   })
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      globalMouse.x = e.touches[0].clientX / window.innerWidth
+      globalMouse.y = 1.0 - e.touches[0].clientY / window.innerHeight
+    }
+  }, { passive: true })
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+      globalMouse.x = e.touches[0].clientX / window.innerWidth
+      globalMouse.y = 1.0 - e.touches[0].clientY / window.innerHeight
+    }
+  }, { passive: true })
 }
 
 const vertexShader = `

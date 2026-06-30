@@ -114,9 +114,10 @@ export default function Contact() {
           <div style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '11px',
-            color: 'rgba(0, 204, 255, 0.5)',
+            color: '#00ccff',
             marginBottom: '16px',
             letterSpacing: '0.1em',
+            animation: 'connectionPulse 2.5s ease-in-out infinite',
           }}>
             {'// ESTABLISH CONNECTION'}
           </div>
@@ -149,39 +150,186 @@ export default function Contact() {
             {'> to be built right? Let\'s talk.'}
           </p>
 
+          {/* Email */}
+          <div style={{
+            marginBottom: '12px',
+            display: 'inline-flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '10px',
+          }}>
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '9px',
+              color: 'rgba(0, 255, 102, 0.35)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+            }}>
+              {'// EMAIL'}
+            </div>
+
           <a
             href="mailto:indicationsmedia@protonmail.com"
-            className="btn-redraw"
             style={{
-              display: 'inline-block',
-              padding: isMobile ? '12px 16px' : '16px 36px',
-              wordBreak: 'break-all',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              padding: isMobile ? '12px 16px' : '14px 28px',
               borderRadius: '2px',
-              border: '1px solid #00ff66',
-              background: 'rgba(0, 255, 102, 0.05)',
-              color: '#00ff66',
-              fontSize: '13px',
-              fontWeight: 600,
+              border: '1px solid rgba(0, 255, 102, 0.15)',
+              background: 'rgba(0, 255, 102, 0.03)',
               textDecoration: 'none',
-              fontFamily: "'Courier New', monospace",
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
               transition: 'all 0.3s ease',
-              boxShadow: '0 0 15px rgba(0, 255, 102, 0.1)',
+              boxShadow: '0 0 20px rgba(0, 255, 102, 0.05)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 255, 102, 0.12)'
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 255, 102, 0.2)'
+              e.currentTarget.style.background = 'rgba(0, 255, 102, 0.08)'
+              e.currentTarget.style.boxShadow = '0 0 35px rgba(0, 255, 102, 0.15)'
+              e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.35)'
               e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 255, 102, 0.05)'
-              e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 102, 0.1)'
+              e.currentTarget.style.background = 'rgba(0, 255, 102, 0.03)'
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 102, 0.05)'
+              e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.15)'
               e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
-            indicationsmedia@protonmail.com
+            {/* Envelope SVG */}
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                filter: 'drop-shadow(0 0 6px rgba(0, 255, 102, 0.4))',
+                animation: 'emailFloat 3s ease-in-out infinite',
+                flexShrink: 0,
+              }}
+            >
+              <rect x="2" y="5" width="20" height="14" rx="2" stroke="#00ff66" strokeWidth="1.5" fill="rgba(0, 255, 102, 0.05)" />
+              <path d="M2 7l8.5 6.5c.9.7 2.1.7 3 0L22 7" stroke="#00ff66" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
+            </svg>
+
+            <span style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '13px',
+              color: '#00ff66',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              textShadow: '0 0 10px rgba(0, 255, 102, 0.3)',
+              wordBreak: 'break-all',
+            }}>
+              indicationsmedia@protonmail.com
+            </span>
+
+            <span style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '9px',
+              color: 'rgba(0, 255, 102, 0.3)',
+              letterSpacing: '0.1em',
+            }}>
+              [pgp]
+            </span>
           </a>
+          </div>
+
+          {/* Telegram */}
+          <div style={{
+            marginTop: '44px',
+            display: 'inline-flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease 0.3s',
+          }}>
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '9px',
+              color: 'rgba(0, 204, 255, 0.35)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+            }}>
+              {'// DIRECT_LINE'}
+            </div>
+
+            <a
+              href="https://t.me/therealdysthemix"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="telegram-line"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '12px 24px',
+                borderRadius: '2px',
+                border: '1px solid rgba(0, 204, 255, 0.15)',
+                background: 'rgba(0, 204, 255, 0.03)',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 0 20px rgba(0, 204, 255, 0.05)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 204, 255, 0.08)'
+                e.currentTarget.style.boxShadow = '0 0 35px rgba(0, 204, 255, 0.15)'
+                e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.35)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 204, 255, 0.03)'
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 204, 255, 0.05)'
+                e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}
+            >
+              {/* Telegram SVG */}
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  filter: 'drop-shadow(0 0 6px rgba(0, 204, 255, 0.4))',
+                  animation: 'telegramFloat 3s ease-in-out infinite',
+                  flexShrink: 0,
+                }}
+              >
+                <circle cx="12" cy="12" r="12" fill="rgba(0, 204, 255, 0.08)" />
+                <path
+                  d="M5.4 11.2l4.3 1.6 1.6 5.1c.1.3.5.4.7.1l2.2-2.6c.2-.2.5-.2.7 0l2.8 2.1c.3.2.7 0 .7-.3l2-11c.1-.4-.3-.7-.7-.6L5.3 10.3c-.4.1-.4.7.1.9zm6-1.5l5.5-3.4c.1-.1.2.1.1.2l-4.7 5.3c-.2.2-.3.5-.3.8l-.2 1.5c0 .1-.2.1-.2 0l-.8-2.5c-.1-.3.1-.6.4-.8l.2-.1z"
+                  fill="#00ccff"
+                  opacity="0.9"
+                  style={{ transition: 'all 0.3s ease' }}
+                />
+              </svg>
+
+              <span style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '13px',
+                color: '#00ccff',
+                letterSpacing: '0.06em',
+                textShadow: '0 0 10px rgba(0, 204, 255, 0.3)',
+                transition: 'all 0.3s ease',
+              }}>
+                @therealdysthemix
+              </span>
+
+              <span style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '9px',
+                color: 'rgba(0, 204, 255, 0.3)',
+                letterSpacing: '0.1em',
+                transition: 'all 0.3s ease',
+              }}>
+                [online]
+              </span>
+            </a>
+          </div>
         </div>
 
         {/* Footer */}
@@ -268,6 +416,19 @@ export default function Contact() {
         @keyframes copyrightPulse {
           0%, 100% { opacity: 0.6; text-shadow: 0 0 4px rgba(0, 204, 255, 0.2); }
           50% { opacity: 1; text-shadow: 0 0 12px rgba(0, 204, 255, 0.4); }
+        }
+        @keyframes connectionPulse {
+          0%, 100% { opacity: 0.4; text-shadow: 0 0 4px rgba(0, 204, 255, 0.15); }
+          50% { opacity: 1; text-shadow: 0 0 16px rgba(0, 204, 255, 0.45), 0 0 32px rgba(0, 204, 255, 0.15); }
+        }
+        @keyframes telegramFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-3px); }
+        }
+        @keyframes emailFloat {
+          0%, 100% { transform: translateY(0); }
+          33% { transform: translateY(-2px); }
+          66% { transform: translateY(1px); }
         }
       `}</style>
     </section>

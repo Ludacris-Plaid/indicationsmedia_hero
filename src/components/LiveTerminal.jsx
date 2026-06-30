@@ -159,7 +159,7 @@ export default function LiveTerminal({ isVisible }) {
       }}>
         <span style={{
           fontFamily: "'Courier New', monospace",
-          fontSize: '10px',
+          fontSize: '13px',
           letterSpacing: '0.08em',
           color: '#00ff66',
         }}>
@@ -167,7 +167,7 @@ export default function LiveTerminal({ isVisible }) {
         </span>
         <span style={{
           fontFamily: "'Courier New', monospace",
-          fontSize: '9px',
+          fontSize: '12px',
           color: 'rgba(0, 255, 102, 0.3)',
         }}>
           {'LIVE'}
@@ -180,7 +180,7 @@ export default function LiveTerminal({ isVisible }) {
         overflowY: 'auto',
         padding: '12px 14px',
         fontFamily: "'Courier New', monospace",
-        fontSize: '9.5px',
+        fontSize: '13px',
         lineHeight: 1.7,
         letterSpacing: '0.03em',
         position: 'relative',
@@ -232,7 +232,7 @@ export default function LiveTerminal({ isVisible }) {
           }}>
             <div style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: '16px',
+              fontSize: '20px',
               fontWeight: 700,
               color: '#ffffff',
               letterSpacing: '-0.02em',
@@ -242,7 +242,7 @@ export default function LiveTerminal({ isVisible }) {
             </div>
             <div style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '7px',
+              fontSize: '10px',
               color: 'rgba(0, 255, 102, 0.35)',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -251,7 +251,7 @@ export default function LiveTerminal({ isVisible }) {
             </div>
             <div style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '6.5px',
+              fontSize: '9px',
               color: 'rgba(255, 255, 255, 0.2)',
               letterSpacing: '0.05em',
               marginTop: '1px',

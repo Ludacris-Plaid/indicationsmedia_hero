@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import useIsMobile from '../hooks/useIsMobile'
 
 function HexStream() {
   const [lines, setLines] = useState([])
@@ -161,14 +160,12 @@ function GlitchBar() {
 }
 
 export default function GlitchOverlay() {
-  const isMobile = useIsMobile()
-
   return (
     <>
-      {!isMobile && <HexStream />}
-      {!isMobile && <StatusBar />}
+      <HexStream />
+      <StatusBar />
       <ScanlineOverlay />
-      {!isMobile && <GlitchBar />}
+      <GlitchBar />
       <style>{`
         @keyframes flicker {
           0% { opacity: 0; }

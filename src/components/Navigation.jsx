@@ -83,21 +83,223 @@ function HamburgerIcon({ isOpen }) {
   )
 }
 
+function MobileMenu({ isOpen, onClose, activeSection, setActiveSection, scrollToTop }) {
+  const navItems = ['Home', 'Work', 'About', 'Contact']
+  const [visible, setVisible] = useState(false)
+  const [animating, setAnimating] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setAnimating(true))
+      })
+    } else {
+      setAnimating(false)
+      const timer = setTimeout(() => setVisible(false), 400)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
+
+  const handleNav = (item) => {
+    setAnimating(false)
+    setTimeout(() => {
+      onClose()
+      if (item === 'Home') {
+        setActiveSection('hero')
+        scrollToTop()
+      } else {
+        setActiveSection(item.toLowerCase())
+        document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 200)
+  }
+
+  if (!visible) return null
+
+  return (
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 105,
+      overflow: 'hidden',
+    }}>
+      {/* Animated dark background */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: '#030806',
+        opacity: animating ? 1 : 0,
+        transition: 'opacity 0.4s ease',
+      }} />
+
+      {/* Animated scanlines */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,102,0.015) 2px, rgba(0,255,102,0.015) 4px)',
+        opacity: animating ? 1 : 0,
+        transition: 'opacity 0.6s ease 0.1s',
+        animation: animating ? 'scanlineScroll 8s linear infinite' : 'none',
+      }} />
+
+      {/* Grid pattern */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `
+          linear-gradient(rgba(0,255,102,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,255,102,0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+        opacity: animating ? 1 : 0,
+        transition: 'opacity 0.8s ease 0.2s',
+      }} />
+
+      {/* Vignette */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%)',
+        opacity: animating ? 1 : 0,
+        transition: 'opacity 0.6s ease 0.1s',
+      }} />
+
+      {/* Horizontal glitch line */}
+      <div style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        height: '1px',
+        background: 'rgba(0,255,102,0.4)',
+        top: '50%',
+        boxShadow: '0 0 20px rgba(0,255,102,0.3)',
+        opacity: animating ? 1 : 0,
+        transform: animating ? 'scaleX(1)' : 'scaleX(0)',
+        transition: 'all 0.6s ease 0.3s',
+      }} />
+
+      {/* Menu items */}
+      <div style={{
+        position: 'relative',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+      }}>
+        {/* System status header */}
+        <div style={{
+          fontFamily: "'Courier New', monospace",
+          fontSize: '10px',
+          color: 'rgba(0,255,102,0.3)',
+          letterSpacing: '0.2em',
+          marginBottom: '24px',
+          opacity: animating ? 1 : 0,
+          transform: animating ? 'translateY(0)' : 'translateY(-10px)',
+          transition: 'all 0.5s ease 0.2s',
+        }}>
+          [ SYSTEM://NAV_MENU.ACTIVE ]
+        </div>
+
+        {navItems.map((item, i) => {
+          const isActive = item === 'Home'
+            ? activeSection === 'hero'
+            : activeSection === item.toLowerCase()
+          return (
+            <button
+              key={item}
+              onClick={() => handleNav(item)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: isActive ? '#00ff66' : 'rgba(0,255,102,0.6)',
+                fontSize: '28px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                padding: '16px 48px',
+                fontFamily: "'Courier New', monospace",
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                transition: 'all 0.3s ease',
+                textShadow: isActive ? '0 0 20px rgba(0,255,102,0.6)' : 'none',
+                opacity: animating ? 1 : 0,
+                transform: animating ? 'translateX(0)' : 'translateX(40px)',
+                transitionDelay: `${0.15 + i * 0.08}s`,
+                position: 'relative',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.color = '#00ff66'
+                  e.currentTarget.style.textShadow = '0 0 15px rgba(0,255,102,0.5)'
+                  e.currentTarget.style.transform = 'translateX(8px)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.color = 'rgba(0,255,102,0.6)'
+                  e.currentTarget.style.textShadow = 'none'
+                  e.currentTarget.style.transform = 'translateX(0)'
+                }
+              }}
+            >
+              {/* Active indicator */}
+              {isActive && (
+                <span style={{
+                  position: 'absolute',
+                  left: '24px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '4px',
+                  height: '4px',
+                  borderRadius: '50%',
+                  background: '#00ff66',
+                  boxShadow: '0 0 10px #00ff66',
+                }} />
+              )}
+              <GlitchText text={item} glitchInterval={5000} />
+            </button>
+          )
+        })}
+
+        {/* Bottom status */}
+        <div style={{
+          fontFamily: "'Courier New', monospace",
+          fontSize: '9px',
+          color: 'rgba(0,255,102,0.2)',
+          letterSpacing: '0.15em',
+          marginTop: '32px',
+          opacity: animating ? 1 : 0,
+          transition: 'opacity 0.5s ease 0.6s',
+        }}>
+          INDICATIONS_MEDIA // {new Date().getFullYear()}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes scanlineScroll {
+          0% { background-position: 0 0; }
+          100% { background-position: 0 100px; }
+        }
+      `}</style>
+    </div>
+  )
+}
+
 export default function Navigation({ activeSection, setActiveSection, scrollToTop }) {
   const isMobile = useIsMobile()
   const [menuOpen, setMenuOpen] = useState(false)
   const navItems = ['Home', 'Work', 'About', 'Contact']
 
-  const handleNav = (item) => {
-    setMenuOpen(false)
-    if (item === 'Home') {
-      setActiveSection('hero')
-      scrollToTop()
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
     } else {
-      setActiveSection(item.toLowerCase())
-      document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+      document.body.style.overflow = ''
     }
-  }
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
 
   return (
     <nav style={{
@@ -112,13 +314,17 @@ export default function Navigation({ activeSection, setActiveSection, scrollToTo
       alignItems: 'center',
       pointerEvents: 'auto',
       borderBottom: '1px solid rgba(0, 255, 102, 0.06)',
-      background: 'rgba(5, 5, 8, 0.8)',
-      backdropFilter: 'blur(20px)',
+      background: menuOpen ? 'transparent' : 'rgba(5, 5, 8, 0.8)',
+      backdropFilter: menuOpen ? 'none' : 'blur(20px)',
+      transition: 'background 0.3s ease, backdrop-filter 0.3s ease',
     }}>
-      <Logo onClick={() => {
-        setActiveSection('hero')
-        scrollToTop()
-      }} />
+      <div style={{ zIndex: menuOpen ? 110 : 1 }}>
+        <Logo onClick={() => {
+          setActiveSection('hero')
+          scrollToTop()
+          setMenuOpen(false)
+        }} />
+      </div>
 
       {/* Desktop nav */}
       {!isMobile && (
@@ -187,53 +393,23 @@ export default function Navigation({ activeSection, setActiveSection, scrollToTo
       )}
 
       {/* Mobile menu overlay */}
-      {isMobile && menuOpen && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(3, 8, 6, 1)',
-          backdropFilter: 'blur(20px)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '24px',
-          paddingTop: '80px',
-          zIndex: 105,
-        }}>
-          {navItems.map((item) => {
-            const isActive = item === 'Home'
-              ? activeSection === 'hero'
-              : activeSection === item.toLowerCase()
-            return (
-              <button
-                key={item}
-                onClick={() => handleNav(item)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  borderBottom: isActive ? '1px solid #00ff66' : '1px solid transparent',
-                  color: isActive ? '#00ff66' : 'rgba(0, 255, 102, 0.8)',
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  padding: '12px 24px',
-                  fontFamily: "'Courier New', monospace",
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  transition: 'all 0.3s',
-                  textShadow: isActive ? '0 0 12px rgba(0, 255, 102, 0.5)' : 'none',
-                }}
-              >
-                {item}
-              </button>
-            )
-          })}
-        </div>
-      )}
+      <MobileMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        scrollToTop={scrollToTop}
+      />
     </nav>
   )
+
+  function handleNav(item) {
+    if (item === 'Home') {
+      setActiveSection('hero')
+      scrollToTop()
+    } else {
+      setActiveSection(item.toLowerCase())
+      document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 }

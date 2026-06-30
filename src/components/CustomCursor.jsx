@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
-import useIsMobile from '../hooks/useIsMobile'
 
 export default function CustomCursor({ cursorPosition, hoveredProject }) {
-  const isMobile = useIsMobile()
   const cursorRef = useRef(null)
   const dotRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const touchTimeout = useRef(null)
 
   useEffect(() => {
     const enter = () => setIsVisible(true)
@@ -19,14 +18,42 @@ export default function CustomCursor({ cursorPosition, hoveredProject }) {
   }, [])
 
   useEffect(() => {
+    const onTouchStart = (e) => {
+      if (e.touches.length > 0) {
+        setIsVisible(true)
+        if (touchTimeout.current) clearTimeout(touchTimeout.current)
+      }
+    }
+    const onTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        setIsVisible(true)
+        if (touchTimeout.current) clearTimeout(touchTimeout.current)
+      }
+    }
+    const onTouchEnd = () => {
+      touchTimeout.current = setTimeout(() => {
+        setIsVisible(false)
+      }, 1500)
+    }
+
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+      if (touchTimeout.current) clearTimeout(touchTimeout.current)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!cursorRef.current || !dotRef.current) return
     cursorRef.current.style.transform = `translate(${cursorPosition.x - 16}px, ${cursorPosition.y - 16}px)`
     dotRef.current.style.transform = `translate(${cursorPosition.x - 3}px, ${cursorPosition.y - 3}px)`
   }, [cursorPosition])
 
   const color = hoveredProject ? '#00ff66' : '#00ff66'
-
-  if (isMobile) return null
 
   return (
     <>

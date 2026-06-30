@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
-import LiveTerminal from './LiveTerminal'
+import ChatBot from './ChatBot'
 import useIsMobile from '../hooks/useIsMobile'
 
 const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
@@ -324,6 +324,7 @@ export default function About() {
           </div>
 
           {/* Tech Stack */}
+          {!isMobile && (
           <div style={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -331,6 +332,7 @@ export default function About() {
           }}>
             <TechStack />
           </div>
+          )}
         </div>
 
         {/* Right - Stats */}
@@ -399,6 +401,7 @@ export default function About() {
           </div>
 
            {/* Digital Manifesto */}
+           {!isMobile && (
            <div style={{
              padding: '20px',
              borderRadius: '2px',
@@ -450,12 +453,13 @@ export default function About() {
                </marquee>
              </div>
            </div>
+           )}
 
           {/* Testimonial */}
           <TestimonialBox isVisible={isVisible} />
 
-          {/* Live Terminal */}
-          <LiveTerminal isVisible={isVisible} />
+          {/* AI Chatbot */}
+          <ChatBot isVisible={isVisible} />
         </div>
       </div>
     </section>

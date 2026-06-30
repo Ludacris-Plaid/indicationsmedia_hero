@@ -13,7 +13,7 @@ export default function ChatBot({ isVisible }) {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight
     }
-  }, [messages])
+  }, [messages, loading])
 
   const send = useCallback(async () => {
     const text = input.trim()
@@ -26,27 +26,16 @@ export default function ChatBot({ isVisible }) {
     setLoading(true)
 
     try {
-      const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + import.meta.env.VITE_NVIDIA_API_KEY,
-        },
-        body: JSON.stringify({
-          model: 'deepseek-ai/deepseek-v4-flash',
-          messages: [
-            { role: 'system', content: 'You are the AI assistant for Indications Media, a premium software development and cybersecurity studio. Be concise and professional.' },
-            ...updatedMessages.map(({ role, content }) => ({ role, content })),
-          ],
-          temperature: 0.7,
-          max_tokens: 500,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: updatedMessages.map(({ role, content }) => ({ role, content })) }),
       })
 
       const data = await res.json()
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.choices?.[0]?.message?.content || data.error?.message || 'No response' },
+        { role: 'assistant', content: data.message || data.error || 'No response' },
       ])
     } catch {
       setMessages((prev) => [
@@ -84,15 +73,19 @@ export default function ChatBot({ isVisible }) {
         borderBottom: '1px solid rgba(0, 255, 102, 0.08)',
         color: '#00ff66',
         fontFamily: "'Courier New', monospace",
-        fontSize: '10px',
+        fontSize: '13px',
         letterSpacing: '0.08em',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
         <span>{'// AI_ASSISTANT'}</span>
-        <span style={{ color: 'rgba(0, 255, 102, 0.3)', fontSize: '9px' }}>
-          {'ONLINE'}
+        <span style={{
+          color: loading ? '#ffcc00' : 'rgba(0, 255, 102, 0.3)',
+          fontSize: '12px',
+          transition: 'color 0.3s ease',
+        }}>
+          {loading ? 'PROCESSING...' : 'ONLINE'}
         </span>
       </div>
 
@@ -112,7 +105,7 @@ export default function ChatBot({ isVisible }) {
           {messages.map((msg, i) => (
             <div key={i} style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '10px',
+              fontSize: '13px',
               lineHeight: 1.55,
               color: msg.role === 'user'
                 ? 'rgba(0, 204, 255, 0.7)'
@@ -133,11 +126,17 @@ export default function ChatBot({ isVisible }) {
           {loading && (
             <div style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '10px',
+              fontSize: '13px',
               color: 'rgba(0, 255, 102, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
             }}>
               <span style={{ color: '#00ff66', fontWeight: 700 }}>{'$ '}</span>
-              <span className="blink">{'▌'}</span>
+              <span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>{'PROCESSING'}</span>
+              <span className="thinking-dots">
+                <span>{'.'}</span><span>{'.'}</span><span>{'.'}</span>
+              </span>
             </div>
           )}
         </div>
@@ -162,7 +161,7 @@ export default function ChatBot({ isVisible }) {
               border: 'none',
               color: '#ffffff',
               fontFamily: "'Courier New', monospace",
-              fontSize: '10px',
+              fontSize: '13px',
               outline: 'none',
               letterSpacing: '0.03em',
             }}
@@ -179,7 +178,7 @@ export default function ChatBot({ isVisible }) {
                 ? 'rgba(0, 255, 102, 0.15)'
                 : '#00ff66',
               fontFamily: "'Courier New', monospace",
-              fontSize: '10px',
+              fontSize: '13px',
               cursor: loading || !input.trim() ? 'default' : 'pointer',
               transition: 'color 0.2s ease',
               outline: 'none',

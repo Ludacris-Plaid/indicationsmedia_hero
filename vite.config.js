@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiKey = env.NVIDIA_API_KEY
+  const deepseekKey = env.DEEPSEEK_API_KEY
+  const featherlessKey = env.FEATHERLESS_API_KEY
 
   return {
     plugins: [
@@ -77,25 +78,43 @@ We don't publish pricing — every project is scoped individually based on requi
 --- HOW TO ANSWER ---
 You are professional, knowledgeable, and speak like a senior engineer who enjoys their craft. Be concise and helpful — keep responses under 3 sentences unless the visitor asks for detail. If someone asks about pricing, timelines, or project specifics, suggest they use the contact form so we can scope it properly. Never mention other AI companies or models. You ARE Indications Media's assistant.`
 
-              const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+              const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${apiKey}`,
+                  'Authorization': `Bearer ${deepseekKey}`,
                 },
                 body: JSON.stringify({
-                  model: 'deepseek-ai/deepseek-v4-flash',
+                  model: 'deepseek-chat',
                   messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                   temperature: 0.7,
                   max_tokens: 500,
-                  stream: false,
                 }),
+                signal: AbortSignal.timeout(15000),
               })
 
-              const data = await response.json()
-
+              let finalResponse = response
               if (!response.ok) {
-                res.statusCode = response.status
+                finalResponse = await fetch('https://api.featherless.ai/v1/chat/completions', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${featherlessKey}`,
+                  },
+                  body: JSON.stringify({
+                    model: 'mistralai/Mistral-Nemo-Instruct-2407',
+                    messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+                    temperature: 0.7,
+                    max_tokens: 500,
+                  }),
+                  signal: AbortSignal.timeout(15000),
+                })
+              }
+
+              const data = await finalResponse.json()
+
+              if (!finalResponse.ok) {
+                res.statusCode = finalResponse.status
                 res.end(JSON.stringify({ error: data.error?.message || 'API error' }))
                 return
               }
