@@ -10,7 +10,7 @@ const CATEGORY_COLORS = {
 
 export default function BlogFeed({ isVisible }) {
   const [selectedPost, setSelectedPost] = useState(null)
-  const latest = posts.slice(0, 3)
+  const latest = posts.slice(0, 5)
 
   return (
     <>
