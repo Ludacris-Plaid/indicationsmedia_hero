@@ -51,9 +51,9 @@ export default function BlogModal({ post, onClose }) {
 
       <div style={{
         position: 'relative',
-        width: '90vw',
-        maxWidth: '680px',
-        maxHeight: '85vh',
+        width: '96vw',
+        maxWidth: 'none',
+        maxHeight: '92vh',
         background: '#0a0e0c',
         border: `1px solid ${catColor}30`,
         borderRadius: '10px',
@@ -64,7 +64,7 @@ export default function BlogModal({ post, onClose }) {
       }}>
         {/* Header bar */}
         <div style={{
-          padding: '20px 28px 16px',
+          padding: '24px 40px 20px',
           borderBottom: '1px solid rgba(0, 255, 102, 0.08)',
           flexShrink: 0,
         }}>
@@ -107,15 +107,15 @@ export default function BlogModal({ post, onClose }) {
 
         {/* Body */}
         <div className="blog-modal-body" style={{
-          padding: '24px 28px',
+          padding: '28px 40px',
           overflowY: 'auto',
           flex: 1,
         }}>
           {paragraphs.map((p, i) => (
             <p key={i} style={{
               fontFamily: "'Courier New', monospace",
-              fontSize: '13px',
-              lineHeight: 1.75,
+              fontSize: '14px',
+              lineHeight: 1.8,
               color: 'rgba(255, 255, 255, 0.65)',
               margin: '0 0 20px 0',
             }}>
@@ -126,7 +126,7 @@ export default function BlogModal({ post, onClose }) {
 
         {/* Footer */}
         <div style={{
-          padding: '16px 28px',
+          padding: '20px 40px',
           borderTop: '1px solid rgba(0, 255, 102, 0.08)',
           display: 'flex',
           alignItems: 'center',

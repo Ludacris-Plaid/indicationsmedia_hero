@@ -256,7 +256,7 @@ export default function BlogCarousel() {
                 onKeyDown={(e) => { if (e.key === 'Enter') setSelectedPost(post) }}
                 style={{
                   flex: '0 0',
-                  width: isMobile ? '280px' : '420px',
+                  width: isMobile ? '85vw' : 'calc(50vw - 48px)',
                   scrollSnapAlign: 'start',
                   background: 'rgba(0, 255, 102, 0.02)',
                   border: '1px solid rgba(0, 255, 102, 0.1)',
