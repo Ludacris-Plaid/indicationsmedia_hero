@@ -250,14 +250,15 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Bottom-center: clean dot indicator + counter */}
+          {/* Top-center: clean dot indicator + counter (above the bottom sheet) */}
           <div style={{
-            position: 'absolute', bottom: '14px', left: '50%', transform: 'translateX(-50%)',
+            position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)',
             display: 'flex', alignItems: 'center', gap: '8px',
             padding: '7px 16px', background: 'rgba(3, 8, 6, 0.85)',
             border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
             backdropFilter: 'blur(8px)',
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
+            zIndex: 6,
           }}>
             {Array.from({ length: gallery.length }).map((_, i) => (
               <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
