@@ -203,11 +203,12 @@ export default function ProjectModal({ project, onClose }) {
             }}>✕</button>
         </div>
 
-        {/* Carousel — fixed height, not part of scroll */}
+        {/* Carousel — constrained height so body always has room */}
         <div style={{
           position: 'relative', width: '100%', background: '#0a0c0a',
           borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
-          overflow: 'hidden', aspectRatio: '16/9', flexShrink: 0,
+          overflow: 'hidden', flexShrink: 0,
+          height: 'min(36vh, 360px)',
         }}>
           <div style={{
             display: 'flex', height: '100%',
@@ -232,7 +233,7 @@ export default function ProjectModal({ project, onClose }) {
               }}>‹</button>
           )}
           {slideIdx < gallery.length - 1 && (
-            <button onClick={() => setSlideIdx(i => Math.min(totalSlides - 1, i + 1))} aria-label="Next"
+            <button onClick={() => setSlideIdx(i => Math.min(gallery.length - 1, i + 1))} aria-label="Next"
               style={{
                 position: 'absolute', top: '50%', right: '12px', transform: 'translateY(-50%)',
                 width: '36px', height: '36px', borderRadius: '50%',
@@ -264,7 +265,7 @@ export default function ProjectModal({ project, onClose }) {
           className="modal-body-scroll"
           style={{
             padding: '20px 24px', overflowY: 'scroll', overflowX: 'hidden',
-            flex: '1 1 0%', minHeight: 0, WebkitOverflowScrolling: 'touch',
+            flex: '1 1 0%', minHeight: '260px', WebkitOverflowScrolling: 'touch',
           }}
         >
           {/* Title + CTA */}
