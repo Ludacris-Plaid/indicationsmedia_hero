@@ -244,6 +244,34 @@ const languages = [
       </>
     ),
   },
+  {
+    name: 'PHP',
+    usage: 'web backend',
+    color: '#777BB4',
+    url: 'https://www.php.net/',
+    svg: (
+      <>
+        <ellipse cx="16" cy="17" rx="13" ry="11" fill="#777BB4" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">PHP</text>
+        <circle cx="16" cy="8" r="2" fill="#777BB4" />
+      </>
+    ),
+  },
+  {
+    name: 'Bash',
+    usage: 'shell, scripts',
+    color: '#4EAA25',
+    url: 'https://www.gnu.org/software/bash/',
+    svg: (
+      <>
+        <rect x="3" y="6" width="26" height="20" rx="2" fill="#4EAA25" />
+        <circle cx="6" cy="9" r="0.8" fill="#FF5F56" />
+        <circle cx="8.5" cy="9" r="0.8" fill="#FFBD2E" />
+        <circle cx="11" cy="9" r="0.8" fill="#27C93F" />
+        <text x="6" y="22" fontSize="10" fontWeight="700" fontFamily="monospace" fill="#FFF">$ _</text>
+      </>
+    ),
+  },
 ]
 
 const frameworks = [
@@ -371,6 +399,31 @@ const frameworks = [
       <>
         <rect x="3" y="3" width="26" height="26" rx="3" fill="#FF3E00" />
         <path d="M16 6 Q10 6 8 12 Q9 9 13 9 Q11 9 10 13 Q12 10 16 12 Q13 12 12 16 Q15 13 19 15 Q16 13 19 17 Q21 15 19 21 Q22 17 20 23" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Angular',
+    usage: 'enterprise UI',
+    color: '#DD0031',
+    url: 'https://angular.dev/',
+    svg: (
+      <>
+        <path d="M5 8 L16 4 L27 8 L25 22 L16 28 L7 22 Z" fill="#DD0031" />
+        <path d="M16 4 L16 28 L25 22 L27 8 Z" fill="#C3002F" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">A</text>
+      </>
+    ),
+  },
+  {
+    name: 'Nuxt',
+    usage: 'Vue meta-framework',
+    color: '#00DC82',
+    url: 'https://nuxt.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#00DC82" />
+        <path d="M9 22 L13 8 L17 17 L19 13 L23 22" stroke="#030806" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
   },
@@ -534,6 +587,31 @@ const infrastructure = [
       </>
     ),
   },
+  {
+    name: 'MongoDB',
+    usage: 'NoSQL database',
+    color: '#47A248',
+    url: 'https://www.mongodb.com/',
+    svg: (
+      <>
+        <path d="M16 4 Q12 8 12 14 Q12 20 16 28 Q20 20 20 14 Q20 8 16 4" fill="#47A248" />
+        <path d="M16 4 Q12 8 12 14 Q12 20 16 28 Q20 20 20 14 Q20 8 16 4" fill="none" stroke="#FFF" strokeWidth="0.5" opacity="0.5" />
+        <line x1="16" y1="4" x2="16" y2="28" stroke="#030806" strokeWidth="0.5" opacity="0.4" />
+      </>
+    ),
+  },
+  {
+    name: 'Vercel',
+    usage: 'edge deploys',
+    color: '#FFFFFF',
+    url: 'https://vercel.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#000" />
+        <polygon points="16,7 25,24 7,24" fill="#FFF" />
+      </>
+    ),
+  },
 ]
 
 const crypto = [
@@ -675,6 +753,38 @@ const crypto = [
         <rect x="7" y="9" width="14" height="2.5" rx="0.5" fill="#FFF" transform="skewX(-20)" />
         <rect x="9" y="14.5" width="14" height="2.5" rx="0.5" fill="#14F195" transform="skewX(-20)" />
         <rect x="7" y="20" width="14" height="2.5" rx="0.5" fill="#FFF" transform="skewX(-20)" />
+      </>
+    ),
+  },
+  {
+    name: 'Polkadot',
+    usage: 'DOT, interoperability',
+    color: '#E6007A',
+    url: 'https://polkadot.network/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#E6007A" />
+        <circle cx="16" cy="16" r="8" fill="none" stroke="#FFF" strokeWidth="1" opacity="0.4" />
+        <circle cx="16" cy="9" r="2" fill="#FFF" />
+        <circle cx="16" cy="23" r="2" fill="#FFF" />
+        <circle cx="9" cy="16" r="2" fill="#FFF" />
+        <circle cx="23" cy="16" r="2" fill="#FFF" />
+        <circle cx="16" cy="16" r="2.5" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Chainlink',
+    usage: 'oracles, LINK',
+    color: '#2A5ADA',
+    url: 'https://chain.link/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#2A5ADA" />
+        <polygon points="16,5 25,10 25,22 16,27 7,22 7,10" fill="none" stroke="#FFF" strokeWidth="2" strokeLinejoin="round" />
+        <line x1="11" y1="13" x2="21" y2="13" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="11" y1="16" x2="21" y2="16" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="11" y1="19" x2="21" y2="19" stroke="#FFF" strokeWidth="1.5" />
       </>
     ),
   },
