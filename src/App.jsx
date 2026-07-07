@@ -12,22 +12,11 @@ import GlitchOverlay from './components/GlitchOverlay'
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const [hoveredProject, setHoveredProject] = useState(null)
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
   const scrollRef = useRef(null)
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden'
     return () => { document.documentElement.style.overflow = '' }
-  }, [])
-
-  const handleMouseMove = useCallback((e) => {
-    setCursorPosition({ x: e.clientX, y: e.clientY })
-  }, [])
-
-  const handleTouchMove = useCallback((e) => {
-    if (e.touches.length > 0) {
-      setCursorPosition({ x: e.touches[0].clientX, y: e.touches[0].clientY })
-    }
   }, [])
 
   const scrollToTop = useCallback(() => {
@@ -72,7 +61,7 @@ export default function App() {
       <Scene />
       <DataStream />
       <GlitchOverlay />
-      <CustomCursor cursorPosition={cursorPosition} hoveredProject={hoveredProject} />
+      <CustomCursor hoveredProject={hoveredProject} />
 
       <div
         ref={scrollRef}

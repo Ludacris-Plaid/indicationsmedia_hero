@@ -197,6 +197,59 @@ function TestimonialBox({ isVisible }) {
   )
 }
 
+function StatCard({ stat, index, isVisible }) {
+  const count = useCounterAnimation(stat.number, isVisible, 2000)
+
+  return (
+    <div style={{
+      padding: '28px',
+      borderRadius: '2px',
+      border: '1px solid rgba(255, 255, 255, 0.06)',
+      background: 'rgba(255, 255, 255, 0.02)',
+      textAlign: 'center',
+      opacity: isVisible ? 1 : 0,
+      transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
+      transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
+    }}>
+      <div style={{
+        fontFamily: "'Space Grotesk', sans-serif",
+        fontSize: '32px',
+        fontWeight: 700,
+        letterSpacing: '-0.02em',
+        marginBottom: '6px',
+        color: '#ffffff',
+        textShadow: '0 0 15px rgba(255, 255, 255, 0.2)',
+      }}>
+        <span style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: '32px',
+          fontWeight: 700,
+          color: '#ffffff',
+        }}>
+          {count}
+        </span>
+        <span style={{
+          fontSize: '32px',
+          fontWeight: 700,
+          color: '#ffffff',
+        }}>
+          +
+        </span>
+      </div>
+      <div style={{
+        fontFamily: "'Courier New', monospace",
+        fontSize: '10px',
+        color: 'rgba(255, 255, 255, 0.4)',
+        fontWeight: 500,
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase',
+      }}>
+        {stat.label}
+      </div>
+    </div>
+  )
+}
+
 export default function About() {
   const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
@@ -350,54 +403,8 @@ export default function About() {
             gap: '20px',
           }}>
             {stats.map((stat, index) => (
-              <div key={stat.label} style={{
-                padding: '28px',
-                borderRadius: '2px',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                background: 'rgba(255, 255, 255, 0.02)',
-                textAlign: 'center',
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-                transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
-              }}>
-                <div style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: '32px',
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  marginBottom: '6px',
-                  color: '#ffffff',
-                  textShadow: '0 0 15px rgba(255, 255, 255, 0.2)',
-                }}>
-                  <span style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: '32px',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                  }}>
-                    {useCounterAnimation(stat.number, isVisible, 2000)}
-                  </span>
-                  <span style={{
-                    fontSize: '32px',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                  }}>
-                    +
-                  </span>
-                </div>
-                  <div style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '10px',
-                    color: 'rgba(255, 255, 255, 0.4)',
-                    fontWeight: 500,
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                  }}>
-                    {stat.label}
-                  </div>
-                </div>
-              )
-            )}
+              <StatCard key={stat.label} stat={stat} index={index} isVisible={isVisible} />
+            ))}
           </div>
 
            {/* Digital Manifesto */}

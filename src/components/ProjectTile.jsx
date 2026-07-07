@@ -14,10 +14,21 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
     })
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      project.url && window.open(project.url, '_blank')
+    }
+  }
+
   return (
     <div
       ref={tileRef}
+      role="link"
+      tabIndex={0}
+      aria-label={`View ${project.title} — ${project.description}`}
       onClick={() => project.url && window.open(project.url, '_blank')}
+      onKeyDown={handleKeyDown}
       onMouseEnter={() => { setLocalHover(true); onHover(project) }}
       onMouseLeave={() => { setLocalHover(false); onHover(null) }}
       onMouseMove={handleMouseMove}
