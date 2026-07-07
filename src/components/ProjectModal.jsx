@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function CarouselSlide({ src, label, idx }) {
   return (
@@ -98,11 +98,34 @@ export default function ProjectModal({ project, onClose }) {
   const [slideIdx, setSlideIdx] = useState(0)
   const [closing, setClosing] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
+  const carouselRef = useRef(null)
+  const wheelLockRef = useRef(false)
 
   useEffect(() => {
     setSlideIdx(0)
     setSheetOpen(false)
   }, [project?.id])
+
+  // Mouse wheel navigates the carousel when scrolling over it
+  useEffect(() => {
+    const el = carouselRef.current
+    if (!el) return
+    const handleWheel = (e) => {
+      e.preventDefault()
+      if (wheelLockRef.current) return
+      if (e.deltaY > 0) {
+        setSlideIdx((i) => Math.min(gallery.length - 1, i + 1))
+        wheelLockRef.current = true
+        setTimeout(() => { wheelLockRef.current = false }, 450)
+      } else if (e.deltaY < 0) {
+        setSlideIdx((i) => Math.max(0, i - 1))
+        wheelLockRef.current = true
+        setTimeout(() => { wheelLockRef.current = false }, 450)
+      }
+    }
+    el.addEventListener('wheel', handleWheel, { passive: false })
+    return () => el.removeEventListener('wheel', handleWheel)
+  }, [project])
 
   useEffect(() => {
     if (!project) return
@@ -213,7 +236,7 @@ export default function ProjectModal({ project, onClose }) {
         </div>
 
         {/* Carousel — flex: 1, shrinks when sheet opens */}
-        <div style={{
+        <div ref={carouselRef} style={{
           position: 'relative', width: '100%', background: '#0a0c0a',
           overflow: 'hidden', flex: 1, minHeight: 0,
         }}>
