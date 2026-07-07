@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Scene from './components/Scene'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
@@ -19,11 +19,11 @@ export default function App() {
     return () => { document.documentElement.style.overflow = '' }
   }, [])
 
-  const scrollToTop = useCallback(() => {
+  const scrollToTop = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' })
     }
-  }, [])
+  }
 
   useEffect(() => {
     const container = scrollRef.current
@@ -54,8 +54,6 @@ export default function App() {
 
   return (
     <div
-      onMouseMove={handleMouseMove}
-      onTouchMove={handleTouchMove}
       style={{ width: '100vw', height: '100dvh', overflow: 'hidden', background: '#030806' }}
     >
       <Scene />
