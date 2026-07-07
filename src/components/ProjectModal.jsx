@@ -250,11 +250,11 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Top-center: clean dot indicator + counter (above the bottom sheet) */}
+          {/* Bottom-center: dot indicator + counter (just above the case study sheet) */}
           <div style={{
-            position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)',
+            position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
             display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '7px 16px', background: 'rgba(3, 8, 6, 0.85)',
+            padding: '7px 16px', background: 'rgba(3, 8, 6, 0.9)',
             border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
             backdropFilter: 'blur(8px)',
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
@@ -282,15 +282,15 @@ export default function ProjectModal({ project, onClose }) {
           </div>
         </div>
 
-        {/* Bottom sheet — slides up from bottom */}
+        {/* Bottom sheet — flex child so it sits below the carousel, not over it */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
           background: '#050806',
           borderTop: '1px solid rgba(0, 255, 102, 0.3)',
           boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.5)',
           transition: 'height 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           height: sheetOpen ? '60%' : '64px',
           display: 'flex', flexDirection: 'column',
+          flexShrink: 0,
           zIndex: 5,
         }}>
           {/* Sheet header — always visible */}
