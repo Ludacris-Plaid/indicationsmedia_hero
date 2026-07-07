@@ -259,9 +259,11 @@ export default function ProjectModal({ project, onClose }) {
         <div ref={carouselRef} style={{
           position: 'relative', width: '100%', background: '#0a0c0a',
           overflow: 'hidden', flex: 1, minHeight: 0,
+          display: 'flex', alignItems: isMobile && heroMode ? 'center' : 'stretch',
         }}>
           <div style={{
-            display: 'flex', height: '100%',
+            display: 'flex', height: isMobile && heroMode ? '70dvh' : '100%',
+            width: '100%',
             transform: `translateX(-${slideIdx * 100}%)`,
             transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
