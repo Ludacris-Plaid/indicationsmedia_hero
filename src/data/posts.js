@@ -234,7 +234,7 @@ Next, scan your images. We run Trivy in CI on every build. It catches known CVEs
 - name: Run Trivy vulnerability scanner
   uses: aquasecurity/trivy-action@master
   with:
-    image-ref: 'myapp:${{ github.sha }}'
+    image-ref: 'myapp:\${{ github.sha }}'
     severity: 'CRITICAL,HIGH'
     exit-code: '1'
 \`\`\`
