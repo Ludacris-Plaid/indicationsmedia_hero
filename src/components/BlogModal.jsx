@@ -12,7 +12,9 @@ export default function BlogModal({ post, onClose }) {
 
   useEffect(() => {
     if (!post) return
-    if (bodyRef.current) bodyRef.current.scrollTop = 0
+    requestAnimationFrame(() => {
+      if (bodyRef.current) bodyRef.current.scrollTop = 0
+    })
     document.body.style.overflow = 'hidden'
     const handleKey = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handleKey)
