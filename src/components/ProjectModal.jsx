@@ -1,64 +1,33 @@
 import { useState, useEffect } from 'react'
 
-function CarouselSlide({ project, idx, color }) {
-  const base = {
-    width: '100%', height: '100%', aspectRatio: '16/9',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    padding: '40px', position: 'relative', overflow: 'hidden',
-  }
-  if (idx === 0) {
-    return project.screenshot ? (
-      <img src={project.screenshot} alt={project.title}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
-    ) : (
-      <div style={{ ...base, color: 'rgba(0, 255, 102, 0.3)', fontFamily: "'Courier New', monospace", fontSize: '12px' }}>[NO_SCREENSHOT]</div>
-    )
-  }
-  if (idx === 1) {
-    return (
-      <div style={{ ...base, background: `linear-gradient(135deg, ${color}22 0%, #0a0c0a 100%)`, flexDirection: 'column' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: `linear-gradient(${color}10 1px, transparent 1px), linear-gradient(90deg, ${color}10 1px, transparent 1px)`, backgroundSize: '32px 32px', opacity: 0.5 }} />
-        <div style={{ fontFamily: "'Courier New', monospace", fontSize: '11px', color, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '16px', position: 'relative', zIndex: 1 }}>{'> '}{project.category}</div>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'rgba(255,255,255,0.95)', textAlign: 'center', letterSpacing: '-0.03em', lineHeight: 1.05, textShadow: `0 0 40px ${color}40`, position: 'relative', zIndex: 1 }}>{project.title}</div>
-        <div style={{ fontFamily: "'Courier New', monospace", fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '16px', position: 'relative', zIndex: 1 }}>{project.year} · {project.stack?.length || 0} technologies</div>
+function CarouselSlide({ src, label, idx }) {
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#0a0c0a' }}>
+      {src ? (
+        <img src={src} alt={label}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+      ) : (
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(0, 255, 102, 0.3)', fontFamily: "'Courier New', monospace", fontSize: '12px' }}>[NO_IMAGE]</div>
+      )}
+      <div style={{
+        position: 'absolute', top: '10px', left: '12px',
+        fontFamily: "'Courier New', monospace", fontSize: '9px',
+        color: 'rgba(0, 255, 102, 0.7)', letterSpacing: '0.15em',
+        textTransform: 'uppercase', padding: '4px 10px',
+        background: 'rgba(3, 8, 6, 0.75)', border: '1px solid rgba(0, 255, 102, 0.2)',
+        borderRadius: '2px', backdropFilter: 'blur(4px)',
+        display: 'flex', alignItems: 'center', gap: '6px',
+      }}>
+        <span style={{ width: '4px', height: '4px', background: '#00ff66', borderRadius: '50%' }} />
+        {'> '}{label}
       </div>
-    )
-  }
-  if (idx === 2) {
-    return (
-      <div style={{ ...base, background: 'linear-gradient(135deg, rgba(255,102,102,0.1) 0%, #0a0c0a 100%)', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 60px' }}>
-        <div style={{ fontFamily: "'Courier New', monospace", fontSize: '11px', color: '#ff6666', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '20px' }}>{'> THE_PROBLEM'}</div>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(18px, 2.4vw, 28px)', fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4, maxWidth: '600px' }}>"{project.problem || 'No problem statement.'}"</div>
-      </div>
-    )
-  }
-  if (idx === 3) {
-    return (
-      <div style={{ ...base, background: 'linear-gradient(135deg, rgba(0,255,102,0.12) 0%, #0a0c0a 100%)', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 60px' }}>
-        <div style={{ fontFamily: "'Courier New', monospace", fontSize: '11px', color: '#00ff66', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '20px' }}>{'> THE_SOLUTION'}</div>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(18px, 2.4vw, 28px)', fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4, maxWidth: '600px' }}>"{project.solution || 'No solution provided.'}"</div>
-      </div>
-    )
-  }
-  if (idx === 4) {
-    return (
-      <div style={{ ...base, background: 'linear-gradient(135deg, rgba(0,204,255,0.1) 0%, #0a0c0a 100%)', flexDirection: 'column' }}>
-        <div style={{ fontFamily: "'Courier New', monospace", fontSize: '11px', color: '#00ccff', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '24px' }}>{'> BUILT_WITH'}</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', maxWidth: '600px' }}>
-          {(project.stack || []).map((tech) => (
-            <div key={tech} style={{ fontFamily: "'Courier New', monospace", fontSize: '13px', color: 'rgba(0, 204, 255, 0.95)', fontWeight: 600, padding: '8px 16px', borderRadius: '2px', border: '1px solid rgba(0, 204, 255, 0.4)', background: 'rgba(0, 204, 255, 0.08)', letterSpacing: '0.05em' }}>{tech}</div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-  return null
+    </div>
+  )
 }
 
 function CaseStudy({ project, color }) {
   return (
     <div>
-      {/* PROBLEM */}
       {project.problem && (
         <div style={{ marginBottom: '20px' }}>
           <div style={{
@@ -79,7 +48,6 @@ function CaseStudy({ project, color }) {
         </div>
       )}
 
-      {/* SOLUTION */}
       {project.solution && (
         <div style={{ marginBottom: '20px' }}>
           <div style={{
@@ -100,7 +68,6 @@ function CaseStudy({ project, color }) {
         </div>
       )}
 
-      {/* STACK */}
       {project.stack?.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
           <div style={{
@@ -152,7 +119,20 @@ export default function ProjectModal({ project, onClose }) {
   if (!project) return null
 
   const color = project.color || '#00ff66'
-  const totalSlides = 5
+
+  // Build gallery from the existing screenshot path + the 3 new captures
+  const buildGallery = () => {
+    if (!project.screenshot) return []
+    const base = project.screenshot.replace(/\.png$/, '')
+    return [
+      { src: `${base}.png`, label: 'HOME' },
+      { src: `${base}-2.png`, label: 'SECTION_02' },
+      { src: `${base}-3.png`, label: 'SECTION_03' },
+      { src: `${base}-4.png`, label: 'FOOTER' },
+    ]
+  }
+  const gallery = buildGallery()
+  const totalSlides = gallery.length
   const displayHostname = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') + '.com'
 
   const handleClose = () => {
@@ -211,7 +191,7 @@ export default function ProjectModal({ project, onClose }) {
             <span style={{ color: 'rgba(0, 255, 102, 0.3)' }}>·</span>
             <span style={{ color: 'rgba(0, 255, 102, 0.7)' }}>{displayHostname}</span>
             <span style={{ color: 'rgba(0, 255, 102, 0.3)' }}>·</span>
-            <span style={{ color: 'rgba(0, 255, 102, 0.5)' }}>{String(slideIdx + 1).padStart(2, '0')}/{String(totalSlides).padStart(2, '0')}</span>
+            <span style={{ color: 'rgba(0, 255, 102, 0.5)' }}>{String(slideIdx + 1).padStart(2, '0')}/{String(gallery.length).padStart(2, '0')}</span>
           </div>
           <button onClick={handleClose} aria-label="Close"
             style={{
@@ -234,12 +214,9 @@ export default function ProjectModal({ project, onClose }) {
             transform: `translateX(-${slideIdx * 100}%)`,
             transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           }}>
-            {Array.from({ length: totalSlides }).map((_, i) => (
-              <div key={i} style={{ width: '100%', height: '100%', flexShrink: 0, position: 'relative' }}>
-                <CarouselSlide project={project} idx={i} color={color} />
-                <div style={{ position: 'absolute', top: '8px', left: '12px', fontFamily: "'Courier New', monospace", fontSize: '9px', color: 'rgba(0, 255, 102, 0.5)', letterSpacing: '0.1em', padding: '3px 8px', background: 'rgba(3, 8, 6, 0.7)', borderRadius: '2px', backdropFilter: 'blur(4px)' }}>
-                  {['HOME', 'OVERVIEW', 'PROBLEM', 'SOLUTION', 'STACK'][i]}
-                </div>
+            {gallery.map((slide, i) => (
+              <div key={i} style={{ width: '100%', height: '100%', flexShrink: 0 }}>
+                <CarouselSlide src={slide.src} label={slide.label} idx={i} />
               </div>
             ))}
           </div>
@@ -254,7 +231,7 @@ export default function ProjectModal({ project, onClose }) {
                 fontSize: '18px', lineHeight: 1, padding: 0, backdropFilter: 'blur(4px)',
               }}>‹</button>
           )}
-          {slideIdx < totalSlides - 1 && (
+          {slideIdx < gallery.length - 1 && (
             <button onClick={() => setSlideIdx(i => Math.min(totalSlides - 1, i + 1))} aria-label="Next"
               style={{
                 position: 'absolute', top: '50%', right: '12px', transform: 'translateY(-50%)',
@@ -270,7 +247,7 @@ export default function ProjectModal({ project, onClose }) {
             display: 'flex', gap: '6px', padding: '4px 8px',
             background: 'rgba(3, 8, 6, 0.7)', borderRadius: '12px', backdropFilter: 'blur(4px)',
           }}>
-            {Array.from({ length: totalSlides }).map((_, i) => (
+            {Array.from({ length: gallery.length }).map((_, i) => (
               <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Slide ${i + 1}`}
                 style={{
                   width: i === slideIdx ? '22px' : '6px', height: '6px',
