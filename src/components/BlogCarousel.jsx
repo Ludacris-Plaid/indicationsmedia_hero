@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import BlogModal from './BlogModal'
-import posts from '../data/posts'
+import fallbackPosts from '../data/posts'
 import useIsMobile from '../hooks/useIsMobile'
 
 const CATEGORY_COLORS = {
@@ -15,9 +15,28 @@ export default function BlogCarousel() {
   const [selectedPost, setSelectedPost] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
   const scrollRef = useRef(null)
   const sectionRef = useRef(null)
   const intervalRef = useRef(null)
+
+  useEffect(() => {
+    fetch('/api/posts')
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPosts(data)
+        } else {
+          setPosts(fallbackPosts)
+        }
+        setLoading(false)
+      })
+      .catch(() => {
+        setPosts(fallbackPosts)
+        setLoading(false)
+      })
+  }, [])
 
   useEffect(() => {
     const el = sectionRef.current
@@ -61,18 +80,18 @@ export default function BlogCarousel() {
   const next = useCallback(() => {
     const nextIdx = (activeIndex + 1) % posts.length
     scrollToIndex(nextIdx)
-  }, [activeIndex, scrollToIndex])
+  }, [activeIndex, scrollToIndex, posts.length])
 
   const prev = useCallback(() => {
     const prevIdx = (activeIndex - 1 + posts.length) % posts.length
     scrollToIndex(prevIdx)
-  }, [activeIndex, scrollToIndex])
+  }, [activeIndex, scrollToIndex, posts.length])
 
   useEffect(() => {
-    if (isPaused || selectedPost) return
+    if (isPaused || selectedPost || posts.length === 0) return
     intervalRef.current = setInterval(next, 4000)
     return () => clearInterval(intervalRef.current)
-  }, [isPaused, next, selectedPost])
+  }, [isPaused, next, selectedPost, posts.length])
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -82,6 +101,8 @@ export default function BlogCarousel() {
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
   }, [selectedPost])
+
+  if (posts.length === 0 && !loading) return null
 
   return (
     <section

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
 import ChatBot from './ChatBot'
 import BlogFeed from './BlogFeed'
+import CryptoFeed from './CryptoFeed'
+import SysPulse from './SysPulse'
 import useIsMobile from '../hooks/useIsMobile'
 
 const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
@@ -482,8 +484,12 @@ export default function About() {
           {/* AI Chatbot */}
           <ChatBot isVisible={isVisible} />
 
-          {/* Intel Feed */}
-          <BlogFeed isVisible={isVisible} />
+          {/* Crypto Feed (desktop) / Blog Feed (mobile) */}
+          {!isMobile && <CryptoFeed isVisible={isVisible} />}
+          {isMobile && <BlogFeed isVisible={isVisible} />}
+
+          {/* System Pulse */}
+          <SysPulse isVisible={isVisible} />
         </div>
       </div>
     </section>
