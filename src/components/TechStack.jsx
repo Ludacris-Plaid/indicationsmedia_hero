@@ -799,8 +799,8 @@ const ai = [
     svg: (
       <>
         <rect x="3" y="3" width="26" height="26" rx="5" fill="#D97757" />
-        <path d="M16 5 L19.5 13 L28 13 L21 18 L23.5 27 L16 22 L8.5 27 L11 18 L4 13 L12.5 13 Z" fill="#FFF" />
-        <path d="M16 9 L17.5 13 L21 13 L18 16 L19 19.5 L16 17.5 L13 19.5 L14 16 L11 13 L14.5 13 Z" fill="#D97757" />
+        <path d="M16 5 L19 13 L27 16 L19 19 L16 27 L13 19 L5 16 L13 13 Z" fill="#FFF" />
+        <path d="M16 11 L18.5 17 L16 17 L16 15 L16 17 L13.5 17 Z" fill="#D97757" />
       </>
     ),
   },
@@ -812,10 +812,15 @@ const ai = [
     svg: (
       <>
         <rect x="3" y="3" width="26" height="26" rx="5" fill="#10A37F" />
-        <path d="M16 4 C 13 4 10.5 6 10 9 C 7 9.5 5 12 5 15 C 5 17 6 18.5 7.5 19.5 C 7 21 8 23 9.5 23 C 10.5 23 11.5 22.5 12 21.5 C 13 22 14 22.5 15 22.5 C 15.5 24 17 25 18.5 25 C 20.5 25 22 23.5 22 21.5 C 24 21 25.5 19 25.5 16.5 C 25.5 14 24 12 22 11 C 22 7 19.5 4 16 4 Z" fill="#FFF" />
-        <circle cx="12" cy="14" r="1.2" fill="#10A37F" />
-        <circle cx="19" cy="14" r="1.2" fill="#10A37F" />
-        <path d="M13 18 Q16 20 19 18" stroke="#10A37F" strokeWidth="1" fill="none" strokeLinecap="round" />
+        <g fill="none" stroke="#FFF" strokeWidth="1.4">
+          <ellipse cx="16" cy="10" rx="2.2" ry="4.5" />
+          <ellipse cx="16" cy="22" rx="2.2" ry="4.5" />
+          <ellipse cx="11" cy="12.2" rx="2.2" ry="4.5" transform="rotate(-60 11 12.2)" />
+          <ellipse cx="21" cy="12.2" rx="2.2" ry="4.5" transform="rotate(60 21 12.2)" />
+          <ellipse cx="11" cy="19.8" rx="2.2" ry="4.5" transform="rotate(60 11 19.8)" />
+          <ellipse cx="21" cy="19.8" rx="2.2" ry="4.5" transform="rotate(-60 21 19.8)" />
+        </g>
+        <circle cx="16" cy="16" r="1.5" fill="#FFF" />
       </>
     ),
   },
@@ -827,11 +832,8 @@ const ai = [
     svg: (
       <>
         <rect x="3" y="3" width="26" height="26" rx="5" fill="#000" />
-        <path d="M9 9 L19 9 Q23 9 23 13 Q23 16 20 17 Q23 18 23 21 Q23 25 19 25 L9 25 Q7 25 7 23 L7 11 Q7 9 9 9 Z" fill="none" stroke="#FFF" strokeWidth="1.5" />
-        <path d="M11 13 L20 13 M11 17 L21 17 M11 21 L19 21" stroke="#FFF" strokeWidth="1.2" strokeLinecap="round" />
-        <circle cx="9" cy="13" r="1" fill="#FFF" />
-        <circle cx="9" cy="17" r="1" fill="#FFF" />
-        <circle cx="9" cy="21" r="1" fill="#FFF" />
+        <path d="M22 7 L13 7 L8 12 L8 20 L13 25 L22 25" stroke="#FFF" strokeWidth="2.2" fill="none" strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M15 14 L22 14 L22 21 L18 21" stroke="#FFF" strokeWidth="2.2" fill="none" strokeLinejoin="round" strokeLinecap="round" />
       </>
     ),
   },
@@ -843,14 +845,13 @@ const ai = [
     svg: (
       <>
         <rect x="3" y="3" width="26" height="26" rx="5" fill="#0866FF" />
-        <ellipse cx="16" cy="17" rx="7" ry="6" fill="#FFF" />
-        <path d="M9 17 Q9 12 12 10 L12 8 L14 10 L18 10 L20 8 L20 10 Q23 12 23 17" fill="#FFF" />
-        <ellipse cx="13" cy="12" rx="1.5" ry="2.5" fill="#0866FF" />
-        <ellipse cx="19" cy="12" rx="1.5" ry="2.5" fill="#0866FF" />
-        <circle cx="13" cy="15" r="0.9" fill="#0866FF" />
-        <circle cx="19" cy="15" r="0.9" fill="#0866FF" />
-        <path d="M14 18 Q16 19 18 18" stroke="#0866FF" strokeWidth="0.8" fill="none" strokeLinecap="round" />
-        <line x1="16" y1="19" x2="16" y2="22" stroke="#FFF" strokeWidth="1" />
+        <path d="M10 11 L11 6 L14 10 Z" fill="#FFF" />
+        <path d="M22 11 L21 6 L18 10 Z" fill="#FFF" />
+        <path d="M9 14 Q9 22 16 22 Q23 22 23 14 Q23 11 20 11 L12 11 Q9 11 9 14 Z" fill="#FFF" />
+        <circle cx="13" cy="15" r="1" fill="#0866FF" />
+        <circle cx="19" cy="15" r="1" fill="#0866FF" />
+        <ellipse cx="16" cy="18.5" rx="1.2" ry="0.7" fill="#0866FF" />
+        <path d="M13 20 Q16 22 19 20" stroke="#0866FF" strokeWidth="0.8" fill="none" strokeLinecap="round" />
       </>
     ),
   },
@@ -862,11 +863,28 @@ const ai = [
     svg: (
       <>
         <rect x="3" y="3" width="26" height="26" rx="5" fill="#FFD21E" />
-        <circle cx="11" cy="13" r="1.5" fill="#000" />
-        <circle cx="21" cy="13" r="1.5" fill="#000" />
-        <path d="M10 17 Q16 22 22 17" stroke="#000" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        <ellipse cx="16" cy="17" rx="1.2" ry="0.8" fill="#FF9D28" />
-        <line x1="16" y1="17" x2="16" y2="20" stroke="#FF9D28" strokeWidth="0.6" />
+        <circle cx="11.5" cy="12.5" r="1.6" fill="#000" />
+        <circle cx="20.5" cy="12.5" r="1.6" fill="#000" />
+        <path d="M10 16.5 Q16 22.5 22 16.5" stroke="#000" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d="M14 19.5 Q16 21 18 19.5 L17 18 L15 18 Z" fill="#FF9D28" />
+        <ellipse cx="16" cy="19.8" rx="1.5" ry="1" fill="#FF9D28" />
+      </>
+    ),
+  },
+  {
+    name: 'Ollama',
+    usage: 'local model runner',
+    color: '#FFFFFF',
+    url: 'https://ollama.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="5" fill="#000" />
+        <path d="M10 12 L11 7 L14 11" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M22 12 L21 7 L18 11" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M9 15 Q9 22 16 22 Q23 22 23 15 Q23 12 20 12 L12 12 Q9 12 9 15 Z" stroke="#FFF" strokeWidth="1.5" fill="none" />
+        <circle cx="13" cy="16" r="0.8" fill="#FFF" />
+        <circle cx="19" cy="16" r="0.8" fill="#FFF" />
+        <path d="M14 19 Q16 20 18 19" stroke="#FFF" strokeWidth="1" fill="none" strokeLinecap="round" />
       </>
     ),
   },
