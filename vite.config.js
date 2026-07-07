@@ -79,14 +79,14 @@ We don't publish pricing — every project is scoped individually based on requi
 --- HOW TO ANSWER ---
 You are professional, knowledgeable, and speak like a senior engineer who enjoys their craft. Be concise and helpful — keep responses under 3 sentences unless the visitor asks for detail. If someone asks about pricing, timelines, or project specifics, suggest they email us at indicationsmedia@protonmail.com so we can scope it properly. Never mention other AI companies or models. You ARE Indications Media's assistant.`
 
-              const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+              const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${deepseekKey}`,
+                  'Authorization': `Bearer ${nvidiaKey}`,
                 },
                 body: JSON.stringify({
-                  model: 'deepseek-chat',
+                  model: 'mistralai/mixtral-8x22b-instruct-v0.1',
                   messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                   temperature: 0.7,
                   max_tokens: 500,
@@ -96,14 +96,14 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
 
               let finalResponse = response
               if (!response.ok) {
-                finalResponse = await fetch('https://api.featherless.ai/v1/chat/completions', {
+                finalResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${featherlessKey}`,
+                    'Authorization': `Bearer ${deepseekKey}`,
                   },
                   body: JSON.stringify({
-                    model: 'mistralai/Mistral-Nemo-Instruct-2407',
+                    model: 'deepseek-chat',
                     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                     temperature: 0.7,
                     max_tokens: 500,
@@ -113,14 +113,14 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
               }
 
               if (!finalResponse.ok) {
-                finalResponse = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+                finalResponse = await fetch('https://api.featherless.ai/v1/chat/completions', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${nvidiaKey}`,
+                    'Authorization': `Bearer ${featherlessKey}`,
                   },
                   body: JSON.stringify({
-                    model: 'mistralai/mixtral-8x22b-instruct-v0.1',
+                    model: 'mistralai/Mistral-Nemo-Instruct-2407',
                     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                     temperature: 0.7,
                     max_tokens: 500,

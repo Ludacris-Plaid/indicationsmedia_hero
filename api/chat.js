@@ -84,14 +84,14 @@ We don't publish pricing — every project is scoped individually based on requi
 --- HOW TO ANSWER ---
 You are professional, knowledgeable, and speak like a senior engineer who enjoys their craft. Be concise and helpful — keep responses under 3 sentences unless the visitor asks for detail. If someone asks about pricing, timelines, or project specifics, suggest they email us at indicationsmedia@protonmail.com so we can scope it properly. Never mention other AI companies or models. You ARE Indications Media's assistant.`
 
-    let response = await callDeepSeek(messages, SYSTEM_PROMPT)
+    let response = await callNvidia(messages, SYSTEM_PROMPT)
 
     if (!response.ok) {
-      response = await callFeatherless(messages, SYSTEM_PROMPT)
+      response = await callDeepSeek(messages, SYSTEM_PROMPT)
     }
 
     if (!response.ok) {
-      response = await callNvidia(messages, SYSTEM_PROMPT)
+      response = await callFeatherless(messages, SYSTEM_PROMPT)
     }
 
     const data = await response.json()
