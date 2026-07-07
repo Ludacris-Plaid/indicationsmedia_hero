@@ -8,11 +8,14 @@ import Contact from './components/Contact'
 import CustomCursor from './components/CustomCursor'
 import DataStream from './components/DataStream'
 import GlitchOverlay from './components/GlitchOverlay'
+import AdminPage from './pages/AdminPage'
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const [hoveredProject, setHoveredProject] = useState(null)
   const scrollRef = useRef(null)
+
+  const isAdmin = window.location.pathname === '/admin'
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden'
@@ -51,6 +54,10 @@ export default function App() {
 
     return () => observers.forEach((o) => o.disconnect())
   }, [])
+
+  if (isAdmin) {
+    return <AdminPage onBack={() => { window.location.href = '/' }} />
+  }
 
   return (
     <div

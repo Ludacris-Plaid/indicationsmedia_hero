@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import posts from '../data/posts'
+import { useState, useEffect } from 'react'
 import BlogModal from './BlogModal'
 
 const CATEGORY_COLORS = {
@@ -10,6 +9,18 @@ const CATEGORY_COLORS = {
 
 export default function BlogFeed({ isVisible }) {
   const [selectedPost, setSelectedPost] = useState(null)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/posts')
+      .then((r) => r.json())
+      .then((data) => {
+        setPosts(Array.isArray(data) ? data : [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
 
   return (
     <>
@@ -39,10 +50,23 @@ export default function BlogFeed({ isVisible }) {
           justifyContent: 'space-between',
         }}>
           {'// INTEL_FEED'}
-          <span style={{ color: 'rgba(0, 204, 255, 0.4)' }}>{posts.length}_entries</span>
+          <span style={{ color: 'rgba(0, 204, 255, 0.4)' }}>
+            {loading ? 'LOADING...' : `${posts.length}_entries`}
+          </span>
         </div>
 
         <div className="blog-feed-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '360px', overflowY: 'auto' }}>
+          {loading && (
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '11px',
+              color: 'rgba(0, 204, 255, 0.4)',
+              textAlign: 'center',
+              padding: '20px',
+            }}>
+              {'> FETCHING_ENTRIES...'}
+            </div>
+          )}
           {posts.map((post) => {
             const catColor = CATEGORY_COLORS[post.category] || '#00ff66'
             return (
@@ -115,6 +139,17 @@ export default function BlogFeed({ isVisible }) {
               </div>
             )
           })}
+          {!loading && posts.length === 0 && (
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '11px',
+              color: 'rgba(0, 204, 255, 0.3)',
+              textAlign: 'center',
+              padding: '20px',
+            }}>
+              {'> NO_ENTRIES_FOUND'}
+            </div>
+          )}
         </div>
       </div>
 
