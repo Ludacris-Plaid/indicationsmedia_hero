@@ -38,7 +38,7 @@ html, body, #root {
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -48,6 +48,28 @@ html, body, #root {
 ::-webkit-scrollbar-thumb {
   background: rgba(0, 255, 102, 0.2);
   border-radius: 2px;
+}
+
+.modal-body-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 102, 0.3) transparent;
+}
+
+.modal-body-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 102, 0.3);
+  border-radius: 3px;
+}
+
+.modal-body-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 102, 0.5);
 }
 
 a, button {

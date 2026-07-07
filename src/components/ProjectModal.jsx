@@ -55,6 +55,78 @@ function CarouselSlide({ project, idx, color }) {
   return null
 }
 
+function CaseStudy({ project, color }) {
+  return (
+    <div>
+      {/* PROBLEM */}
+      {project.problem && (
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            color: '#ff6666', letterSpacing: '0.15em', textTransform: 'uppercase',
+            marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px',
+          }}>
+            <span style={{ width: '4px', height: '4px', background: '#ff6666', borderRadius: '50%' }} />
+            {'> THE_PROBLEM'}
+          </div>
+          <div style={{
+            paddingLeft: '14px', borderLeft: '2px solid rgba(255, 102, 102, 0.3)',
+            fontFamily: "'Courier New', monospace", fontSize: '13px',
+            lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.65)',
+          }}>
+            {project.problem}
+          </div>
+        </div>
+      )}
+
+      {/* SOLUTION */}
+      {project.solution && (
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            color: '#00ff66', letterSpacing: '0.15em', textTransform: 'uppercase',
+            marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px',
+          }}>
+            <span style={{ width: '4px', height: '4px', background: '#00ff66', borderRadius: '50%' }} />
+            {'> THE_SOLUTION'}
+          </div>
+          <div style={{
+            paddingLeft: '14px', borderLeft: '2px solid rgba(0, 255, 102, 0.3)',
+            fontFamily: "'Courier New', monospace", fontSize: '13px',
+            lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.65)',
+          }}>
+            {project.solution}
+          </div>
+        </div>
+      )}
+
+      {/* STACK */}
+      {project.stack?.length > 0 && (
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            color: '#00ccff', letterSpacing: '0.15em', textTransform: 'uppercase',
+            marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px',
+          }}>
+            <span style={{ width: '4px', height: '4px', background: '#00ccff', borderRadius: '50%' }} />
+            {'> BUILT_WITH'}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {project.stack.map((tech) => (
+              <span key={tech} style={{
+                fontFamily: "'Courier New', monospace", fontSize: '10px',
+                color: 'rgba(0, 204, 255, 0.85)', padding: '5px 10px',
+                borderRadius: '2px', border: '1px solid rgba(0, 204, 255, 0.25)',
+                background: 'rgba(0, 204, 255, 0.05)', letterSpacing: '0.05em',
+              }}>{tech}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ProjectModal({ project, onClose }) {
   const [slideIdx, setSlideIdx] = useState(0)
   const [closing, setClosing] = useState(false)
@@ -151,7 +223,7 @@ export default function ProjectModal({ project, onClose }) {
             }}>✕</button>
         </div>
 
-        {/* Carousel */}
+        {/* Carousel — fixed height, not part of scroll */}
         <div style={{
           position: 'relative', width: '100%', background: '#0a0c0a',
           borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
@@ -172,7 +244,6 @@ export default function ProjectModal({ project, onClose }) {
             ))}
           </div>
 
-          {/* Arrows */}
           {slideIdx > 0 && (
             <button onClick={() => setSlideIdx(i => Math.max(0, i - 1))} aria-label="Previous"
               style={{
@@ -194,7 +265,6 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Dots */}
           <div style={{
             position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)',
             display: 'flex', gap: '6px', padding: '4px 8px',
@@ -212,10 +282,15 @@ export default function ProjectModal({ project, onClose }) {
           </div>
         </div>
 
-        {/* Body */}
-        <div style={{
-          padding: '20px 24px', overflowY: 'auto', flex: 1, minHeight: 0,
-        }}>
+        {/* Body — SCROLLABLE with all case study content */}
+        <div
+          className="modal-body-scroll"
+          style={{
+            padding: '20px 24px', overflowY: 'scroll', overflowX: 'hidden',
+            flex: '1 1 0%', minHeight: 0, WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          {/* Title + CTA */}
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
             marginBottom: '8px', gap: '12px', flexWrap: 'wrap',
@@ -258,6 +333,21 @@ export default function ProjectModal({ project, onClose }) {
               {displayHostname} ↗
             </a>
           </div>
+
+          {/* Case study content — forces scroll */}
+          <div style={{
+            marginTop: '24px', paddingTop: '20px',
+            borderTop: '1px solid rgba(0, 255, 102, 0.08)',
+          }}>
+            <div style={{
+              fontFamily: "'Courier New', monospace", fontSize: '9px',
+              color: 'rgba(0, 255, 102, 0.4)', letterSpacing: '0.2em', textTransform: 'uppercase',
+              marginBottom: '14px',
+            }}>
+              {'// CASE_STUDY · SCROLL_TO_READ'}
+            </div>
+            <CaseStudy project={project} color={color} />
+          </div>
         </div>
 
         {/* Footer */}
@@ -267,7 +357,7 @@ export default function ProjectModal({ project, onClose }) {
           color: 'rgba(0, 255, 102, 0.3)', letterSpacing: '0.1em',
           display: 'flex', justifyContent: 'space-between', flexShrink: 0,
         }}>
-          <span>ESC to close · click outside to close</span>
+          <span>ESC to close · click outside to close · scroll inside the box</span>
           <span>{displayHostname}</span>
         </div>
       </div>
