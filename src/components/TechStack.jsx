@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import useIsMobile from '../hooks/useIsMobile'
 
-function StackTile({ name, usage, color, children }) {
+function StackTile({ name, usage, color, url, children }) {
   const [hovered, setHovered] = useState(false)
   return (
-    <div
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -20,7 +23,8 @@ function StackTile({ name, usage, color, children }) {
         borderRadius: '4px',
         background: hovered ? `${color}10` : 'rgba(255, 255, 255, 0.015)',
         border: 'none',
-        cursor: 'default',
+        cursor: 'pointer',
+        textDecoration: 'none',
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
         transform: hovered ? 'translateY(-4px) scale(1.05)' : 'translateY(0) scale(1)',
@@ -36,6 +40,20 @@ function StackTile({ name, usage, color, children }) {
         clipPath: 'inherit',
         zIndex: -1,
       }} />
+      {hovered && (
+        <div style={{
+          position: 'absolute',
+          top: '6px',
+          right: '12px',
+          width: '10px',
+          height: '10px',
+          zIndex: 5,
+        }}>
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 9 L9 3 M5 3 L9 3 L9 7" stroke={color} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      )}
       <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
         {children}
       </svg>
@@ -84,7 +102,7 @@ function StackTile({ name, usage, color, children }) {
           }} />
         </div>
       )}
-    </div>
+    </a>
   )
 }
 
@@ -93,6 +111,7 @@ const languages = [
     name: 'JavaScript',
     usage: 'web apps, scripts',
     color: '#F7DF1E',
+    url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
     svg: (
       <>
         <rect x="2" y="2" width="28" height="28" rx="3" fill="#F7DF1E" />
@@ -104,6 +123,7 @@ const languages = [
     name: 'TypeScript',
     usage: 'typed JS apps',
     color: '#3178C6',
+    url: 'https://www.typescriptlang.org/',
     svg: (
       <>
         <rect x="2" y="2" width="28" height="28" rx="3" fill="#3178C6" />
@@ -115,6 +135,7 @@ const languages = [
     name: 'Python',
     usage: 'AI, automation',
     color: '#3776AB',
+    url: 'https://www.python.org/',
     svg: (
       <>
         <path d="M16 4 C 10 4, 9 7, 9 10 L 9 13 L 16 13 L 16 14.5 L 7 14.5 C 5 14.5, 4 16, 4 18.5 L 4 21 C 4 23.5, 5.5 25, 8 25 L 11 25 L 11 22 C 11 19.5, 12.5 18, 15 18 L 22 18 C 24 18, 25 17, 25 14.5 L 25 9 C 25 6, 23.5 4.5, 20.5 4.5 Z" fill="#3776AB" />
@@ -128,6 +149,7 @@ const languages = [
     name: 'Go',
     usage: 'high-perf services',
     color: '#00ADD8',
+    url: 'https://go.dev/',
     svg: (
       <>
         <rect x="2" y="2" width="28" height="28" rx="5" fill="#00ADD8" />
@@ -139,6 +161,7 @@ const languages = [
     name: 'Rust',
     usage: 'systems code',
     color: '#DEA584',
+    url: 'https://www.rust-lang.org/',
     svg: (
       <>
         <circle cx="16" cy="16" r="12" fill="#DEA584" />
@@ -154,6 +177,7 @@ const languages = [
     name: 'SQL',
     usage: 'data, queries',
     color: '#E48E00',
+    url: 'https://en.wikipedia.org/wiki/SQL',
     svg: (
       <>
         <ellipse cx="16" cy="7" rx="10" ry="3.5" fill="#E48E00" />
@@ -171,6 +195,7 @@ const frameworks = [
     name: 'React',
     usage: 'UI, SPAs',
     color: '#61DAFB',
+    url: 'https://react.dev/',
     svg: (
       <>
         <circle cx="16" cy="16" r="2.5" fill="#61DAFB" />
@@ -184,6 +209,7 @@ const frameworks = [
     name: 'Next.js',
     usage: 'SSR, full-stack',
     color: '#FFFFFF',
+    url: 'https://nextjs.org/',
     svg: (
       <>
         <circle cx="16" cy="16" r="13" fill="#FFFFFF" />
@@ -195,6 +221,7 @@ const frameworks = [
     name: 'Node.js',
     usage: 'backend, APIs',
     color: '#339933',
+    url: 'https://nodejs.org/',
     svg: (
       <>
         <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" fill="#339933" />
@@ -206,6 +233,7 @@ const frameworks = [
     name: 'Vue',
     usage: 'progressive UIs',
     color: '#4FC08D',
+    url: 'https://vuejs.org/',
     svg: (
       <>
         <path d="M3 6 L8 6 L16 19 L24 6 L29 6 L16 27 Z" fill="#4FC08D" />
@@ -217,6 +245,7 @@ const frameworks = [
     name: 'Tailwind',
     usage: 'utility-first CSS',
     color: '#06B6D4',
+    url: 'https://tailwindcss.com/',
     svg: (
       <>
         <path d="M16 6 Q11 6 9 11 Q11 8 14 9 Q11 9 10 13 Q13 9 18 11 Q14 11 13 15 Q17 11 22 14 Q19 11 22 17 Q24 14 22 22 Q25 17 23 25 Q26 20 25 26" stroke="#06B6D4" strokeWidth="2" fill="none" strokeLinecap="round" />
@@ -228,6 +257,7 @@ const frameworks = [
     name: 'Flask',
     usage: 'lightweight APIs',
     color: '#FFFFFF',
+    url: 'https://flask.palletsprojects.com/',
     svg: (
       <>
         <path d="M11 4 L11 11 L6 24 Q5 28 10 28 L22 28 Q27 28 26 24 L21 11 L21 4 Z" fill="none" stroke="#FFFFFF" strokeWidth="1.8" strokeLinejoin="round" />
@@ -245,6 +275,7 @@ const infrastructure = [
     name: 'Docker',
     usage: 'containers',
     color: '#2496ED',
+    url: 'https://www.docker.com/',
     svg: (
       <>
         <g fill="#2496ED">
@@ -265,6 +296,7 @@ const infrastructure = [
     name: 'PostgreSQL',
     usage: 'relational DB',
     color: '#336791',
+    url: 'https://www.postgresql.org/',
     svg: (
       <>
         <path d="M9 11 Q9 8 12 8 L20 8 Q23 8 23 11 L23 17 Q23 22 16 25 Q9 22 9 17 Z" fill="#336791" />
@@ -279,6 +311,7 @@ const infrastructure = [
     name: 'AWS',
     usage: 'cloud infra',
     color: '#FF9900',
+    url: 'https://aws.amazon.com/',
     svg: (
       <>
         <path d="M4 22 Q2 25 4 27 L28 27 Q30 25 28 22 L21 14 L19 17 L16 13 L13 17 L11 14 Z" fill="#FF9900" />
@@ -290,6 +323,7 @@ const infrastructure = [
     name: 'Linux',
     usage: 'servers, CLI',
     color: '#FCC624',
+    url: 'https://www.linux.org/',
     svg: (
       <>
         <ellipse cx="16" cy="19" rx="7" ry="8" fill="#FCC624" />
@@ -308,6 +342,7 @@ const infrastructure = [
     name: 'Git',
     usage: 'version control',
     color: '#F05032',
+    url: 'https://git-scm.com/',
     svg: (
       <>
         <line x1="7" y1="9" x2="7" y2="23" stroke="#F05032" strokeWidth="2.2" />
@@ -325,6 +360,7 @@ const infrastructure = [
     name: 'VS Code',
     usage: 'editor, IDE',
     color: '#007ACC',
+    url: 'https://code.visualstudio.com/',
     svg: (
       <>
         <path d="M23 4 L13 14 L21 22 L24 19 L18 14 L24 9 Z" fill="#007ACC" />
@@ -356,7 +392,7 @@ function StackGrid({ title, items }) {
         gap: '12px',
       }}>
         {items.map((item) => (
-          <StackTile key={item.name} name={item.name} usage={item.usage} color={item.color}>
+          <StackTile key={item.name} name={item.name} usage={item.usage} color={item.color} url={item.url}>
             {item.svg}
           </StackTile>
         ))}
