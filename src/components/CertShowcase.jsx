@@ -47,6 +47,15 @@ const certs = [
     url: 'https://www.comptia.org/certifications/pentest',
   },
   {
+    id: 'cysa',
+    name: 'CompTIA CySA+',
+    short: 'CSA+',
+    color: '#C8102E',
+    accent: '#FF1744',
+    description: 'Cybersecurity analysis, threat detection, incident response, and compliance.',
+    url: 'https://www.comptia.org/certifications/cybersecurity-analyst',
+  },
+  {
     id: 'oscp',
     name: 'OSCP',
     short: 'OSCP',
