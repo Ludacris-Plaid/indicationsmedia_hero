@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import BlogModal from './BlogModal'
+import fallbackPosts from '../data/posts'
 
 const CATEGORY_COLORS = {
   SECURITY: '#ff3366',
@@ -16,10 +17,17 @@ export default function BlogFeed({ isVisible }) {
     fetch('/api/posts')
       .then((r) => r.json())
       .then((data) => {
-        setPosts(Array.isArray(data) ? data : [])
+        if (Array.isArray(data) && data.length > 0) {
+          setPosts(data)
+        } else {
+          setPosts(fallbackPosts)
+        }
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        setPosts(fallbackPosts)
+        setLoading(false)
+      })
   }, [])
 
   return (
