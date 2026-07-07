@@ -4,6 +4,7 @@ const posts = [
     title: 'Building a Secure API Layer in Rust',
     category: 'SECURITY',
     date: '2024-07-01',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop',
     excerpt: 'A walkthrough of building a zero-trust API using Rust, Actix-web, and JWT authentication at scale.',
     content: `At Indications Media, we recently shipped a client-facing API that handles sensitive financial data for a fintech startup processing $2M+ in daily transactions. After evaluating Go, Python (FastAPI), and Node.js (Express), we chose Rust for its memory safety guarantees and zero-cost abstractions. The decision wasn't made lightly — we spent two weeks prototyping in each language before committing.
 
@@ -41,6 +42,7 @@ If you're building anything that touches PII or financial data, Rust should be o
     title: 'Zero-Trust Architecture for Small Businesses',
     category: 'SECURITY',
     date: '2024-06-15',
+    image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=400&fit=crop',
     excerpt: 'Why zero-trust isn\'t just for enterprises. A practical guide to implementing least-privilege access for SMBs.',
     content: `Zero-trust architecture sounds like an enterprise-only concern, but here's the reality: small businesses are actually the easiest targets for attackers. They have the same attack surface as a Fortune 500 company — web applications, email, cloud services, employee devices — but a fraction of the defense budget and often no dedicated security team. The 2023 Verizon Data Breach Investigations Report found that 43% of breaches involved small businesses.
 
@@ -91,6 +93,7 @@ Zero-trust isn't a product you buy — it's an architecture you adopt. Start wit
     title: 'Why Monero Belongs in Your Privacy Stack',
     category: 'CRYPTO',
     date: '2024-05-20',
+    image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&h=400&fit=crop',
     excerpt: 'Understanding Monero\'s ring signatures, stealth addresses, and why privacy is not optional in digital payments.',
     content: `Most cryptocurrency transactions are pseudonymous, not anonymous. This is the fundamental misunderstanding that gets people into trouble. Every Bitcoin payment is permanently recorded on a public ledger. Every Ethereum smart contract interaction is traceable. With enough chain analysis — and companies like Chainalysis have billions of dollars worth of analysis tools — any transaction can be traced back to a real identity through exchange KYC data, IP analysis, and spending pattern correlation.
 
@@ -126,6 +129,7 @@ That said, compliance is real. If you operate in a regulated industry, consult w
     title: 'Deploying AI Agents: Lessons from 50+ Projects',
     category: 'AI',
     date: '2024-04-10',
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop',
     excerpt: 'Hard-won lessons from deploying LLM-based agents at scale. What works, what fails, and what costs a fortune.',
     content: `After deploying AI agents across 50+ client projects — from customer support bots processing 10,000 messages/day to code review assistants analyzing pull requests in real-time — a few patterns have become painfully clear. These aren't theoretical observations from a research paper. They're lessons learned from production incidents, unexpected costs, and the gap between "it works in the demo" and "it works at scale."
 
@@ -176,6 +180,7 @@ AI agents are powerful but they're not magic. They're software components that n
     title: 'The State of Quantum-Resistant Cryptography',
     category: 'SECURITY',
     date: '2024-03-05',
+    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=400&fit=crop',
     excerpt: 'NIST\'s post-quantum standards are finalized. Here\'s what developers need to know about CRYSTALS-Kyber and CRYSTALS-Dilithium.',
     content: `In August 2024, NIST finalized three post-quantum cryptography standards that will reshape how we think about digital security for the next 50 years. ML-KEM (formerly CRYSTALS-Kyber) for key encapsulation, ML-DSA (CRYSTALS-Dilithium) for digital signatures, and SLH-DSA (SPHINCS+) as a hash-based backup signature scheme. These replace RSA and ECDSA — the cryptographic foundations that have secured the internet since the 1970s — both of which are breakable by Shor's algorithm running on a sufficiently large quantum computer.
 
@@ -211,6 +216,7 @@ Start testing your service mesh and API gateways with hybrid PQ-TLS now. The tra
     title: 'Docker Security Hardening: Beyond the Basics',
     category: 'SECURITY',
     date: '2024-02-28',
+    image: 'https://images.unsplash.com/photo-1605745341112-85968b19335b?w=800&h=400&fit=crop',
     excerpt: 'Stop running containers as root. A practical guide to Dockerfile security, image scanning, and runtime protection.',
     content: `The number one Docker security mistake we see in production: running containers as root. It's the default configuration, it's convenient during development, and it's a disaster waiting to happen. If an attacker achieves container escape — and there are multiple CVEs every year that enable this — they immediately have root access to the host machine. Every container running on that host is now compromised. The blast radius of a single container escape when running as root is the entire server.
 
@@ -265,6 +271,7 @@ The fix took two hours: updated base images to distroless, added non-root users,
     title: 'Building Real-Time Dashboards with WebSockets',
     category: 'AI',
     date: '2024-02-12',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop',
     excerpt: 'How we replaced polling with WebSocket streams to deliver sub-100ms data updates for monitoring platforms.',
     content: `Polling is dead. If your dashboard still hits an API endpoint every 5 seconds to check for updates, you're wasting bandwidth, hammering your database, and delivering a worse user experience than was technically possible in 2015. We measured the impact: a monitoring dashboard with 500 concurrent users making 5-second polls generates 6,000 requests per minute. 95% of those requests return the same data as the previous poll. That's 5,700 wasted requests per minute, every minute, 24/7.
 
@@ -349,6 +356,7 @@ For the global case, we use Cloudflare's WebSocket support to terminate connecti
     title: 'Lightning Network: Practical Micropayments for Web Apps',
     category: 'CRYPTO',
     date: '2024-01-25',
+    image: 'https://images.unsplash.com/photo-1516245834210-c4c142787335?w=800&h=400&fit=crop',
     excerpt: 'Integrating Bitcoin Lightning payments into your SaaS. Real code, real invoices, real settlement in under a second.',
     content: `Bitcoin on-chain transactions take 10 minutes to confirm and cost $1-5 in fees depending on network congestion. That's fine for buying a car or making a large transfer, but it's absurd for paying $0.10 to read an article, $0.05 for an API call, or $1 for a digital download. The Lightning Network fixes this by moving transactions off-chain into bidirectional payment channels, enabling instant settlements with fees measured in fractions of a cent.
 
@@ -418,6 +426,7 @@ That's a 99.9% fee reduction. For micropayment-heavy business models — pay-per
     title: 'CI/CD Pipeline Security: Hardening Your Build Process',
     category: 'SECURITY',
     date: '2024-01-10',
+    image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800&h=400&fit=crop',
     excerpt: 'Your CI/CD pipeline is an attack vector. Here\'s how to secure GitHub Actions, lock down secrets, and audit your builds.',
     content: `Your CI/CD pipeline has root access to your production infrastructure. It can read your database credentials, deploy to your servers, push to your container registry, and access your cloud provider APIs. If an attacker compromises your build process, they own everything. Yet most teams secure their applications with firewalls and WAFs while leaving their pipelines wide open to supply-chain attacks.
 
@@ -505,6 +514,7 @@ We set up a pipeline for a fintech client that required SOC 2 compliance. The au
     title: 'WebAssembly for Compute-Heavy Backend Tasks',
     category: 'AI',
     date: '2024-01-02',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=400&fit=crop',
     excerpt: 'When Python is too slow and C is too painful. Using WASM modules for image processing, crypto, and data transformation.',
     content: `We had a problem: a client's image processing pipeline was taking 45 seconds per batch in Python. The pipeline receives uploaded images, resizes them to multiple dimensions, applies watermarks, generates thumbnails, extracts EXIF metadata, and produces optimized WebP variants. It handles about 500 images per hour during peak traffic.
 
@@ -576,6 +586,7 @@ But for CPU-bound, compute-heavy tasks — image processing, cryptography, data 
     title: 'The Practical Guide to Self-Hosting with WireGuard',
     category: 'SECURITY',
     date: '2024-01-05',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop',
     excerpt: 'Set up a private WireGuard VPN in 30 minutes. Access your self-hosted services securely from anywhere.',
     content: `Self-hosting is only useful if you can reach your services from anywhere. Running a home lab with Pi-hole, Nextcloud, and a media server is great — until you leave the house and can't access any of it. Exposing ports to the public internet is irresponsible. Every open port is an attack surface, and home routers are notoriously slow to patch vulnerabilities.
 
@@ -673,6 +684,7 @@ The entire stack — WireGuard, Unbound, Pi-hole — runs in a single Docker Com
     title: 'Prompt Injection Attacks on AI-Powered Apps',
     category: 'AI',
     date: '2024-02-05',
+    image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=400&fit=crop',
     excerpt: 'Your AI features are vulnerable. How prompt injection works, real attack vectors, and how to defend against them.',
     content: `If your application uses LLMs to process user input, you are vulnerable to prompt injection. It's not a theoretical risk — it's the SQL injection of the AI era, and most teams aren't taking it seriously. The OWASP Top 10 for LLM Applications lists prompt injection as the #1 vulnerability, and for good reason: it's trivially easy to execute and devastating when successful.
 
@@ -745,6 +757,7 @@ If your AI features can access sensitive data, send emails, modify databases, or
     title: 'Ethereum Layer 2s: Which One Actually Works?',
     category: 'CRYPTO',
     date: '2024-03-18',
+    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=400&fit=crop',
     excerpt: 'Arbitrum vs Optimism vs Base vs zkSync — a developer\'s comparison of L2 chains for building dApps.',
     content: `Every Ethereum Layer 2 claims to be the future of scaling. Arbitrum says it has the best developer experience. Optimism says it has the strongest ecosystem. zkSync says it has the strongest security guarantees. Base says it has the best distribution. After building production dApps on all four major L2s over the past 18 months, here's the honest comparison based on real deployment experience, not marketing materials.
 
@@ -800,6 +813,7 @@ Watch the L2 landscape closely. What's true today may not be true in six months.
     title: 'Linux Server Hardening: A Production Checklist',
     category: 'SECURITY',
     date: '2024-03-22',
+    image: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800&h=400&fit=crop',
     excerpt: 'The 15-step checklist we run on every new server. SSH lockdown, firewall rules, kernel tuning, and intrusion detection.',
     content: `Every server we provision goes through the same hardening checklist. It takes about 45 minutes and prevents 90% of common attacks. We've been running this checklist for two years across 50+ production servers, and our intrusion detection system hasn't flagged a single unauthorized access attempt. The checklist is designed to be automated — we run it via Ansible on every new server, with manual verification for critical steps.
 
@@ -941,6 +955,7 @@ Each step is documented with exact commands, expected output, and verification p
     title: 'Building a RAG Pipeline That Actually Works',
     category: 'AI',
     date: '2024-04-22',
+    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=400&fit=crop',
     excerpt: 'Retrieval-Augmented Generation isn\'t magic. Here\'s how to build one that retrieves relevant context and doesn\'t hallucinate.',
     content: `Retrieval-Augmented Generation sounds simple: search your documents, inject the results into the prompt, let the LLM answer. In theory, this gives the LLM access to your private data without fine-tuning. In practice, most RAG pipelines produce confidently wrong answers because the retrieval step fails silently. The LLM generates fluent, authoritative-sounding text that has nothing to do with your actual documents. Users trust it because it sounds right, and the errors go undetected until it's too late.
 

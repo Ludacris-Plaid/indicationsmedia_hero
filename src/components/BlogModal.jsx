@@ -109,6 +109,28 @@ export default function BlogModal({ post, onClose }) {
           </h2>
         </div>
 
+        {/* Hero image */}
+        {post.image && (
+          <div style={{
+            width: '100%',
+            height: '240px',
+            overflow: 'hidden',
+            flexShrink: 0,
+          }}>
+            <img
+              src={post.image}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                filter: 'brightness(0.75) saturate(0.85)',
+              }}
+            />
+          </div>
+        )}
+
         {/* Body */}
         <div ref={bodyRef} className="blog-modal-body" style={{
           padding: '28px 40px',

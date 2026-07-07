@@ -36,6 +36,7 @@ Content-Type: application/json
 {
   "title": "Your Post Title",
   "category": "SECURITY",
+  "image": "https://images.unsplash.com/photo-...?w=800&h=400&fit=crop",
   "excerpt": "Short 1-2 sentence summary for the feed.",
   "content": "Full blog post body. Paragraphs separated by \\n\\n."
 }
@@ -47,6 +48,7 @@ Content-Type: application/json
 |-------|----------|-------------|
 | `title` | Yes | Blog post title. Clear, specific, no clickbait. |
 | `category` | Yes | One of: `SECURITY`, `CRYPTO`, `AI` |
+| `image` | Yes | URL to a stock image. Must be a valid image URL. |
 | `excerpt` | No | 1-2 sentence summary. Auto-generated from content if omitted. |
 | `content` | Yes | Full post body. Use `\n\n` to separate paragraphs. |
 | `color` | No | Hex color. Auto-assigned from category if omitted. |
@@ -75,7 +77,7 @@ Content-Type: application/json
 
 | Status | Meaning |
 |--------|---------|
-| 400 | Missing required field (title, category, or content) |
+| 400 | Missing required field (title, category, content, or image) |
 | 401 | Wrong or missing API key |
 | 405 | Wrong HTTP method (use POST) |
 
@@ -96,6 +98,7 @@ curl -X POST https://indicationsmedia.com/api/posts \
   -d '{
     "title": "Hardening SSH in Production: The Complete Checklist",
     "category": "SECURITY",
+    "image": "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800&h=400&fit=crop",
     "excerpt": "SSH is the front door to your infrastructure. Here is how to lock it down.",
     "content": "SSH brute-force attacks account for over 30% of unauthorized access attempts against cloud servers according to AWS 2023 threat reports. If your SSH configuration is still running defaults, you are one automated scan away from compromise.\n\nThis is not theoretical. We found an unpatched jump box running Ubuntu 18.04 with password authentication enabled. It had 47,000 failed login attempts in 72 hours. The attacker eventually moved laterally into our staging environment.\n\nHere is the hardened SSH configuration we now deploy across every production server."
   }'

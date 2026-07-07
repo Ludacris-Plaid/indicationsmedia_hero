@@ -40,7 +40,7 @@ export default function AdminPage({ onBack }) {
   const [phase, setPhase] = useState('booting')
   const [password, setPassword] = useState('')
   const [authed, setAuthed] = useState(false)
-  const [form, setForm] = useState({ title: '', category: 'SECURITY', excerpt: '', content: '' })
+  const [form, setForm] = useState({ title: '', category: 'SECURITY', excerpt: '', content: '', image: '' })
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [recentPosts, setRecentPosts] = useState([])
@@ -78,7 +78,7 @@ export default function AdminPage({ onBack }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.title || !form.content) return
+    if (!form.title || !form.content || !form.image) return
     setSending(true)
     setResult(null)
     try {
@@ -93,7 +93,7 @@ export default function AdminPage({ onBack }) {
       if (res.ok) {
         const post = await res.json()
         setResult({ ok: true, post })
-        setForm({ title: '', category: 'SECURITY', excerpt: '', content: '' })
+        setForm({ title: '', category: 'SECURITY', excerpt: '', content: '', image: '' })
         loadRecent()
       } else {
         const err = await res.json()
@@ -385,6 +385,65 @@ export default function AdminPage({ onBack }) {
                   </div>
                 </div>
 
+                {/* Image URL */}
+                <div>
+                  <label style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '9px',
+                    color: 'rgba(0, 255, 102, 0.5)',
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    display: 'block',
+                    marginBottom: '6px',
+                  }}>
+                    IMAGE_URL <span style={{ color: '#ff3366' }}>*</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={form.image}
+                    onChange={(e) => setForm({ ...form, image: e.target.value })}
+                    placeholder="https://images.unsplash.com/photo-..."
+                    className="admin-input"
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      background: 'rgba(0, 255, 102, 0.03)',
+                      border: '1px solid rgba(0, 255, 102, 0.15)',
+                      borderRadius: '2px',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: '12px',
+                      transition: 'border-color 0.2s',
+                    }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = '#00ff66'}
+                    onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.15)'}
+                  />
+                  {form.image && (
+                    <div style={{
+                      marginTop: '8px',
+                      width: '100%',
+                      height: '80px',
+                      borderRadius: '2px',
+                      overflow: 'hidden',
+                      border: '1px solid rgba(0, 255, 102, 0.1)',
+                    }}>
+                      <img
+                        src={form.image}
+                        alt="Preview"
+                        onError={(e) => { e.currentTarget.style.display = 'none' }}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                          filter: 'brightness(0.7)',
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+
                 {/* Excerpt */}
                 <div>
                   <label style={{
@@ -463,20 +522,20 @@ export default function AdminPage({ onBack }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <button
                     type="submit"
-                    disabled={sending || !form.title || !form.content}
+                    disabled={sending || !form.title || !form.content || !form.image}
                     style={{
                       fontFamily: "'Courier New', monospace",
                       fontSize: '12px',
                       fontWeight: 700,
                       letterSpacing: '0.12em',
                       color: '#030806',
-                      background: sending || !form.title || !form.content
+                      background: sending || !form.title || !form.content || !form.image
                         ? 'rgba(0, 255, 102, 0.15)'
                         : '#00ff66',
                       padding: '12px 28px',
                       borderRadius: '2px',
                       border: 'none',
-                      cursor: sending || !form.title || !form.content ? 'default' : 'pointer',
+                      cursor: sending || !form.title || !form.content || !form.image ? 'default' : 'pointer',
                       boxShadow: sending ? 'none' : '0 0 20px rgba(0, 255, 102, 0.3)',
                       transition: 'all 0.3s',
                       display: 'flex',
@@ -625,6 +684,7 @@ Content-Type: application/json
 {
   "title": "Post Title",
   "category": "SECURITY | CRYPTO | AI",
+  "image": "https://images.unsplash.com/photo-...",
   "excerpt": "Short summary (optional)",
   "content": "Full blog post body..."
 }`}

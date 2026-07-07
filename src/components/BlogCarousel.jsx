@@ -147,12 +147,169 @@ export default function BlogCarousel() {
           </h2>
         </div>
 
-        {/* Carousel controls */}
+        {/* Carousel track */}
+        <div
+          ref={scrollRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          style={{
+            display: 'flex',
+            gap: isMobile ? '12px' : '24px',
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            paddingTop: '8px',
+            paddingBottom: '16px',
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+          }}
+        >
+          {posts.map((post, index) => {
+            const catColor = CATEGORY_COLORS[post.category] || '#00ff66'
+            return (
+              <article
+                key={post.id}
+                onClick={() => setSelectedPost(post)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') setSelectedPost(post) }}
+                style={{
+                  flex: '0 0 auto',
+                  width: isMobile ? '88vw' : '75vw',
+                  maxWidth: '960px',
+                  scrollSnapAlign: 'start',
+                  background: 'rgba(0, 255, 102, 0.02)',
+                  border: '1px solid rgba(0, 255, 102, 0.1)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = catColor
+                  e.currentTarget.style.background = `rgba(${catColor === '#ff3366' ? '255,51,102' : catColor === '#FF6600' ? '255,102,0' : catColor === '#00ccff' ? '0,204,255' : '0,255,102'}, 0.04)`
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.1)'
+                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.02)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+              >
+                {/* Thumbnail image */}
+                {post.image && (
+                  <div style={{
+                    width: '100%',
+                    height: '120px',
+                    overflow: 'hidden',
+                    borderRadius: '8px 8px 0 0',
+                  }}>
+                    <img
+                      src={post.image}
+                      alt=""
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                        filter: 'brightness(0.7) saturate(0.8)',
+                        transition: 'filter 0.35s ease',
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(0.85) saturate(1)' }}
+                      onMouseLeave={(e) => { e.currentTarget.style.filter = 'brightness(0.7) saturate(0.8)' }}
+                    />
+                  </div>
+                )}
+
+                {/* Content */}
+                <div style={{ padding: '20px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <span style={{
+                        fontFamily: "'Courier New', monospace",
+                        fontSize: '9px',
+                        fontWeight: 700,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        color: catColor,
+                        padding: '3px 10px',
+                        border: `1px solid ${catColor}40`,
+                        borderRadius: '3px',
+                        background: `${catColor}10`,
+                      }}>
+                        {post.category}
+                      </span>
+                      <span style={{
+                        fontFamily: "'Courier New', monospace",
+                        fontSize: '10px',
+                        color: 'rgba(255, 255, 255, 0.35)',
+                        letterSpacing: '0.05em',
+                      }}>
+                        {post.date}
+                      </span>
+                    </div>
+
+                    <h3 style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '20px',
+                      fontWeight: 600,
+                      lineHeight: 1.3,
+                      margin: '0 0 10px 0',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                    }}>
+                      {post.title}
+                    </h3>
+
+                    <p style={{
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: '12px',
+                      lineHeight: 1.6,
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      margin: 0,
+                    }}>
+                      {post.excerpt}
+                    </p>
+                  </div>
+
+                  {/* Read more */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginTop: '16px',
+                    paddingTop: '14px',
+                    borderTop: '1px solid rgba(0, 255, 102, 0.08)',
+                  }}>
+                    <span style={{
+                      fontFamily: "'Courier New', monospace",
+                      fontSize: '10px',
+                      color: '#00ff66',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                    }}>
+                      {'> READ_MORE'}
+                    </span>
+                    <span style={{ color: '#00ff66', fontSize: '10px' }}>{'->'}</span>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+
+        {/* Carousel controls — below the cards */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: '16px',
-          marginBottom: '32px',
+          marginTop: '32px',
           opacity: isVisible ? 1 : 0,
           transition: 'opacity 1s ease 0.3s',
         }}>
@@ -245,137 +402,6 @@ export default function BlogCarousel() {
           }}>
             {String(activeIndex + 1).padStart(2, '0')} / {String(posts.length).padStart(2, '0')}
           </span>
-        </div>
-
-        {/* Carousel track */}
-        <div
-          ref={scrollRef}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          style={{
-            display: 'flex',
-            gap: isMobile ? '12px' : '24px',
-            overflowX: 'auto',
-            scrollSnapType: 'x mandatory',
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            paddingBottom: '16px',
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-          }}
-        >
-          {posts.map((post, index) => {
-            const catColor = CATEGORY_COLORS[post.category] || '#00ff66'
-            return (
-              <article
-                key={post.id}
-                onClick={() => setSelectedPost(post)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter') setSelectedPost(post) }}
-                style={{
-                  flex: '0 0 auto',
-                  width: isMobile ? '88vw' : '75vw',
-                  maxWidth: '960px',
-                  scrollSnapAlign: 'start',
-                  background: 'rgba(0, 255, 102, 0.02)',
-                  border: '1px solid rgba(0, 255, 102, 0.1)',
-                  borderRadius: '8px',
-                  padding: '28px',
-                  cursor: 'pointer',
-                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  minHeight: '260px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = catColor
-                  e.currentTarget.style.background = `rgba(${catColor === '#ff3366' ? '255,51,102' : catColor === '#FF6600' ? '255,102,0' : catColor === '#00ccff' ? '0,204,255' : '0,255,102'}, 0.04)`
-                  e.currentTarget.style.transform = 'translateY(-4px)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.1)'
-                  e.currentTarget.style.background = 'rgba(0, 255, 102, 0.02)'
-                  e.currentTarget.style.transform = 'translateY(0)'
-                }}
-              >
-                {/* Category + Date */}
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                    <span style={{
-                      fontFamily: "'Courier New', monospace",
-                      fontSize: '9px',
-                      fontWeight: 700,
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color: catColor,
-                      padding: '3px 10px',
-                      border: `1px solid ${catColor}40`,
-                      borderRadius: '3px',
-                      background: `${catColor}10`,
-                    }}>
-                      {post.category}
-                    </span>
-                    <span style={{
-                      fontFamily: "'Courier New', monospace",
-                      fontSize: '10px',
-                      color: 'rgba(255, 255, 255, 0.35)',
-                      letterSpacing: '0.05em',
-                    }}>
-                      {post.date}
-                    </span>
-                  </div>
-
-                  <h3 style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: '20px',
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    margin: '0 0 12px 0',
-                    color: 'rgba(255, 255, 255, 0.9)',
-                  }}>
-                    {post.title}
-                  </h3>
-
-                  <p style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '12px',
-                    lineHeight: 1.6,
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    margin: 0,
-                  }}>
-                    {post.excerpt}
-                  </p>
-                </div>
-
-                {/* Read more */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginTop: '20px',
-                  paddingTop: '16px',
-                  borderTop: '1px solid rgba(0, 255, 102, 0.08)',
-                }}>
-                  <span style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '10px',
-                    color: '#00ff66',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                  }}>
-                    {'> READ_MORE'}
-                  </span>
-                  <span style={{ color: '#00ff66', fontSize: '10px' }}>{'->'}</span>
-                </div>
-              </article>
-            )
-          })}
         </div>
       </div>
 
