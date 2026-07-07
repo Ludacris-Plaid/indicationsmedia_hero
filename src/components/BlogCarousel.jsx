@@ -91,11 +91,11 @@ export default function BlogCarousel() {
         position: 'relative',
         width: '100%',
         minHeight: '100vh',
-        padding: isMobile ? '80px 16px 40px' : '120px 40px 80px',
+        padding: isMobile ? '80px 0 40px' : '120px 0 80px',
         pointerEvents: 'auto',
       }}
     >
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 40px' }}>
         {/* Header */}
         <div style={{
           marginBottom: '48px',
@@ -255,8 +255,9 @@ export default function BlogCarousel() {
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter') setSelectedPost(post) }}
                 style={{
-                  flex: '0 0',
-                  width: isMobile ? '85vw' : 'calc(50vw - 48px)',
+                  flex: '0 0 auto',
+                  width: isMobile ? '88vw' : '75vw',
+                  maxWidth: '960px',
                   scrollSnapAlign: 'start',
                   background: 'rgba(0, 255, 102, 0.02)',
                   border: '1px solid rgba(0, 255, 102, 0.1)',
