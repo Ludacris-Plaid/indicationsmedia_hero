@@ -27,21 +27,21 @@ function CarouselSlide({ src, label, idx }) {
 
 function CaseStudy({ project }) {
   return (
-    <div style={{ padding: '0 4px' }}>
+    <div style={{ padding: '0 2px' }}>
       {project.problem && (
-        <div style={{ marginBottom: '18px' }}>
+        <div style={{ marginBottom: '10px' }}>
           <div style={{
-            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            fontFamily: "'Courier New', monospace", fontSize: '9px',
             color: '#ff6666', letterSpacing: '0.15em', textTransform: 'uppercase',
-            marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px',
+            marginBottom: '3px', display: 'flex', alignItems: 'center', gap: '5px',
           }}>
             <span style={{ width: '4px', height: '4px', background: '#ff6666', borderRadius: '50%' }} />
             {'> THE_PROBLEM'}
           </div>
           <div style={{
-            paddingLeft: '12px', borderLeft: '2px solid rgba(255, 102, 102, 0.3)',
-            fontFamily: "'Courier New', monospace", fontSize: '12px',
-            lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.65)',
+            paddingLeft: '10px', borderLeft: '2px solid rgba(255, 102, 102, 0.3)',
+            fontFamily: "'Courier New', monospace", fontSize: '11px',
+            lineHeight: 1.45, color: 'rgba(255, 255, 255, 0.65)',
           }}>
             {project.problem}
           </div>
@@ -49,19 +49,19 @@ function CaseStudy({ project }) {
       )}
 
       {project.solution && (
-        <div style={{ marginBottom: '18px' }}>
+        <div style={{ marginBottom: '10px' }}>
           <div style={{
-            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            fontFamily: "'Courier New', monospace", fontSize: '9px',
             color: '#00ff66', letterSpacing: '0.15em', textTransform: 'uppercase',
-            marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px',
+            marginBottom: '3px', display: 'flex', alignItems: 'center', gap: '5px',
           }}>
             <span style={{ width: '4px', height: '4px', background: '#00ff66', borderRadius: '50%' }} />
             {'> THE_SOLUTION'}
           </div>
           <div style={{
-            paddingLeft: '12px', borderLeft: '2px solid rgba(0, 255, 102, 0.3)',
-            fontFamily: "'Courier New', monospace", fontSize: '12px',
-            lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.65)',
+            paddingLeft: '10px', borderLeft: '2px solid rgba(0, 255, 102, 0.3)',
+            fontFamily: "'Courier New', monospace", fontSize: '11px',
+            lineHeight: 1.45, color: 'rgba(255, 255, 255, 0.65)',
           }}>
             {project.solution}
           </div>
@@ -71,18 +71,18 @@ function CaseStudy({ project }) {
       {project.stack?.length > 0 && (
         <div>
           <div style={{
-            fontFamily: "'Courier New', monospace", fontSize: '10px',
+            fontFamily: "'Courier New', monospace", fontSize: '9px',
             color: '#00ccff', letterSpacing: '0.15em', textTransform: 'uppercase',
-            marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px',
+            marginBottom: '5px', display: 'flex', alignItems: 'center', gap: '5px',
           }}>
             <span style={{ width: '4px', height: '4px', background: '#00ccff', borderRadius: '50%' }} />
             {'> BUILT_WITH'}
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
             {project.stack.map((tech) => (
               <span key={tech} style={{
                 fontFamily: "'Courier New', monospace", fontSize: '9px',
-                color: 'rgba(0, 204, 255, 0.85)', padding: '4px 8px',
+                color: 'rgba(0, 204, 255, 0.85)', padding: '3px 7px',
                 borderRadius: '2px', border: '1px solid rgba(0, 204, 255, 0.25)',
                 background: 'rgba(0, 204, 255, 0.05)', letterSpacing: '0.05em',
               }}>{tech}</span>
@@ -322,7 +322,7 @@ export default function ProjectModal({ project, onClose }) {
           {/* Sheet header — always visible */}
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '10px 18px', borderBottom: sheetOpen ? '1px solid rgba(0, 255, 102, 0.1)' : 'none',
+            padding: '8px 16px', borderBottom: sheetOpen ? '1px solid rgba(0, 255, 102, 0.1)' : 'none',
             flexShrink: 0, minHeight: '44px',
           }}>
             <div style={{
@@ -377,12 +377,12 @@ export default function ProjectModal({ project, onClose }) {
           {sheetOpen && (
             <div className="modal-body-scroll" style={{
               flex: 1, overflowY: 'scroll', overflowX: 'hidden',
-              padding: '16px 20px 20px', minHeight: 0,
+              padding: '10px 16px 12px', minHeight: 0,
               WebkitOverflowScrolling: 'touch',
             }}>
               {/* Category + year strip */}
               <div style={{
-                display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px',
+                display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px',
                 fontFamily: "'Courier New', monospace", fontSize: '10px',
                 color: project.color || '#00ff66', letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -393,17 +393,17 @@ export default function ProjectModal({ project, onClose }) {
 
               <p style={{
                 fontFamily: "'Courier New', monospace", fontSize: '12px',
-                lineHeight: 1.6, color: 'rgba(255, 255, 255, 0.5)', margin: '0 0 18px 0',
+                lineHeight: 1.45, color: 'rgba(255, 255, 255, 0.5)', margin: '0 0 10px 0', fontSize: '11px',
               }}>{project.description}</p>
 
               <CaseStudy project={project} />
 
               {/* Big Visit Page button at the bottom of the expanded sheet */}
-              <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ marginTop: '14px', display: 'flex', justifyContent: 'center' }}>
                 <a href={project.url} target="_blank" rel="noopener noreferrer"
                   style={{
                     ...visitButtonStyle,
-                    padding: '14px 32px', fontSize: '13px', width: '100%', maxWidth: '400px',
+                    padding: '10px 28px', fontSize: '12px', width: '100%', maxWidth: '400px',
                   }}>VISIT PAGE <span style={{ fontSize: '15px' }}>↗</span></a>
               </div>
             </div>
