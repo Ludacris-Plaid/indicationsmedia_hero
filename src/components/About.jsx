@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
 import ChatBot from './ChatBot'
 import BlogFeed from './BlogFeed'
+import CertShowcase from './CertShowcase'
 import useIsMobile from '../hooks/useIsMobile'
 
 const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
@@ -484,6 +485,9 @@ export default function About() {
 
           {/* Intel Feed */}
           <BlogFeed isVisible={isVisible} />
+
+          {/* Credentials — mobile only */}
+          {isMobile && <CertShowcase isVisible={isVisible} />}
         </div>
       </div>
     </section>
