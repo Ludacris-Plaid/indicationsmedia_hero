@@ -312,36 +312,78 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Bottom-center: dot indicator + counter (just above the case study sheet) */}
-          <div style={{
-            position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
-            display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '7px 16px', background: 'rgba(3, 8, 6, 0.9)',
-            border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
-            backdropFilter: 'blur(8px)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
-            zIndex: 6,
-          }}>
-            {Array.from({ length: gallery.length }).map((_, i) => (
-              <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
-                style={{
-                  width: i === slideIdx ? '22px' : '7px', height: '7px',
-                  borderRadius: '4px',
-                  background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
-                  border: 'none', padding: 0, cursor: 'pointer', transition: 'all 0.25s',
-                  boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
-                }} />
-            ))}
-            <span style={{
-              fontFamily: "'Courier New', monospace", fontSize: '10px',
-              color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.15em',
-              fontWeight: 700, minWidth: '36px', textAlign: 'center',
-              borderLeft: '1px solid rgba(0, 255, 102, 0.2)',
-              paddingLeft: '10px', marginLeft: '2px',
+          {/* Bottom-center: dot indicator + counter (when case study is closed) */}
+          {!sheetOpen && (
+            <div style={{
+              position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '7px 16px', background: 'rgba(3, 8, 6, 0.9)',
+              border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
+              zIndex: 6,
+              transition: 'opacity 0.2s, transform 0.2s',
             }}>
-              {String(slideIdx + 1).padStart(2, '0')}<span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>/</span>{String(gallery.length).padStart(2, '0')}
-            </span>
-          </div>
+              {Array.from({ length: gallery.length }).map((_, i) => (
+                <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
+                  style={{
+                    width: i === slideIdx ? '22px' : '7px', height: '7px',
+                    borderRadius: '4px',
+                    background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
+                    border: 'none', padding: 0, cursor: 'pointer', transition: 'all 0.25s',
+                    boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
+                  }} />
+              ))}
+              <span style={{
+                fontFamily: "'Courier New', monospace", fontSize: '10px',
+                color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.15em',
+                fontWeight: 700, minWidth: '36px', textAlign: 'center',
+                borderLeft: '1px solid rgba(0, 255, 102, 0.2)',
+                paddingLeft: '10px', marginLeft: '2px',
+              }}>
+                {String(slideIdx + 1).padStart(2, '0')}<span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>/</span>{String(gallery.length).padStart(2, '0')}
+              </span>
+            </div>
+          )}
+
+          {/* Right side: vertical dot indicator (when case study is open, in the letterbox space) */}
+          {sheetOpen && (
+            <div style={{
+              position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+              padding: '14px 10px', background: 'rgba(3, 8, 6, 0.9)',
+              border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
+              zIndex: 6,
+              transition: 'opacity 0.2s, transform 0.2s',
+            }}>
+              {/* Dots stacked vertically */}
+              {Array.from({ length: gallery.length }).map((_, i) => (
+                <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
+                  style={{
+                    width: '7px', height: i === slideIdx ? '22px' : '7px',
+                    borderRadius: '4px',
+                    background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
+                    border: 'none', padding: 0, cursor: 'pointer', transition: 'all 0.25s',
+                    boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
+                  }} />
+              ))}
+              {/* Divider */}
+              <div style={{ width: '14px', height: '1px', background: 'rgba(0, 255, 102, 0.2)', margin: '2px 0' }} />
+              {/* Counter */}
+              <span style={{
+                fontFamily: "'Courier New', monospace", fontSize: '9px',
+                color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.1em',
+                fontWeight: 700, textAlign: 'center',
+                writingMode: 'vertical-rl',
+                textOrientation: 'mixed',
+                transform: 'rotate(180deg)',
+              }}>
+                {String(slideIdx + 1).padStart(2, '0')}<span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>/</span>{String(gallery.length).padStart(2, '0')}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Bottom sheet — flex child so it sits below the carousel, not over it */}
