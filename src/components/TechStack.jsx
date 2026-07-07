@@ -369,6 +369,34 @@ const infrastructure = [
       </>
     ),
   },
+  {
+    name: 'n8n',
+    usage: 'workflow automation',
+    color: '#EA4B71',
+    url: 'https://n8n.io/',
+    svg: (
+      <>
+        <polygon points="16,3 27,9.5 27,22.5 16,29 5,22.5 5,9.5" fill="#EA4B71" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">n8n</text>
+      </>
+    ),
+  },
+  {
+    name: 'Obsidian',
+    usage: 'knowledge base',
+    color: '#7C3AED',
+    url: 'https://obsidian.md/',
+    svg: (
+      <>
+        <polygon points="16,3 25,8 28,16 25,24 16,29 7,24 4,16 7,8" fill="#7C3AED" />
+        <polygon points="16,3 25,8 28,16 16,16 7,8" fill="#9F67FA" opacity="0.6" />
+        <line x1="16" y1="3" x2="16" y2="29" stroke="#FFF" strokeWidth="0.6" opacity="0.5" />
+        <line x1="4" y1="16" x2="28" y2="16" stroke="#FFF" strokeWidth="0.6" opacity="0.4" />
+        <line x1="7" y1="8" x2="25" y2="24" stroke="#FFF" strokeWidth="0.5" opacity="0.3" />
+        <line x1="25" y1="8" x2="7" y2="24" stroke="#FFF" strokeWidth="0.5" opacity="0.3" />
+      </>
+    ),
+  },
 ]
 
 const crypto = [
@@ -492,6 +520,22 @@ const crypto = [
         <circle cx="16" cy="16" r="13" fill="#8247E5" />
         <path d="M11 11 L16 8 L21 11 L21 16 L16 19 L11 16 Z" fill="none" stroke="#FFF" strokeWidth="1.5" strokeLinejoin="round" />
         <path d="M11 11 L16 14 L21 11 M16 14 L16 19" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    name: 'PGP',
+    usage: 'encrypted comms',
+    color: '#D4A017',
+    url: 'https://www.openpgp.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#D4A017" />
+        <circle cx="11" cy="16" r="5" stroke="#030806" strokeWidth="1.8" fill="none" />
+        <circle cx="11" cy="16" r="1.8" fill="#030806" />
+        <line x1="16" y1="16" x2="26" y2="16" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
+        <line x1="22" y1="16" x2="22" y2="20" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
+        <line x1="25" y1="16" x2="25" y2="19" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
       </>
     ),
   },
