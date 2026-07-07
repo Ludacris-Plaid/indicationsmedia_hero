@@ -378,13 +378,27 @@ export default function ProjectModal({ project, onClose }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               {!sheetOpen && (
                 <button onClick={() => setSheetOpen(true)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(0, 255, 102, 0.18)'
+                    e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.7)'
+                    e.currentTarget.style.color = '#00ff66'
+                    e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 255, 102, 0.35)'
+                    e.currentTarget.style.transform = 'translateY(-1px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(0, 255, 102, 0.08)'
+                    e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.3)'
+                    e.currentTarget.style.color = '#00ff66'
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
                   style={{
                     fontFamily: "'Courier New', monospace", fontSize: '10px', fontWeight: 700,
                     letterSpacing: '0.1em', textTransform: 'uppercase',
                     color: '#00ff66', background: 'rgba(0, 255, 102, 0.08)',
                     border: '1px solid rgba(0, 255, 102, 0.3)', padding: '8px 14px',
                     borderRadius: '2px', cursor: 'pointer', display: 'flex',
-                    alignItems: 'center', gap: '6px',
+                    alignItems: 'center', gap: '6px', transition: 'all 0.15s',
                   }}>VIEW CASE STUDY <span style={{ fontSize: '10px' }}>▴</span></button>
               )}
               <a href={project.url} target="_blank" rel="noopener noreferrer"
