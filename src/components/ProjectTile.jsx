@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 
-export default function ProjectTile({ project, index, isVisible, onHover, isMobile }) {
+export default function ProjectTile({ project, index, isVisible, onHover, onSelect, isMobile }) {
   const [localHover, setLocalHover] = useState(false)
   const tileRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -17,7 +17,7 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      project.url && window.open(project.url, '_blank')
+      onSelect && onSelect(project)
     }
   }
 
@@ -27,7 +27,7 @@ export default function ProjectTile({ project, index, isVisible, onHover, isMobi
       role="link"
       tabIndex={0}
       aria-label={`View ${project.title} — ${project.description}`}
-      onClick={() => project.url && window.open(project.url, '_blank')}
+      onClick={() => onSelect && onSelect(project)}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => { setLocalHover(true); onHover(project) }}
       onMouseLeave={() => { setLocalHover(false); onHover(null) }}

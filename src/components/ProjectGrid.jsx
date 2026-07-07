@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import ProjectTile from './ProjectTile'
+import ProjectModal from './ProjectModal'
 import projects from '../data/projects'
 import useIsMobile from '../hooks/useIsMobile'
 
 export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveSection }) {
   const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedProject, setSelectedProject] = useState(null)
   const gridRef = useRef(null)
 
   useEffect(() => {
@@ -94,12 +96,18 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
               index={index}
               isVisible={isVisible}
               onHover={onProjectHover}
+              onSelect={setSelectedProject}
               isHovered={hoveredProject?.id === project.id}
               isMobile={isMobile}
             />
           ))}
         </div>
       </div>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   )
 }
