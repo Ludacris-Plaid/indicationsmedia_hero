@@ -8,6 +8,9 @@ const projects = [
     screenshot: '/screenshots/lovingcharmz.png',
     color: '#c084fc',
     year: '2026',
+    problem: 'The founder was selling symbolic keepsake jewelry on Etsy and Instagram, but had no brand-owned storefront and no way to tell the story behind each piece without losing the sale to marketplace fees.',
+    solution: 'Built a custom storefront with rich product storytelling, fast Stripe checkout, and a newsletter capture flow that converts browsers into repeat buyers.',
+    stack: ['Next.js', 'Stripe', 'Sanity CMS', 'Tailwind'],
   },
   {
     id: 2,
@@ -18,6 +21,9 @@ const projects = [
     screenshot: '/screenshots/bettyz.png',
     color: '#00ff66',
     year: '2025',
+    problem: 'A Smithers, BC boutique was running an outdated Squarespace site that buried their product photography and didn\'t reflect the in-store experience customers kept coming back for.',
+    solution: 'Rebuilt the site around the visual identity — full-bleed photography, easy inventory updates via headless CMS, and a local pickup flow that drives foot traffic.',
+    stack: ['Next.js', 'Sanity CMS', 'Tailwind'],
   },
   {
     id: 3,
@@ -28,6 +34,9 @@ const projects = [
     screenshot: '/screenshots/nexus-coffee.png',
     color: '#d4a574',
     year: '2025',
+    problem: 'A specialty coffee shop was losing the morning rush — orders stacking up at the counter, no real-time visibility into the queue, and customers abandoning the line.',
+    solution: 'Built a real-time mobile ordering app with inventory sync, loyalty rewards, and a barista queue view that cut average wait time by 60% during peak hours.',
+    stack: ['Next.js', 'PostgreSQL', 'Stripe', 'WebSockets'],
   },
   {
     id: 4,
@@ -38,6 +47,9 @@ const projects = [
     screenshot: '/screenshots/arc-ai.png',
     color: '#00ccff',
     year: '2025',
+    problem: 'Enterprise teams needed to deploy LLM workflows in production without hallucinations, runaway costs, or compliance gaps that auditors could flag.',
+    solution: 'Built an orchestration platform with eval gates, structured output validation, per-tenant cost tracking, and full activity logging — AI that auditors can sign off on.',
+    stack: ['Next.js', 'OpenAI API', 'FastAPI', 'PostgreSQL'],
   },
   {
     id: 5,
@@ -48,6 +60,9 @@ const projects = [
     screenshot: '/screenshots/sentinel-cyber.png',
     color: '#ef4444',
     year: '2025',
+    problem: 'A managed security services provider was generating client vulnerability reports as 40-page PDFs that sat unread in inboxes. No real-time visibility, no client engagement.',
+    solution: 'Built a client portal that pulls from their SIEM, generates client-readable reports in plain English, and pushes alerts via webhook the moment critical CVEs drop.',
+    stack: ['Next.js', 'Python', 'FastAPI', 'PostgreSQL'],
   },
   {
     id: 6,
@@ -58,6 +73,9 @@ const projects = [
     screenshot: '/screenshots/ridgepoint-realestate.png',
     color: '#1a1a1a',
     year: '2025',
+    problem: 'Real estate agents were losing leads to Zillow and Realtor.com. Their site showcased nothing and captured inquiries nowhere.',
+    solution: 'Built a property listing platform with virtual tour embeds, a mortgage calculator, and CRM-integrated lead capture that tripled their direct inquiries in 90 days.',
+    stack: ['Next.js', 'Mapbox', 'PostgreSQL'],
   },
   {
     id: 7,
@@ -68,6 +86,9 @@ const projects = [
     screenshot: '/screenshots/ironclad-fitness.png',
     color: '#f59e0b',
     year: '2025',
+    problem: 'A gym chain was juggling MindBody, spreadsheets, and a Wix site. Class scheduling was a mess and member retention was slipping quarter over quarter.',
+    solution: 'Unified scheduling, member management, and trainer booking into one platform with Stripe-powered recurring billing and automated win-back flows.',
+    stack: ['Next.js', 'PostgreSQL', 'Stripe'],
   },
   {
     id: 8,
@@ -78,6 +99,9 @@ const projects = [
     screenshot: '/screenshots/cognito-systems.png',
     color: '#6366f1',
     year: '2025',
+    problem: 'An IT consulting firm needed a credibility-marketing site that explained their services without drowning prospects in jargon or burying the contact form.',
+    solution: 'Built a clean services overview with case studies, a service-tier pricing table, and a lead-routing form that connects directly to their ticketing system.',
+    stack: ['Next.js', 'Node.js', 'AWS'],
   },
   {
     id: 9,
@@ -88,6 +112,9 @@ const projects = [
     screenshot: '/screenshots/vertex-finance.png',
     color: '#22d3ee',
     year: '2025',
+    problem: 'Users wanted a single dashboard for their bank accounts, investments, and savings goals — without paying $100/mo for Mint alternatives or trusting their data to big tech.',
+    solution: 'Built a personal finance dashboard with Plaid integration, AI-generated savings recommendations, and zero-ad-tracking privacy that respects user data.',
+    stack: ['Next.js', 'Plaid API', 'PostgreSQL'],
   },
   {
     id: 10,
@@ -98,6 +125,9 @@ const projects = [
     screenshot: '/screenshots/soundline-audio.png',
     color: '#ec4899',
     year: '2025',
+    problem: 'Producers needed a way to collaborate on tracks in the browser without uploading 500MB stems to yet another $30/mo DAW subscription that locks their files.',
+    solution: 'Built a browser-based collaborative DAW with low-latency multi-track editing, a sample marketplace, and one-click artist publishing to Spotify.',
+    stack: ['Next.js', 'Web Audio API', 'PostgreSQL'],
   },
   {
     id: 11,
@@ -108,6 +138,9 @@ const projects = [
     screenshot: '/screenshots/medvex-health.png',
     color: '#34d399',
     year: '2025',
+    problem: 'A rural health network needed HIPAA-compliant video consultations that worked on a 3G connection without forcing patients to download yet another app.',
+    solution: 'Built a browser-first telehealth platform with WebRTC video, e-prescribing, and offline-capable patient records that works on any device, any connection.',
+    stack: ['Next.js', 'WebRTC', 'PostgreSQL'],
   },
   {
     id: 12,
@@ -118,6 +151,9 @@ const projects = [
     screenshot: '/screenshots/codevault-academy.png',
     color: '#a6e3a1',
     year: '2025',
+    problem: 'Bootcamps were charging $15k for content YouTube covered for free. Learners needed structured, project-based paths with real feedback — without the price tag.',
+    solution: 'Built a project-first curriculum with an in-browser Monaco IDE, automated test suites for assignments, and peer review queues that mirror how real engineering teams work.',
+    stack: ['Next.js', 'Monaco Editor', 'PostgreSQL'],
   },
   {
     id: 13,
@@ -128,6 +164,9 @@ const projects = [
     screenshot: '/screenshots/wavelength-pod.png',
     color: '#f97316',
     year: '2025',
+    problem: 'Independent podcasters were paying $20/mo per show for hosting, transcription, and distribution — and most platforms took 30% of ad revenue on top of that.',
+    solution: 'Built a hosting platform with AI mastering, automatic transcription, one-click distribution to Spotify and Apple, and zero revenue share for the creators.',
+    stack: ['Next.js', 'FFmpeg', 'AWS S3'],
   },
   {
     id: 14,
@@ -138,6 +177,9 @@ const projects = [
     screenshot: '/screenshots/terra-studios.png',
     color: '#a855f7',
     year: '2025',
+    problem: 'An indie game studio needed a portfolio site that showcased their procedural-generation engine without requiring visitors to download a 2GB demo just to see what they do.',
+    solution: 'Built an in-browser WebGL showcase with playable micro-demos, a real-time multiplayer lobby, and an integrated devblog with embedded gameplay clips.',
+    stack: ['Next.js', 'Three.js', 'WebGL'],
   },
   {
     id: 15,
@@ -148,6 +190,9 @@ const projects = [
     screenshot: '/screenshots/nomad-living.png',
     color: '#d97706',
     year: '2025',
+    problem: 'Remote workers wanted short-term co-living without the friction of Airbnb plus a long-term lease. Existing platforms weren\'t built for the nomad lifestyle.',
+    solution: 'Built a monthly-membership marketplace with vetted homes, built-in community features, and one-click booking that works across countries and currencies.',
+    stack: ['Next.js', 'Stripe', 'PostgreSQL'],
   },
   {
     id: 16,
@@ -158,6 +203,9 @@ const projects = [
     screenshot: '/screenshots/flux-logistics.png',
     color: '#22c55e',
     year: '2025',
+    problem: 'Logistics coordinators were juggling five dashboards to track shipments. Status updates were stale by the time they made it to customers, and support tickets piled up.',
+    solution: 'Built a unified tracking dashboard with real-time GPS, predictive ETAs, and customer-facing shareable tracking links that cut support tickets by 40%.',
+    stack: ['Next.js', 'Mapbox', 'PostgreSQL'],
   },
   {
     id: 17,
@@ -168,6 +216,9 @@ const projects = [
     screenshot: '/screenshots/cortex-legal.png',
     color: '#a8a29e',
     year: '2025',
+    problem: 'Solo attorneys were spending 60% of their time on research and document review that AI could handle — if it could be trusted with privileged data.',
+    solution: 'Built a private-LLM legal research tool with citation verification, contract clause flagging, and zero-retention data handling for privileged documents.',
+    stack: ['Next.js', 'OpenAI API', 'PostgreSQL'],
   },
   {
     id: 18,
@@ -178,6 +229,9 @@ const projects = [
     screenshot: '/screenshots/ember-dining.png',
     color: '#ef4444',
     year: '2025',
+    problem: 'A wood-fired restaurant had a beautiful space but their website was a stock-template Squarespace that didn\'t capture the atmosphere or drive bookings.',
+    solution: 'Rebuilt around the sensory experience — full-bleed photography, seasonal menu updates via CMS, and OpenTable reservations baked into the homepage flow.',
+    stack: ['Next.js', 'Sanity CMS', 'OpenTable API'],
   },
   {
     id: 19,
@@ -188,6 +242,9 @@ const projects = [
     screenshot: '/screenshots/prism-gallery.png',
     color: '#18181b',
     year: '2025',
+    problem: 'Digital artists were getting their work stolen and resold as NFTs by anonymous wallets. Collectors had no way to verify authenticity before buying.',
+    solution: 'Built a curated marketplace with on-chain certificates of authenticity, IPFS-pinned metadata, and a verification flow that proves provenance from artist to current owner.',
+    stack: ['Next.js', 'IPFS', 'Ethereum'],
   },
   {
     id: 20,
@@ -198,6 +255,9 @@ const projects = [
     screenshot: '/screenshots/vanguard-vc.png',
     color: '#3b82f6',
     year: '2025',
+    problem: 'An early-stage VC needed a portfolio site that matched the caliber of founders they wanted to attract — not a generic Squarespace template with stock photos of handshakes.',
+    solution: 'Built a founder-first portfolio with company deep-dives, founder interviews, and a confidential pitch submission form that routes directly to the partners.',
+    stack: ['Next.js', 'Airtable', 'Framer Motion'],
   },
   {
     id: 21,
@@ -208,6 +268,9 @@ const projects = [
     screenshot: '/screenshots/synthwave-records.png',
     color: '#ec4899',
     year: '2025',
+    problem: 'A small indie label was losing 30% of revenue to streaming payouts. Direct-to-fan sales were done via PayPal.me links in a Facebook group.',
+    solution: 'Built a label site with direct digital sales, vinyl pre-orders, artist pages, and a listening room where visitors can preview full tracks before buying.',
+    stack: ['Next.js', 'Stripe', 'AWS S3'],
   },
   {
     id: 22,
@@ -218,6 +281,9 @@ const projects = [
     screenshot: '/screenshots/forge-foundry.png',
     color: '#f59e0b',
     year: '2025',
+    problem: 'A CNC shop was quoting jobs from emailed STEP files, which led to errors and 30% quote revision. They needed instant quotes from uploaded files without phone tag.',
+    solution: 'Built a quote calculator that accepts STEP/STL uploads, visualizes the part in Three.js, and returns instant pricing based on material, finish, and lead time.',
+    stack: ['Next.js', 'Three.js', 'Sanity CMS'],
   },
 ]
 

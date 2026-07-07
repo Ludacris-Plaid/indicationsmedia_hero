@@ -1,6 +1,36 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
+function SectionLabel({ children, color = '#00ccff' }) {
+  return (
+    <div style={{
+      fontFamily: "'Courier New', monospace",
+      fontSize: '10px',
+      color,
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase',
+      marginBottom: '8px',
+      marginTop: '20px',
+    }}>
+      {children}
+    </div>
+  )
+}
+
+function BodyText({ children }) {
+  return (
+    <p style={{
+      fontFamily: "'Courier New', monospace",
+      fontSize: '13px',
+      lineHeight: 1.8,
+      color: 'rgba(255, 255, 255, 0.6)',
+      margin: 0,
+    }}>
+      {children}
+    </p>
+  )
+}
+
 export default function ProjectModal({ project, onClose }) {
   const [mounted, setMounted] = useState(false)
   const [closing, setClosing] = useState(false)
@@ -87,6 +117,7 @@ export default function ProjectModal({ project, onClose }) {
           padding: '14px 20px',
           borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
           background: 'rgba(0, 255, 102, 0.02)',
+          flexShrink: 0,
         }}>
           <div style={{
             display: 'flex',
@@ -152,6 +183,7 @@ export default function ProjectModal({ project, onClose }) {
           borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
           overflow: 'hidden',
           aspectRatio: '16/9',
+          flexShrink: 0,
         }}>
           {project.screenshot ? (
             <img
@@ -179,7 +211,6 @@ export default function ProjectModal({ project, onClose }) {
               [NO_SCREENSHOT]
             </div>
           )}
-          {/* corner brackets */}
           {[
             { top: '12px', left: '12px', borderTop: '1px solid #00ff66', borderLeft: '1px solid #00ff66' },
             { top: '12px', right: '12px', borderTop: '1px solid #00ff66', borderRight: '1px solid #00ff66' },
@@ -190,20 +221,23 @@ export default function ProjectModal({ project, onClose }) {
           ))}
         </div>
 
-        {/* Body */}
+        {/* Body — scrollable */}
         <div style={{
           padding: '24px 28px 20px',
           overflowY: 'auto',
+          flex: 1,
+          minHeight: 0,
         }}>
+          {/* Title + CTA */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: '12px',
+            marginBottom: '8px',
             gap: '12px',
             flexWrap: 'wrap',
           }}>
-            <div>
+            <div style={{ flex: 1, minWidth: '200px' }}>
               <div style={{
                 fontFamily: "'Courier New', monospace",
                 fontSize: '10px',
@@ -263,56 +297,99 @@ export default function ProjectModal({ project, onClose }) {
             </a>
           </div>
 
+          {/* Overview */}
           <p style={{
             fontFamily: "'Courier New', monospace",
             fontSize: '13px',
             lineHeight: 1.8,
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: 'rgba(255, 255, 255, 0.55)',
             margin: 0,
-            marginBottom: project.stack ? '20px' : '0',
+            marginTop: '12px',
           }}>
             {'> '}{project.description}
           </p>
 
-          {project.stack && project.stack.length > 0 && (
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '6px',
-              marginTop: '16px',
-              paddingTop: '16px',
-              borderTop: '1px solid rgba(0, 255, 102, 0.08)',
-            }}>
-              <span style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: '9px',
-                color: 'rgba(0, 255, 102, 0.4)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                marginRight: '6px',
-                alignSelf: 'center',
+          {/* Problem */}
+          {project.problem && (
+            <>
+              <SectionLabel color="#ff6666">{'> PROBLEM'}</SectionLabel>
+              <div style={{
+                paddingLeft: '14px',
+                borderLeft: '2px solid rgba(255, 102, 102, 0.3)',
               }}>
-                BUILT_WITH
-              </span>
-              {project.stack.map((tech) => (
-                <span key={tech} style={{
-                  fontFamily: "'Courier New', monospace",
-                  fontSize: '10px',
-                  color: 'rgba(0, 255, 102, 0.8)',
-                  padding: '4px 10px',
-                  borderRadius: '2px',
-                  border: '1px solid rgba(0, 255, 102, 0.2)',
-                  background: 'rgba(0, 255, 102, 0.04)',
-                  letterSpacing: '0.05em',
-                }}>
-                  {tech}
-                </span>
-              ))}
-            </div>
+                <BodyText>{project.problem}</BodyText>
+              </div>
+            </>
+          )}
+
+          {/* Solution */}
+          {project.solution && (
+            <>
+              <SectionLabel color="#00ff66">{'> SOLUTION'}</SectionLabel>
+              <div style={{
+                paddingLeft: '14px',
+                borderLeft: '2px solid rgba(0, 255, 102, 0.3)',
+              }}>
+                <BodyText>{project.solution}</BodyText>
+              </div>
+            </>
+          )}
+
+          {/* Stack */}
+          {project.stack && project.stack.length > 0 && (
+            <>
+              <SectionLabel color="#00ccff">{'> BUILT_WITH'}</SectionLabel>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '6px',
+                marginTop: '4px',
+              }}>
+                {project.stack.map((tech) => (
+                  <span key={tech} style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '10px',
+                    color: 'rgba(0, 204, 255, 0.85)',
+                    padding: '5px 10px',
+                    borderRadius: '2px',
+                    border: '1px solid rgba(0, 204, 255, 0.25)',
+                    background: 'rgba(0, 204, 255, 0.05)',
+                    letterSpacing: '0.05em',
+                  }}>
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Gallery placeholder (if project has gallery field) */}
+          {project.gallery && project.gallery.length > 0 && (
+            <>
+              <SectionLabel color="#c084fc">{'> GALLERY'}</SectionLabel>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+                gap: '8px',
+                marginTop: '4px',
+              }}>
+                {project.gallery.map((src, i) => (
+                  <div key={i} style={{
+                    aspectRatio: '4/3',
+                    background: '#0a0c0a',
+                    border: '1px solid rgba(192, 132, 252, 0.2)',
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                  }}>
+                    <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
 
-        {/* Footer hint */}
+        {/* Footer */}
         <div style={{
           padding: '10px 28px',
           borderTop: '1px solid rgba(0, 255, 102, 0.08)',
@@ -322,6 +399,7 @@ export default function ProjectModal({ project, onClose }) {
           letterSpacing: '0.1em',
           display: 'flex',
           justifyContent: 'space-between',
+          flexShrink: 0,
         }}>
           <span>ESC or click outside to close</span>
           <span>{project.url ? '↗ ' + hostname : ''}</span>
