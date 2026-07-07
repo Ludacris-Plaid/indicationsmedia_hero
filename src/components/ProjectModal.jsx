@@ -267,22 +267,48 @@ export default function ProjectModal({ project, onClose }) {
 
           {slideIdx > 0 && (
             <button onClick={() => setSlideIdx(i => Math.max(0, i - 1))} aria-label="Previous"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 255, 102, 0.2)'
+                e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.9)'
+                e.currentTarget.style.boxShadow = '0 0 16px rgba(0, 255, 102, 0.5)'
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(3, 8, 6, 0.85)'
+                e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.4)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+              }}
               style={{
                 position: 'absolute', top: '50%', left: '8px', transform: 'translateY(-50%)',
                 width: '32px', height: '32px', borderRadius: '50%',
                 background: 'rgba(3, 8, 6, 0.85)', border: '1px solid rgba(0, 255, 102, 0.4)',
                 color: '#00ff66', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '16px', lineHeight: 1, padding: 0, backdropFilter: 'blur(4px)',
+                transition: 'all 0.15s',
               }}>‹</button>
           )}
           {slideIdx < gallery.length - 1 && (
             <button onClick={() => setSlideIdx(i => Math.min(gallery.length - 1, i + 1))} aria-label="Next"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(0, 255, 102, 0.2)'
+                e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.9)'
+                e.currentTarget.style.boxShadow = '0 0 16px rgba(0, 255, 102, 0.5)'
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(3, 8, 6, 0.85)'
+                e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.4)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+              }}
               style={{
                 position: 'absolute', top: '50%', right: '8px', transform: 'translateY(-50%)',
                 width: '32px', height: '32px', borderRadius: '50%',
                 background: 'rgba(3, 8, 6, 0.85)', border: '1px solid rgba(0, 255, 102, 0.4)',
                 color: '#00ff66', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '16px', lineHeight: 1, padding: 0, backdropFilter: 'blur(4px)',
+                transition: 'all 0.15s',
               }}>›</button>
           )}
 
