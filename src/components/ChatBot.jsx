@@ -25,22 +25,39 @@ export default function ChatBot({ isVisible }) {
     setInput('')
     setLoading(true)
 
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 30000)
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: updatedMessages.map(({ role, content }) => ({ role, content })) }),
+        signal: controller.signal,
       })
 
+      clearTimeout(timeout)
       const data = await res.json()
+
+      if (!res.ok) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: 'System is busy right now. Please try again in a minute.' },
+        ])
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: data.message || 'No response' },
+        ])
+      }
+    } catch (err) {
+      clearTimeout(timeout)
+      const msg = err.name === 'AbortError'
+        ? 'System is busy right now. Please try again in a minute.'
+        : 'Connection error. Please try again.'
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: data.message || data.error || 'No response' },
-      ])
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'Connection error. Try again.' },
+        { role: 'assistant', content: msg },
       ])
     } finally {
       setLoading(false)

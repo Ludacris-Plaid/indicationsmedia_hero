@@ -11,7 +11,7 @@ async function callDeepSeek(messages, systemPrompt) {
       temperature: 0.7,
       max_tokens: 500,
     }),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(12000),
   })
   return response
 }
@@ -29,7 +29,7 @@ async function callFeatherless(messages, systemPrompt) {
       temperature: 0.7,
       max_tokens: 500,
     }),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(12000),
   })
   return response
 }
@@ -47,7 +47,7 @@ async function callNvidia(messages, systemPrompt) {
       temperature: 0.7,
       max_tokens: 500,
     }),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(12000),
   })
   return response
 }

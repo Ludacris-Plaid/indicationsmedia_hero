@@ -91,7 +91,7 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                   temperature: 0.7,
                   max_tokens: 500,
                 }),
-                signal: AbortSignal.timeout(15000),
+                signal: AbortSignal.timeout(12000),
               })
 
               let finalResponse = response
@@ -108,7 +108,7 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                     temperature: 0.7,
                     max_tokens: 500,
                   }),
-                  signal: AbortSignal.timeout(15000),
+                  signal: AbortSignal.timeout(12000),
                 })
               }
 
@@ -125,7 +125,7 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                     temperature: 0.7,
                     max_tokens: 500,
                   }),
-                  signal: AbortSignal.timeout(15000),
+                  signal: AbortSignal.timeout(12000),
                 })
               }
 
