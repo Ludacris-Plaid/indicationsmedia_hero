@@ -21,6 +21,11 @@ html, body, #root {
     overflow: hidden;
     cursor: none;
   }
+  a, button, input, textarea, select, label, [data-cursor="auto"], [role="link"], [role="button"] {
+    cursor: pointer !important;
+  }
+  [data-cursor="text"] { cursor: text !important; }
+  [data-cursor="not-allowed"] { cursor: not-allowed !important; }
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -78,7 +83,7 @@ a, button {
 
 @media (hover: hover) and (pointer: fine) {
   a, button {
-    cursor: none;
+    cursor: pointer;
   }
 }
 

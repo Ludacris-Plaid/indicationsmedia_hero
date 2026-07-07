@@ -5,6 +5,7 @@ export default function CustomCursor({ hoveredProject }) {
   const [pos, setPos] = useState({ x: -100, y: -100 })
   const [isVisible, setIsVisible] = useState(true)
   const [isTouch, setIsTouch] = useState(false)
+  const [isOverLink, setIsOverLink] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia('(pointer: coarse)')
@@ -26,6 +27,21 @@ export default function CustomCursor({ hoveredProject }) {
     }
   }, [isTouch])
 
+  // Hide custom cursor when hovering links, buttons, inputs — let native pointer show through
+  useEffect(() => {
+    if (isTouch) return
+    const onOver = (e) => {
+      const t = e.target
+      if (t.closest && t.closest('a, button, input, textarea, select, label, [role="link"], [role="button"], [data-cursor="auto"]')) {
+        setIsOverLink(true)
+      } else {
+        setIsOverLink(false)
+      }
+    }
+    document.addEventListener('mouseover', onOver)
+    return () => document.removeEventListener('mouseover', onOver)
+  }, [isTouch])
+
   useEffect(() => {
     if (isTouch) return
     document.documentElement.style.cursor = 'none'
@@ -41,6 +57,7 @@ export default function CustomCursor({ hoveredProject }) {
   if (isTouch) return null
 
   const color = hoveredProject?.color || '#00ff66'
+  const hidden = !isVisible || isOverLink
 
   return createPortal(
     <div style={{
@@ -51,8 +68,8 @@ export default function CustomCursor({ hoveredProject }) {
       height: '100vh',
       pointerEvents: 'none',
       zIndex: 2147483647,
-      opacity: isVisible ? 1 : 0,
-      transition: 'opacity 0.2s',
+      opacity: hidden ? 0 : 1,
+      transition: 'opacity 0.15s',
     }}>
       {/* Halo */}
       <div style={{
