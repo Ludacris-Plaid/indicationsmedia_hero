@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import useIsMobile from '../hooks/useIsMobile'
 
 function CarouselSlide({ src, label, idx }) {
   return (
@@ -95,15 +96,18 @@ function CaseStudy({ project }) {
 }
 
 export default function ProjectModal({ project, onClose }) {
+  const isMobile = useIsMobile()
   const [slideIdx, setSlideIdx] = useState(0)
   const [closing, setClosing] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [heroMode, setHeroMode] = useState(true)
   const carouselRef = useRef(null)
   const wheelLockRef = useRef(false)
 
   useEffect(() => {
     setSlideIdx(0)
     setSheetOpen(false)
+    setHeroMode(true)
   }, [project?.id])
 
   // Mouse wheel navigates the carousel when scrolling over it
@@ -188,19 +192,20 @@ export default function ProjectModal({ project, onClose }) {
         background: closing ? 'rgba(3, 8, 6, 0)' : 'rgba(3, 8, 6, 0.88)',
         backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '16px', transition: 'background 0.18s ease',
+        padding: isMobile && heroMode ? '0' : '16px', transition: 'background 0.18s ease',
         overflow: 'hidden',
       }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          position: 'relative', width: '100%', maxWidth: '1100px',
-          height: 'calc(100vh - 32px)', maxHeight: '900px',
+          position: 'relative', width: '100%', maxWidth: isMobile && heroMode ? '100%' : '1100px',
+          height: isMobile && heroMode ? '100dvh' : 'calc(100vh - 32px)',
+          maxHeight: isMobile && heroMode ? 'none' : '900px',
           background: '#050806',
-          border: '1px solid rgba(0, 255, 102, 0.3)',
-          borderRadius: '4px',
-          boxShadow: '0 0 60px rgba(0, 255, 102, 0.15), 0 20px 60px rgba(0, 0, 0, 0.7)',
+          border: isMobile && heroMode ? 'none' : '1px solid rgba(0, 255, 102, 0.3)',
+          borderRadius: isMobile && heroMode ? '0' : '4px',
+          boxShadow: isMobile && heroMode ? 'none' : '0 0 60px rgba(0, 255, 102, 0.15), 0 20px 60px rgba(0, 0, 0, 0.7)',
           display: 'flex', flexDirection: 'column',
           opacity: closing ? 0 : 1,
           transition: 'opacity 0.18s ease',
@@ -208,6 +213,7 @@ export default function ProjectModal({ project, onClose }) {
         }}
       >
         {/* Header */}
+        {!(isMobile && heroMode) && (
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '10px 18px', borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
@@ -247,6 +253,7 @@ export default function ProjectModal({ project, onClose }) {
               transition: 'all 0.15s',
             }}>✕</button>
         </div>
+        )}
 
         {/* Carousel — flex: 1, shrinks when sheet opens */}
         <div ref={carouselRef} style={{
@@ -312,8 +319,8 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Bottom-center: dot indicator + counter (when case study is closed) */}
-          {!sheetOpen && (
+          {/* Bottom-center: dot indicator + counter (when case study is closed, not hero mode) */}
+          {!sheetOpen && !(isMobile && heroMode) && (
             <div style={{
               position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
               display: 'flex', alignItems: 'center', gap: '8px',
@@ -432,9 +439,70 @@ export default function ProjectModal({ project, onClose }) {
               </div>
             </div>
           )}
+
+          {/* Hero mode overlay — close + VIEW CASE STUDY on mobile */}
+          {isMobile && heroMode && (
+            <>
+              {/* Close button — top right */}
+              <button onClick={handleClose} aria-label="Close"
+                style={{
+                  position: 'absolute', top: '12px', right: '12px', zIndex: 10,
+                  background: 'rgba(3, 8, 6, 0.85)', border: '1px solid rgba(0, 255, 102, 0.4)',
+                  color: 'rgba(0, 255, 102, 0.8)', width: '36px', height: '36px',
+                  borderRadius: '50%', cursor: 'pointer', display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  fontFamily: "'Courier New', monospace", fontSize: '16px', lineHeight: 1, padding: 0,
+                  backdropFilter: 'blur(8px)',
+                }}>✕</button>
+
+              {/* Bottom overlay: slide counter + VIEW CASE STUDY */}
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10,
+                padding: '40px 20px 28px',
+                background: 'linear-gradient(transparent, rgba(3, 8, 6, 0.95))',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px',
+              }}>
+                {/* Dot indicators */}
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                  {gallery.map((_, i) => (
+                    <button key={i} onClick={() => setSlideIdx(i)}
+                      style={{
+                        width: i === slideIdx ? '20px' : '6px', height: '6px',
+                        borderRadius: '3px', border: 'none', padding: 0, cursor: 'pointer',
+                        background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
+                        boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
+                        transition: 'all 0.25s',
+                      }} />
+                  ))}
+                  <span style={{
+                    fontFamily: "'Courier New', monospace", fontSize: '10px',
+                    color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.1em',
+                    fontWeight: 700, marginLeft: '6px',
+                  }}>
+                    {String(slideIdx + 1).padStart(2, '0')}/{String(gallery.length).padStart(2, '0')}
+                  </span>
+                </div>
+
+                {/* VIEW CASE STUDY button */}
+                <button onClick={() => { setHeroMode(false); setSheetOpen(true) }}
+                  style={{
+                    fontFamily: "'Courier New', monospace", fontSize: '12px', fontWeight: 700,
+                    letterSpacing: '0.12em', textTransform: 'uppercase',
+                    color: '#030806', background: '#00ff66',
+                    padding: '14px 32px', borderRadius: '2px', border: 'none',
+                    cursor: 'pointer', boxShadow: '0 0 24px rgba(0, 255, 102, 0.4)',
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    width: '100%', maxWidth: '320px', justifyContent: 'center',
+                  }}>
+                  VIEW CASE STUDY <span style={{ fontSize: '10px' }}>▴</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Bottom sheet — flex child so it sits below the carousel, not over it */}
+        {/* Bottom sheet — hidden in hero mode */}
+        {!(isMobile && heroMode) && (
         <div style={{
           background: '#050806',
           borderTop: '1px solid rgba(0, 255, 102, 0.3)',
@@ -549,6 +617,7 @@ export default function ProjectModal({ project, onClose }) {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   )
