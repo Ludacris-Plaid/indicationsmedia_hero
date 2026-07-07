@@ -212,31 +212,44 @@ function StatCard({ stat, index, isVisible }) {
       transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
       transition: `all 0.6s ease ${0.3 + index * 0.08}s`,
     }}>
-      <div style={{
-        fontFamily: "'Space Grotesk', sans-serif",
-        fontSize: '32px',
-        fontWeight: 700,
-        letterSpacing: '-0.02em',
-        marginBottom: '6px',
-        color: '#ffffff',
-        textShadow: '0 0 15px rgba(255, 255, 255, 0.2)',
-      }}>
-        <span style={{
+        <div style={{
           fontFamily: "'Space Grotesk', sans-serif",
           fontSize: '32px',
           fontWeight: 700,
+          letterSpacing: '-0.02em',
+          marginBottom: '6px',
           color: '#ffffff',
+          textShadow: '0 0 15px rgba(255, 255, 255, 0.2)',
         }}>
-          {count}
-        </span>
-        <span style={{
-          fontSize: '32px',
-          fontWeight: 700,
-          color: '#ffffff',
-        }}>
-          +
-        </span>
-      </div>
+          {stat.display ? (
+            <span style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '32px',
+              fontWeight: 700,
+              color: '#ffffff',
+            }}>
+              {stat.display}
+            </span>
+          ) : (
+            <>
+              <span style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '32px',
+                fontWeight: 700,
+                color: '#ffffff',
+              }}>
+                {count}
+              </span>
+              <span style={{
+                fontSize: '32px',
+                fontWeight: 700,
+                color: '#ffffff',
+              }}>
+                +
+              </span>
+            </>
+          )}
+        </div>
       <div style={{
         fontFamily: "'Courier New', monospace",
         fontSize: '10px',
@@ -280,7 +293,7 @@ export default function About() {
     { number: 50, label: 'Projects Deployed' },
     { number: 8, label: 'Years Runtime' },
     { number: 30, label: 'Active Clients' },
-    { number: 247, label: 'Threats Blocked' },
+    { number: 247, label: 'Threats Blocked', display: '24/7' },
   ]
 
   const skills = [
