@@ -153,21 +153,25 @@ export default function CertShowcase({ isVisible }) {
       }} />
 
       {/* Header */}
-      <div style={{
-        fontFamily: "'Courier New', monospace", fontSize: '10px',
-        color: 'rgba(0, 255, 102, 0.5)', letterSpacing: '0.1em',
-        textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px',
-        position: 'relative', zIndex: 1,
-      }}>
-        <span style={{
-          width: '6px', height: '6px', borderRadius: '50%',
-          background: active.color, boxShadow: `0 0 8px ${active.color}`,
-          transition: 'all 0.3s',
-        }} />
-        <span>// COMPETENCY_MATRIX</span>
-        <span style={{ flex: 1 }} />
-        <span style={{ color: 'rgba(200, 16, 46, 0.8)' }}>CERTIFIED: {certs.length}</span>
-      </div>
+        <div style={{
+          fontFamily: "'Courier New', monospace", fontSize: '10px',
+          color: 'rgba(0, 255, 102, 0.5)', letterSpacing: '0.1em',
+          textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px',
+          position: 'relative', zIndex: 1,
+        }}>
+          <span style={{
+            width: '6px', height: '6px', borderRadius: '50%',
+            background: active.color, boxShadow: `0 0 8px ${active.color}`,
+            transition: 'all 0.3s',
+          }} />
+          <span>// COMPETENCY_MATRIX</span>
+          <span className="cursor-blink" style={{
+            width: '7px', height: '12px', background: '#00ff66',
+            display: 'inline-block', opacity: 1,
+          }} />
+          <span style={{ flex: 1 }} />
+          <span style={{ color: 'rgba(200, 16, 46, 0.8)' }}>CERTIFIED: {certs.length}</span>
+        </div>
 
       {/* Central showcase area */}
       <div style={{
@@ -264,27 +268,41 @@ export default function CertShowcase({ isVisible }) {
         <p style={{
           fontFamily: "'Courier New', monospace", fontSize: '10px',
           lineHeight: 1.5, color: 'rgba(255, 255, 255, 0.55)',
-          margin: '0 auto 6px', maxWidth: '300px',
+          margin: '0 auto 8px', maxWidth: '300px',
         }}>{active.description}</p>
-        <a href={active.url} target="_blank" rel="noopener noreferrer"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = active.color
-            e.currentTarget.style.borderColor = active.color
-            e.currentTarget.style.boxShadow = `0 0 8px ${active.color}50`
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'rgba(0, 255, 102, 0.7)'
-            e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.3)'
-            e.currentTarget.style.boxShadow = 'none'
-          }}
-          style={{
-            display: 'inline-block',
-            fontFamily: "'Courier New', monospace", fontSize: '9px',
-            color: 'rgba(0, 255, 102, 0.7)', textDecoration: 'none',
-            border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '2px',
-            padding: '4px 10px', letterSpacing: '0.1em', textTransform: 'uppercase',
-            transition: 'all 0.2s',
-          }}>VIEW_CREDENTIAL ↗</a>
+
+        {/* Cool terminal-style button */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <a href={active.url} target="_blank" rel="noopener noreferrer"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#00ff66'
+              e.currentTarget.style.color = '#030806'
+              e.currentTarget.style.borderColor = '#00ff66'
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.2)'
+              e.currentTarget.style.transform = 'scale(1.03)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = 'rgba(0, 255, 102, 0.85)'
+              e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.4)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              fontFamily: "'Courier New', monospace", fontSize: '11px', fontWeight: 700,
+              color: 'rgba(0, 255, 102, 0.85)', textDecoration: 'none',
+              border: '1px solid rgba(0, 255, 102, 0.4)', borderRadius: '2px',
+              padding: '8px 18px', letterSpacing: '0.15em', textTransform: 'uppercase',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            <span style={{ color: 'rgba(0, 255, 102, 0.5)', fontWeight: 400 }}>$</span>
+            VIEW_CREDENTIAL
+            <span style={{ fontSize: '13px', transition: 'transform 0.2s' }}>↗</span>
+          </a>
+        </div>
       </div>
 
       {/* Cert tile grid */}
@@ -328,6 +346,8 @@ export default function CertShowcase({ isVisible }) {
 
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
       `}</style>
     </div>
   )
