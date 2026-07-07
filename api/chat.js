@@ -34,6 +34,24 @@ async function callFeatherless(messages, systemPrompt) {
   return response
 }
 
+async function callNvidia(messages, systemPrompt) {
+  const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'mistralai/mixtral-8x22b-instruct-v0.1',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      temperature: 0.7,
+      max_tokens: 500,
+    }),
+    signal: AbortSignal.timeout(15000),
+  })
+  return response
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -70,6 +88,10 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
 
     if (!response.ok) {
       response = await callFeatherless(messages, SYSTEM_PROMPT)
+    }
+
+    if (!response.ok) {
+      response = await callNvidia(messages, SYSTEM_PROMPT)
     }
 
     const data = await response.json()

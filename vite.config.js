@@ -6,6 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const deepseekKey = env.DEEPSEEK_API_KEY
   const featherlessKey = env.FEATHERLESS_API_KEY
+  const nvidiaKey = env.NVIDIA_API_KEY
 
   return {
     plugins: [
@@ -103,6 +104,23 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                   },
                   body: JSON.stringify({
                     model: 'mistralai/Mistral-Nemo-Instruct-2407',
+                    messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+                    temperature: 0.7,
+                    max_tokens: 500,
+                  }),
+                  signal: AbortSignal.timeout(15000),
+                })
+              }
+
+              if (!finalResponse.ok) {
+                finalResponse = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${nvidiaKey}`,
+                  },
+                  body: JSON.stringify({
+                    model: 'mistralai/mixtral-8x22b-instruct-v0.1',
                     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                     temperature: 0.7,
                     max_tokens: 500,
