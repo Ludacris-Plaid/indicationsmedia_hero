@@ -890,99 +890,7 @@ const ai = [
   },
 ]
 
-const certs = [
-  {
-    name: 'CompTIA A+',
-    usage: 'hardware, OS, troubleshooting',
-    color: '#FF0000',
-    url: 'https://www.comptia.org/certifications/a',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#FF0000" />
-        <text x="16" y="13" textAnchor="middle" fontSize="6" fontWeight="700" fontFamily="Arial" fill="#FFF">COMPTIA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">A+</text>
-      </>
-    ),
-  },
-  {
-    name: 'CompTIA Network+',
-    usage: 'networking fundamentals',
-    color: '#FF0000',
-    url: 'https://www.comptia.org/certifications/network',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#FF0000" />
-        <text x="16" y="13" textAnchor="middle" fontSize="5.5" fontWeight="700" fontFamily="Arial" fill="#FFF">COMPTIA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="7" fontWeight="700" fontFamily="Arial" fill="#FFF">NET+</text>
-      </>
-    ),
-  },
-  {
-    name: 'CompTIA Security+',
-    usage: 'cybersecurity baseline',
-    color: '#FF0000',
-    url: 'https://www.comptia.org/certifications/security',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#FF0000" />
-        <text x="16" y="13" textAnchor="middle" fontSize="5.5" fontWeight="700" fontFamily="Arial" fill="#FFF">COMPTIA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="7" fontWeight="700" fontFamily="Arial" fill="#FFF">SEC+</text>
-      </>
-    ),
-  },
-  {
-    name: 'CompTIA Linux+',
-    usage: 'Linux administration',
-    color: '#FF0000',
-    url: 'https://www.comptia.org/certifications/linux',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#FF0000" />
-        <text x="16" y="13" textAnchor="middle" fontSize="5.5" fontWeight="700" fontFamily="Arial" fill="#FFF">COMPTIA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="7" fontWeight="700" fontFamily="Arial" fill="#FFF">LNX+</text>
-      </>
-    ),
-  },
-  {
-    name: 'CompTIA PenTest+',
-    usage: 'penetration testing',
-    color: '#FF0000',
-    url: 'https://www.comptia.org/certifications/pentest',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#FF0000" />
-        <text x="16" y="13" textAnchor="middle" fontSize="5.5" fontWeight="700" fontFamily="Arial" fill="#FFF">COMPTIA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="6.5" fontWeight="700" fontFamily="Arial" fill="#FFF">PEN+</text>
-      </>
-    ),
-  },
-  {
-    name: 'C# Diploma',
-    usage: '.NET development',
-    color: '#9B4F96',
-    url: 'https://learn.microsoft.com/en-us/dotnet/csharp/',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#9B4F96" />
-        <text x="16" y="14" textAnchor="middle" fontSize="6" fontWeight="700" fontFamily="Arial" fill="#FFF">DIPLOMA</text>
-        <text x="16" y="22" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">C#</text>
-      </>
-    ),
-  },
-  {
-    name: 'DevOps Diploma',
-    usage: 'CI/CD, automation',
-    color: '#0DB7ED',
-    url: 'https://www.docker.com/',
-    svg: (
-      <>
-        <polygon points="16,4 28,16 16,28 4,16" fill="#0DB7ED" />
-        <text x="16" y="14" textAnchor="middle" fontSize="5.5" fontWeight="700" fontFamily="Arial" fill="#FFF">DEVOPS</text>
-        <path d="M11 19 L15 23 L21 17" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      </>
-    ),
-  },
-]
+function StackGrid({ title, items }) {
 
 function StackGrid({ title, items }) {
   return (
@@ -1052,7 +960,6 @@ export default function TechStack() {
         <StackGrid title="INFRASTRUCTURE" items={infrastructure} />
         <StackGrid title="CRYPTO" items={crypto} />
         <StackGrid title="AI" items={ai} />
-        <StackGrid title="CERTIFICATIONS" items={certs} />
       </div>
     </div>
   )
