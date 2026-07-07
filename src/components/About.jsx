@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import TechStack from './TechStack'
 import ChatBot from './ChatBot'
-import ThreatMonitor from './ThreatMonitor'
+import CertShowcase from './CertShowcase'
 import useIsMobile from '../hooks/useIsMobile'
 
 const useCounterAnimation = (endValue, shouldAnimate, duration = 2000) => {
@@ -482,8 +482,8 @@ export default function About() {
           {/* AI Chatbot */}
           <ChatBot isVisible={isVisible} />
 
-          {/* Threat Monitor */}
-          <ThreatMonitor isVisible={isVisible} />
+          {/* Competency Matrix — CompTIA certs showcase */}
+          <CertShowcase isVisible={isVisible} />
         </div>
       </div>
     </section>
