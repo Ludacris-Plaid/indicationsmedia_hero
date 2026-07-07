@@ -65,9 +65,12 @@ export default function ProjectModal({ project, onClose }) {
     if (e.target === e.currentTarget) handleClose()
   }
 
-  const hostname = (() => {
-    try { return new URL(project.url).hostname.replace(/^www\./, '') }
-    catch { return project.url }
+  const displayHostname = (() => {
+    const slug = project.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+    return `${slug}.com`
   })()
 
   return createPortal(
@@ -138,7 +141,7 @@ export default function ProjectModal({ project, onClose }) {
             }} />
             <span>// PROJECT_CASE</span>
             <span style={{ color: 'rgba(0, 255, 102, 0.3)' }}>·</span>
-            <span style={{ color: 'rgba(0, 255, 102, 0.7)' }}>{hostname}</span>
+            <span style={{ color: 'rgba(0, 255, 102, 0.7)' }}>{displayHostname}</span>
           </div>
           <button
             onClick={handleClose}
@@ -402,7 +405,7 @@ export default function ProjectModal({ project, onClose }) {
           flexShrink: 0,
         }}>
           <span>ESC or click outside to close</span>
-          <span>{project.url ? '↗ ' + hostname : ''}</span>
+          <span>{project.url ? '↗ ' + displayHostname : ''}</span>
         </div>
       </div>
     </div>,
