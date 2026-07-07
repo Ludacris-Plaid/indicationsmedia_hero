@@ -10,10 +10,15 @@ const CATEGORY_COLORS = {
 
 export default function BlogFeed({ isVisible }) {
   const [selectedPost, setSelectedPost] = useState(null)
-  const latest = posts.slice(0, 5)
 
   return (
     <>
+      <style>{`
+        .blog-feed-scroll::-webkit-scrollbar { width: 4px }
+        .blog-feed-scroll::-webkit-scrollbar-track { background: transparent }
+        .blog-feed-scroll::-webkit-scrollbar-thumb { background: rgba(0, 204, 255, 0.2); border-radius: 2px }
+        .blog-feed-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0, 204, 255, 0.4) }
+      `}</style>
       <div style={{
         padding: '20px',
         borderRadius: '2px',
@@ -34,11 +39,11 @@ export default function BlogFeed({ isVisible }) {
           justifyContent: 'space-between',
         }}>
           {'// INTEL_FEED'}
-          <span style={{ color: 'rgba(0, 204, 255, 0.4)' }}>{latest.length}_latest</span>
+          <span style={{ color: 'rgba(0, 204, 255, 0.4)' }}>{posts.length}_entries</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {latest.map((post) => {
+        <div className="blog-feed-scroll" style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '360px', overflowY: 'auto' }}>
+          {posts.map((post) => {
             const catColor = CATEGORY_COLORS[post.category] || '#00ff66'
             return (
               <div
