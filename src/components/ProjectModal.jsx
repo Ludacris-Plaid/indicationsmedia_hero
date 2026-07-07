@@ -226,12 +226,25 @@ export default function ProjectModal({ project, onClose }) {
             <span id="modal-title" style={{ color: project.color || '#00ff66' }}>{project.title.toUpperCase()}</span>
           </div>
           <button onClick={handleClose} aria-label="Close"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(0, 255, 102, 0.15)'
+              e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.7)'
+              e.currentTarget.style.color = '#00ff66'
+              e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 255, 102, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.borderColor = 'rgba(0, 255, 102, 0.25)'
+              e.currentTarget.style.color = 'rgba(0, 255, 102, 0.7)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
             style={{
               background: 'transparent', border: '1px solid rgba(0, 255, 102, 0.25)',
               color: 'rgba(0, 255, 102, 0.7)', width: '30px', height: '30px',
               borderRadius: '2px', cursor: 'pointer', display: 'flex',
               alignItems: 'center', justifyContent: 'center',
               fontFamily: "'Courier New', monospace", fontSize: '14px', lineHeight: 1, padding: 0,
+              transition: 'all 0.15s',
             }}>✕</button>
         </div>
 
