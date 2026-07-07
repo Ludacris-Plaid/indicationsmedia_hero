@@ -188,6 +188,114 @@ const languages = [
       </>
     ),
   },
+  {
+    name: 'C',
+    usage: 'systems, low-level',
+    color: '#A8B9CC',
+    url: 'https://en.wikipedia.org/wiki/C_(programming_language)',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#283593" />
+        <path d="M21 11 Q19 8 14 8 Q9 8 9 16 Q9 24 14 24 Q19 24 21 21" stroke="#FFF" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'C++',
+    usage: 'systems, game dev',
+    color: '#00599C',
+    url: 'https://isocpp.org/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#00599C" />
+        <path d="M14 10 Q11 8 9 11 Q8 14 11 16 Q8 18 9 21 Q11 24 14 22" stroke="#FFF" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <line x1="20" y1="9" x2="20" y2="23" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="16" y1="13" x2="24" y2="13" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="16" y1="19" x2="24" y2="19" stroke="#FFF" strokeWidth="1.5" />
+      </>
+    ),
+  },
+  {
+    name: 'C#',
+    usage: '.NET, enterprise',
+    color: '#9B4F96',
+    url: 'https://learn.microsoft.com/en-us/dotnet/csharp/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#68217A" />
+        <text x="13" y="22" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="Arial" fill="#FFF">C</text>
+        <line x1="18" y1="11" x2="26" y2="11" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="18" y1="15" x2="26" y2="15" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="20" y1="8" x2="24" y2="18" stroke="#FFF" strokeWidth="1.5" />
+      </>
+    ),
+  },
+  {
+    name: 'Ruby',
+    usage: 'web, scripting',
+    color: '#CC342D',
+    url: 'https://www.ruby-lang.org/',
+    svg: (
+      <>
+        <polygon points="16,3 28,11 24,28 8,28 4,11" fill="#CC342D" />
+        <path d="M4 11 L28 11" stroke="#9B1B17" strokeWidth="0.5" opacity="0.5" />
+        <path d="M16 3 L11 28 M16 3 L21 28" stroke="#9B1B17" strokeWidth="0.5" opacity="0.3" />
+        <ellipse cx="16" cy="14" rx="8" ry="3" fill="#FFF" opacity="0.25" />
+      </>
+    ),
+  },
+  {
+    name: 'PHP',
+    usage: 'web backend',
+    color: '#777BB4',
+    url: 'https://www.php.net/',
+    svg: (
+      <>
+        <ellipse cx="16" cy="17" rx="13" ry="11" fill="#777BB4" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">PHP</text>
+        <circle cx="16" cy="8" r="2" fill="#777BB4" />
+      </>
+    ),
+  },
+  {
+    name: 'Swift',
+    usage: 'iOS, macOS',
+    color: '#F05138',
+    url: 'https://www.swift.org/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="5" fill="#F05138" />
+        <path d="M8 22 Q11 9 22 13 L19 16 L23 14 L17 21 L21 19 L14 26 L18 21 L11 24 Z" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Kotlin',
+    usage: 'Android, JVM',
+    color: '#7F52FF',
+    url: 'https://kotlinlang.org/',
+    svg: (
+      <>
+        <polygon points="16,3 28,9.5 28,22.5 16,29 4,22.5 4,9.5" fill="#7F52FF" />
+        <text x="16" y="22" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="Arial" fill="#FFF">K</text>
+      </>
+    ),
+  },
+  {
+    name: 'Bash',
+    usage: 'shell, scripts',
+    color: '#4EAA25',
+    url: 'https://www.gnu.org/software/bash/',
+    svg: (
+      <>
+        <rect x="3" y="6" width="26" height="20" rx="2" fill="#4EAA25" />
+        <circle cx="6" cy="9" r="0.8" fill="#FF5F56" />
+        <circle cx="8.5" cy="9" r="0.8" fill="#FFBD2E" />
+        <circle cx="11" cy="9" r="0.8" fill="#27C93F" />
+        <text x="6" y="22" fontSize="10" fontWeight="700" fontFamily="monospace" fill="#FFF">$ _</text>
+      </>
+    ),
+  },
 ]
 
 const frameworks = [
@@ -265,6 +373,106 @@ const frameworks = [
         <path d="M9 18 L23 18" stroke="#FFFFFF" strokeWidth="1" opacity="0.6" />
         <path d="M11 11 L21 11" stroke="#FFFFFF" strokeWidth="1" opacity="0.4" />
         <path d="M13 22 L19 22 L18 25 L14 25 Z" fill="#FFFFFF" opacity="0.3" />
+      </>
+    ),
+  },
+  {
+    name: 'Express',
+    usage: 'Node.js framework',
+    color: '#FFFFFF',
+    url: 'https://expressjs.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#000" />
+        <text x="16" y="20" textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="Arial" fill="#FFF">ex</text>
+        <path d="M7 23 L25 23" stroke="#FFF" strokeWidth="1" opacity="0.4" />
+      </>
+    ),
+  },
+  {
+    name: 'Django',
+    usage: 'Python web',
+    color: '#092E20',
+    url: 'https://www.djangoproject.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#092E20" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">djan</text>
+      </>
+    ),
+  },
+  {
+    name: 'FastAPI',
+    usage: 'async Python',
+    color: '#009688',
+    url: 'https://fastapi.tiangolo.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#009688" />
+        <text x="16" y="14" textAnchor="middle" fontSize="7" fontWeight="700" fontFamily="Arial" fill="#FFF">FAST</text>
+        <text x="16" y="23" textAnchor="middle" fontSize="7" fontWeight="700" fontFamily="Arial" fill="#FFF">API</text>
+      </>
+    ),
+  },
+  {
+    name: 'Svelte',
+    usage: 'compiled UI',
+    color: '#FF3E00',
+    url: 'https://svelte.dev/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#FF3E00" />
+        <path d="M16 6 Q10 6 8 12 Q9 9 13 9 Q11 9 10 13 Q12 10 16 12 Q13 12 12 16 Q15 13 19 15 Q16 13 19 17 Q21 15 19 21 Q22 17 20 23" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Angular',
+    usage: 'enterprise UI',
+    color: '#DD0031',
+    url: 'https://angular.dev/',
+    svg: (
+      <>
+        <path d="M5 8 L16 4 L27 8 L25 22 L16 28 L7 22 Z" fill="#DD0031" />
+        <path d="M16 4 L16 28 L25 22 L27 8 Z" fill="#C3002F" />
+        <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fontFamily="Arial" fill="#FFF">A</text>
+      </>
+    ),
+  },
+  {
+    name: 'Spring',
+    usage: 'Java framework',
+    color: '#6DB33F',
+    url: 'https://spring.io/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#6DB33F" />
+        <path d="M16 22 Q10 18 10 14 Q10 9 16 9 Q22 9 22 14 Q22 18 16 22" fill="#FFF" />
+        <path d="M16 22 L16 11" stroke="#6DB33F" strokeWidth="1" />
+      </>
+    ),
+  },
+  {
+    name: 'Laravel',
+    usage: 'PHP framework',
+    color: '#FF2D20',
+    url: 'https://laravel.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#FF2D20" />
+        <path d="M9 11 L9 22 L13 22 L13 16 Q13 14 15 14 Q17 14 17 16 L17 22 L21 22 L21 15 Q21 11 16 11 L13 11" fill="#FFF" stroke="#FFF" strokeWidth="0.5" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Nuxt',
+    usage: 'Vue meta-framework',
+    color: '#00DC82',
+    url: 'https://nuxt.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#00DC82" />
+        <path d="M9 22 L13 8 L17 17 L19 13 L23 22" stroke="#030806" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
   },
@@ -394,6 +602,113 @@ const infrastructure = [
         <line x1="4" y1="16" x2="28" y2="16" stroke="#FFF" strokeWidth="0.6" opacity="0.4" />
         <line x1="7" y1="8" x2="25" y2="24" stroke="#FFF" strokeWidth="0.5" opacity="0.3" />
         <line x1="25" y1="8" x2="7" y2="24" stroke="#FFF" strokeWidth="0.5" opacity="0.3" />
+      </>
+    ),
+  },
+  {
+    name: 'Kubernetes',
+    usage: 'container orchestration',
+    color: '#326CE5',
+    url: 'https://kubernetes.io/',
+    svg: (
+      <>
+        <polygon points="16,3 27,9 27,22 16,28 5,22 5,9" fill="#326CE5" />
+        <circle cx="16" cy="16" r="2.5" fill="none" stroke="#FFF" strokeWidth="1.2" />
+        <line x1="16" y1="16" x2="16" y2="9" stroke="#FFF" strokeWidth="1" />
+        <line x1="16" y1="16" x2="21" y2="19" stroke="#FFF" strokeWidth="1" />
+        <line x1="16" y1="16" x2="11" y2="19" stroke="#FFF" strokeWidth="1" />
+        <circle cx="16" cy="9" r="1.5" fill="#FFF" />
+        <circle cx="21" cy="19" r="1.5" fill="#FFF" />
+        <circle cx="11" cy="19" r="1.5" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Redis',
+    usage: 'in-memory cache',
+    color: '#DC382D',
+    url: 'https://redis.io/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#DC382D" />
+        <path d="M16 6 Q11 6 11 10 Q11 14 16 16 Q21 14 21 10 Q21 6 16 6" fill="#FFF" opacity="0.9" />
+        <path d="M16 16 Q11 16 11 20 Q11 24 16 26 Q21 24 21 20 Q21 16 16 16" fill="#FFF" opacity="0.7" />
+      </>
+    ),
+  },
+  {
+    name: 'MongoDB',
+    usage: 'NoSQL database',
+    color: '#47A248',
+    url: 'https://www.mongodb.com/',
+    svg: (
+      <>
+        <path d="M16 4 Q12 8 12 14 Q12 20 16 28 Q20 20 20 14 Q20 8 16 4" fill="#47A248" />
+        <path d="M16 4 Q12 8 12 14 Q12 20 16 28 Q20 20 20 14 Q20 8 16 4" fill="none" stroke="#FFF" strokeWidth="0.5" opacity="0.5" />
+        <line x1="16" y1="4" x2="16" y2="28" stroke="#030806" strokeWidth="0.5" opacity="0.4" />
+      </>
+    ),
+  },
+  {
+    name: 'Terraform',
+    usage: 'infra-as-code',
+    color: '#7B42BC',
+    url: 'https://www.terraform.io/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#7B42BC" />
+        <polygon points="16,7 23,11 23,18 16,22 9,18 9,11" fill="none" stroke="#FFF" strokeWidth="1.5" strokeLinejoin="round" />
+        <line x1="16" y1="7" x2="16" y2="22" stroke="#FFF" strokeWidth="1" />
+        <line x1="9" y1="11" x2="23" y2="18" stroke="#FFF" strokeWidth="0.8" />
+        <line x1="9" y1="18" x2="23" y2="11" stroke="#FFF" strokeWidth="0.8" />
+      </>
+    ),
+  },
+  {
+    name: 'Vercel',
+    usage: 'edge deploys',
+    color: '#FFFFFF',
+    url: 'https://vercel.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#000" />
+        <polygon points="16,7 25,24 7,24" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Cloudflare',
+    usage: 'CDN, security',
+    color: '#F38020',
+    url: 'https://www.cloudflare.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#F38020" />
+        <path d="M8 18 Q6 18 6 16 Q6 14 8 14 Q9 10 13 10 Q17 10 18 14 Q22 14 22 17 Q22 20 19 20 L10 20 Q8 20 8 18" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'GitHub',
+    usage: 'code hosting',
+    color: '#FFFFFF',
+    url: 'https://github.com/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#181717" />
+        <path d="M16 6 C 10 6, 6 10, 6 16 C 6 21, 9 25, 13 26 C 14 26, 14 25, 14 25 L 14 23 C 11 24, 10 22, 10 22 C 9 21, 9 20, 9 20 C 8 19, 9 19, 9 19 C 10 19, 11 20, 11 20 C 12 22, 14 21, 14 21 C 14 20, 15 19, 15 19 C 11 19, 9 17, 9 13 C 9 12, 9 11, 10 10 C 10 10, 10 9, 10 8 C 10 8, 11 8, 13 9 C 14 9, 15 9, 16 9 C 17 9, 18 9, 19 9 C 21 8, 22 8, 22 8 C 22 9, 22 10, 22 10 C 23 11, 23 12, 23 13 C 23 17, 21 19, 17 19 C 18 20, 18 21, 18 22 L 18 25 C 18 25, 18 26, 19 26 C 23 25, 26 21, 26 16 C 26 10, 22 6, 16 6 Z" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Supabase',
+    usage: 'BaaS, postgres',
+    color: '#3FCF8E',
+    url: 'https://supabase.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#3FCF8E" />
+        <path d="M14 7 L8 19 L13 19 L12 25 L20 13 L15 13 L16 7 Z" fill="#030806" stroke="#030806" strokeWidth="0.5" strokeLinejoin="round" />
       </>
     ),
   },
@@ -536,6 +851,93 @@ const crypto = [
         <line x1="16" y1="16" x2="26" y2="16" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
         <line x1="22" y1="16" x2="22" y2="20" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
         <line x1="25" y1="16" x2="25" y2="19" stroke="#030806" strokeWidth="1.8" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Solana',
+    usage: 'SOL, fast L1',
+    color: '#9945FF',
+    url: 'https://solana.com/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#9945FF" />
+        <rect x="7" y="9" width="14" height="2.5" rx="0.5" fill="#FFF" transform="skewX(-20)" />
+        <rect x="9" y="14.5" width="14" height="2.5" rx="0.5" fill="#14F195" transform="skewX(-20)" />
+        <rect x="7" y="20" width="14" height="2.5" rx="0.5" fill="#FFF" transform="skewX(-20)" />
+      </>
+    ),
+  },
+  {
+    name: 'Polkadot',
+    usage: 'DOT, interoperability',
+    color: '#E6007A',
+    url: 'https://polkadot.network/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#E6007A" />
+        <circle cx="16" cy="16" r="8" fill="none" stroke="#FFF" strokeWidth="1" opacity="0.4" />
+        <circle cx="16" cy="9" r="2" fill="#FFF" />
+        <circle cx="16" cy="23" r="2" fill="#FFF" />
+        <circle cx="9" cy="16" r="2" fill="#FFF" />
+        <circle cx="23" cy="16" r="2" fill="#FFF" />
+        <circle cx="16" cy="16" r="2.5" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Chainlink',
+    usage: 'oracles, LINK',
+    color: '#2A5ADA',
+    url: 'https://chain.link/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#2A5ADA" />
+        <polygon points="16,5 25,10 25,22 16,27 7,22 7,10" fill="none" stroke="#FFF" strokeWidth="2" strokeLinejoin="round" />
+        <line x1="11" y1="13" x2="21" y2="13" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="11" y1="16" x2="21" y2="16" stroke="#FFF" strokeWidth="1.5" />
+        <line x1="11" y1="19" x2="21" y2="19" stroke="#FFF" strokeWidth="1.5" />
+      </>
+    ),
+  },
+  {
+    name: 'Zcash',
+    usage: 'ZEC, shielded',
+    color: '#F4B728',
+    url: 'https://z.cash/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#F4B728" />
+        <text x="16" y="22" textAnchor="middle" fontSize="14" fontWeight="700" fontFamily="Arial" fill="#030806">Z</text>
+        <path d="M22 6 L26 10 M22 10 L26 6" stroke="#030806" strokeWidth="1.5" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Filecoin',
+    usage: 'FIL, storage',
+    color: '#0090FF',
+    url: 'https://filecoin.io/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#0090FF" />
+        <circle cx="16" cy="16" r="8" fill="none" stroke="#FFF" strokeWidth="1.5" />
+        <path d="M16 8 L16 24 M8 16 L24 16" stroke="#FFF" strokeWidth="1.5" />
+        <ellipse cx="16" cy="16" rx="3" ry="8" fill="none" stroke="#FFF" strokeWidth="1.2" />
+        <ellipse cx="16" cy="16" rx="8" ry="3" fill="none" stroke="#FFF" strokeWidth="1.2" />
+      </>
+    ),
+  },
+  {
+    name: 'Arweave',
+    usage: 'permanent storage',
+    color: '#000000',
+    url: 'https://arweave.org/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="#000" />
+        <rect x="3" y="3" width="26" height="26" rx="3" fill="none" stroke="#FFF" strokeWidth="0.5" />
+        <path d="M9 22 L16 8 L23 22 L19 22 L16 16 L13 22 Z" fill="#FFF" />
       </>
     ),
   },
