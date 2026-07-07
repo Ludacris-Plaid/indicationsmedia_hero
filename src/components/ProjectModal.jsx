@@ -135,7 +135,7 @@ export default function ProjectModal({ project, onClose }) {
     if (!project) return
     const onKey = (e) => {
       if (e.key === 'Escape') {
-        if (sheetOpen) setSheetOpen(false)
+        if (sheetOpen) { setSheetOpen(false); if (isMobile) setHeroMode(true) }
         else handleClose()
       }
     }
@@ -571,7 +571,7 @@ export default function ProjectModal({ project, onClose }) {
                   gap: '6px', boxShadow: '0 0 12px rgba(0, 255, 102, 0.3)',
                 }}>VISIT PAGE <span style={{ fontSize: '11px' }}>↗</span></a>
               {sheetOpen && (
-                <button onClick={() => setSheetOpen(false)} aria-label="Minimize"
+                <button onClick={() => { setSheetOpen(false); if (isMobile) setHeroMode(true) }} aria-label="Minimize"
                   style={{
                     background: 'rgba(0, 255, 102, 0.08)', border: '1px solid rgba(0, 255, 102, 0.3)',
                     color: '#00ff66', width: '32px', height: '32px',
