@@ -371,6 +371,132 @@ const infrastructure = [
   },
 ]
 
+const crypto = [
+  {
+    name: 'Bitcoin',
+    usage: 'BTC, store of value',
+    color: '#F7931A',
+    url: 'https://bitcoin.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#F7931A" />
+        <path d="M13 7 L13 9 M19 7 L19 9 M13 23 L13 25 M19 23 L19 25" stroke="#F7931A" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M11 11 L17 11 Q20 11 20 13.5 Q20 15.5 17 15.5 L11 15.5" stroke="#FFF" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11 15.5 L18 15.5 Q21 15.5 21 18 Q21 20.5 18 20.5 L11 20.5" stroke="#FFF" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Litecoin',
+    usage: 'LTC, fast payments',
+    color: '#345D9D',
+    url: 'https://litecoin.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#345D9D" />
+        <path d="M17 7 L11.5 18.5 L16 18.5 L13 25 L23 14 L18 14 L21 7 Z" fill="#FFF" stroke="#FFF" strokeWidth="0.8" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Monero',
+    usage: 'XMR, private',
+    color: '#FF6600',
+    url: 'https://www.getmonero.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#FF6600" />
+        <path d="M7 9 L7 23 L10 23 L10 14.5 L13 19 L15 19 L13 19 L15 19 L18 14.5 L18 23 L21 23 L21 14.5 L25 9 L21 9 L16 17 L11 9 Z" fill="#FFF" stroke="#FFF" strokeWidth="0.5" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Ethereum',
+    usage: 'ETH, smart contracts',
+    color: '#627EEA',
+    url: 'https://ethereum.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#627EEA" />
+        <path d="M16.5 5 L16.5 12.5 L23 15 Z" fill="#FFF" opacity="0.6" />
+        <path d="M16.5 5 L10 15 L16.5 12.5 Z" fill="#FFF" />
+        <path d="M16.5 19.5 L16.5 26.5 L23 16.5 Z" fill="#FFF" opacity="0.6" />
+        <path d="M16.5 26.5 L16.5 19.5 L10 16.5 Z" fill="#FFF" />
+        <path d="M16.5 17.5 L23 14 L16.5 11 Z" fill="#FFF" opacity="0.2" />
+        <path d="M16.5 17.5 L10 14 L16.5 11 Z" fill="#FFF" opacity="0.4" />
+      </>
+    ),
+  },
+  {
+    name: 'Solidity',
+    usage: 'smart contracts',
+    color: '#9FA8DA',
+    url: 'https://soliditylang.org/',
+    svg: (
+      <>
+        <rect x="3" y="3" width="26" height="26" rx="4" fill="#363636" />
+        <rect x="3" y="3" width="26" height="26" rx="4" fill="none" stroke="#9FA8DA" strokeWidth="0.5" />
+        <path d="M9 11 Q9 9 11 9 L19 9 Q22 9 22 12 Q22 14 19 14 L13 14 Q10 14 10 16.5 Q10 19 13 19 L20 19 Q23 19 23 21.5" stroke="#9FA8DA" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        <line x1="11" y1="22.5" x2="21" y2="22.5" stroke="#9FA8DA" strokeWidth="1.5" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    name: 'Tor',
+    usage: 'private network',
+    color: '#7D4698',
+    url: 'https://www.torproject.org/',
+    svg: (
+      <>
+        <path d="M16 4 Q9 6 9 14 Q9 19 12 23 Q14 26 16 28 Q18 26 20 23 Q23 19 23 14 Q23 6 16 4 Z" fill="#7D4698" />
+        <path d="M16 7 Q11 9 11 14 Q11 18 13 21 Q14.5 23.5 16 25 Q17.5 23.5 19 21 Q21 18 21 14 Q21 9 16 7 Z" fill="none" stroke="#FFF" strokeWidth="0.5" opacity="0.4" />
+        <path d="M16 7 Q13 12 13 16 Q13 20 16 24" stroke="#FFF" strokeWidth="0.6" fill="none" opacity="0.5" />
+        <path d="M16 7 Q19 12 19 16 Q19 20 16 24" stroke="#FFF" strokeWidth="0.6" fill="none" opacity="0.5" />
+        <line x1="13" y1="16" x2="19" y2="16" stroke="#FFF" strokeWidth="0.6" opacity="0.5" />
+        <path d="M14 11 Q16 13 18 11" stroke="#FFF" strokeWidth="0.5" fill="none" opacity="0.4" />
+      </>
+    ),
+  },
+  {
+    name: 'Telegram',
+    usage: 'bots, channels',
+    color: '#26A5E4',
+    url: 'https://telegram.org/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#26A5E4" />
+        <path d="M8 16 L24 8 L21 24 L17 19 L13 23 L13 18 L22 10 L11 17 Z" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'IPFS',
+    usage: 'decentralized storage',
+    color: '#65C2CB',
+    url: 'https://ipfs.tech/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#65C2CB" />
+        <path d="M16 6 L23 10 L23 16 L20 17.5 L17 16 L17 12 L20 13.5 L20 11 L16 8.5 L12 11 L12 19 L16 21.5 L20 19 L20 17.5 L23 16 L23 22 L16 26 L9 22 L9 10 Z" fill="#030806" opacity="0.5" />
+        <path d="M16 7 L22 10.5 L22 15.5 L19 17 L16 15.5 L16 12.5 L19 14 L19 11.5 L16 9.5 L13 11.5 L13 18.5 L16 20.5 L19 18.5 L19 17 L22 15.5 L22 21.5 L16 25 L10 21.5 L10 10.5 Z" fill="#FFF" />
+      </>
+    ),
+  },
+  {
+    name: 'Polygon',
+    usage: 'ETH L2, scaling',
+    color: '#8247E5',
+    url: 'https://polygon.technology/',
+    svg: (
+      <>
+        <circle cx="16" cy="16" r="13" fill="#8247E5" />
+        <path d="M11 11 L16 8 L21 11 L21 16 L16 19 L11 16 Z" fill="none" stroke="#FFF" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M11 11 L16 14 L21 11 M16 14 L16 19" stroke="#FFF" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+      </>
+    ),
+  },
+]
+
 function StackGrid({ title, items }) {
   return (
     <div>
@@ -437,6 +563,7 @@ export default function TechStack() {
         <StackGrid title="LANGUAGES" items={languages} />
         <StackGrid title="FRAMEWORKS" items={frameworks} />
         <StackGrid title="INFRASTRUCTURE" items={infrastructure} />
+        <StackGrid title="CRYPTO" items={crypto} />
       </div>
     </div>
   )
