@@ -8,9 +8,11 @@ const CATEGORY_COLORS = {
 
 export default function BlogModal({ post, onClose }) {
   const overlayRef = useRef(null)
+  const bodyRef = useRef(null)
 
   useEffect(() => {
     if (!post) return
+    if (bodyRef.current) bodyRef.current.scrollTop = 0
     document.body.style.overflow = 'hidden'
     const handleKey = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handleKey)
@@ -106,7 +108,7 @@ export default function BlogModal({ post, onClose }) {
         </div>
 
         {/* Body */}
-        <div className="blog-modal-body" style={{
+        <div ref={bodyRef} className="blog-modal-body" style={{
           padding: '28px 40px',
           overflowY: 'auto',
           flex: 1,
