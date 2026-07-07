@@ -891,8 +891,6 @@ const ai = [
 ]
 
 function StackGrid({ title, items }) {
-
-function StackGrid({ title, items }) {
   return (
     <div>
       <div style={{
