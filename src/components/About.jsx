@@ -280,7 +280,7 @@ export default function About() {
     { number: 50, label: 'Projects Deployed' },
     { number: 8, label: 'Years Runtime' },
     { number: 30, label: 'Active Clients' },
-    { number: 15, label: 'Awards Compiled' },
+    { number: 247, label: 'Threats Blocked' },
   ]
 
   const skills = [
