@@ -333,7 +333,7 @@ export default function Contact() {
         </div>
 
         {/* Footer */}
-        <div style={{
+        <footer style={{
           borderTop: '1px solid rgba(0, 255, 102, 0.06)',
           paddingTop: isMobile ? '24px' : '32px',
           marginTop: isMobile ? '48px' : '80px',
@@ -407,9 +407,9 @@ export default function Contact() {
             letterSpacing: '0.05em',
             animation: 'copyrightPulse 3s ease-in-out infinite',
           }}>
-            c.2020 INDICATIONS_MEDIA
+            c.2024 INDICATIONS_MEDIA
           </div>
-        </div>
+        </footer>
       </div>
 
       <style>{`

@@ -302,7 +302,7 @@ export default function Navigation({ activeSection, setActiveSection, scrollToTo
   }, [menuOpen])
 
   return (
-    <nav style={{
+    <nav aria-label="Main navigation" style={{
       position: 'fixed',
       top: 0,
       left: 0,

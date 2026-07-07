@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/index.html" }
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/((?!api|_next|assets|favicon|screenshots|images).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

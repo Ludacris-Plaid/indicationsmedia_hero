@@ -82,10 +82,12 @@ export default function App() {
         }}
       >
         <Navigation activeSection={activeSection} setActiveSection={setActiveSection} scrollToTop={scrollToTop} />
-        <Hero />
-        <ProjectGrid onProjectHover={setHoveredProject} hoveredProject={hoveredProject} setActiveSection={setActiveSection} />
-        <About />
-        <Contact />
+        <main>
+          <Hero />
+          <ProjectGrid onProjectHover={setHoveredProject} hoveredProject={hoveredProject} setActiveSection={setActiveSection} />
+          <About />
+          <Contact />
+        </main>
       </div>
     </div>
   )
