@@ -105,6 +105,7 @@ export default function ProjectGrid({ onProjectHover, hoveredProject, setActiveS
       </div>
 
       <ProjectModal
+        key={selectedProject ? selectedProject.id : 'closed'}
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
       />
