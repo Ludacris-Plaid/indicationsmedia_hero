@@ -346,42 +346,90 @@ export default function ProjectModal({ project, onClose }) {
             </div>
           )}
 
-          {/* Right side: vertical dot indicator (when case study is open, in the letterbox space) */}
+          {/* Right side: terminal-style "page log" (when case study is open) */}
           {sheetOpen && (
             <div style={{
-              position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
-              padding: '14px 10px', background: 'rgba(3, 8, 6, 0.9)',
-              border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
+              position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)',
+              display: 'flex', flexDirection: 'column',
+              background: 'rgba(3, 8, 6, 0.92)',
+              border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '4px',
               backdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 255, 102, 0.08)',
               zIndex: 6,
-              transition: 'opacity 0.2s, transform 0.2s',
+              minWidth: '130px',
+              overflow: 'hidden',
             }}>
-              {/* Dots stacked vertically */}
-              {Array.from({ length: gallery.length }).map((_, i) => (
-                <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
-                  style={{
-                    width: '7px', height: i === slideIdx ? '22px' : '7px',
-                    borderRadius: '4px',
-                    background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
-                    border: 'none', padding: 0, cursor: 'pointer', transition: 'all 0.25s',
-                    boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
-                  }} />
-              ))}
-              {/* Divider */}
-              <div style={{ width: '14px', height: '1px', background: 'rgba(0, 255, 102, 0.2)', margin: '2px 0' }} />
-              {/* Counter */}
-              <span style={{
-                fontFamily: "'Courier New', monospace", fontSize: '9px',
-                color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.1em',
-                fontWeight: 700, textAlign: 'center',
-                writingMode: 'vertical-rl',
-                textOrientation: 'mixed',
-                transform: 'rotate(180deg)',
+              {/* Log header */}
+              <div style={{
+                padding: '5px 10px',
+                background: 'rgba(0, 255, 102, 0.06)',
+                borderBottom: '1px solid rgba(0, 255, 102, 0.15)',
+                fontFamily: "'Courier New', monospace", fontSize: '8px',
+                color: 'rgba(0, 255, 102, 0.5)', letterSpacing: '0.12em',
+                display: 'flex', alignItems: 'center', gap: '6px',
               }}>
-                {String(slideIdx + 1).padStart(2, '0')}<span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>/</span>{String(gallery.length).padStart(2, '0')}
-              </span>
+                <span style={{ width: '4px', height: '4px', background: '#00ff66', borderRadius: '50%', boxShadow: '0 0 4px #00ff66' }} />
+                // PAGES
+                <span style={{ flex: 1, textAlign: 'right', color: 'rgba(0, 255, 102, 0.4)' }}>{String(slideIdx + 1).padStart(2, '0')}/{String(gallery.length).padStart(2, '0')}</span>
+              </div>
+
+              {/* Slide entries */}
+              {gallery.map((slide, i) => (
+                <button key={i} onClick={() => setSlideIdx(i)}
+                  onMouseEnter={(e) => {
+                    if (i !== slideIdx) {
+                      e.currentTarget.style.background = 'rgba(0, 255, 102, 0.08)'
+                      e.currentTarget.style.paddingLeft = '14px'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = i === slideIdx ? 'rgba(0, 255, 102, 0.12)' : 'transparent'
+                    e.currentTarget.style.paddingLeft = i === slideIdx ? '12px' : '10px'
+                  }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '7px',
+                    padding: i === slideIdx ? '6px 10px 6px 12px' : '6px 10px',
+                    background: i === slideIdx ? 'rgba(0, 255, 102, 0.12)' : 'transparent',
+                    border: 'none',
+                    borderLeft: i === slideIdx ? '2px solid #00ff66' : '2px solid transparent',
+                    cursor: 'pointer',
+                    fontFamily: "'Courier New', monospace", fontSize: '9px',
+                    color: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.5)',
+                    letterSpacing: '0.05em',
+                    transition: 'all 0.15s',
+                    textAlign: 'left',
+                    width: '100%',
+                  }}
+                >
+                  {/* Status indicator */}
+                  <span style={{
+                    width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
+                    background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.25)',
+                    boxShadow: i === slideIdx ? '0 0 6px #00ff66' : 'none',
+                  }} />
+                  {/* Number */}
+                  <span style={{ fontWeight: 700, minWidth: '14px', opacity: i === slideIdx ? 1 : 0.6 }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {/* Label */}
+                  <span style={{ fontWeight: 600, fontSize: '8.5px', letterSpacing: '0.08em' }}>
+                    {slide.label}
+                  </span>
+                </button>
+              ))}
+
+              {/* Log footer with progress bar */}
+              <div style={{
+                height: '2px', background: 'rgba(0, 255, 102, 0.08)',
+                position: 'relative',
+              }}>
+                <div style={{
+                  position: 'absolute', left: 0, top: 0, bottom: 0,
+                  width: `${((slideIdx + 1) / gallery.length) * 100}%`,
+                  background: '#00ff66', boxShadow: '0 0 6px #00ff66',
+                  transition: 'width 0.3s ease',
+                }} />
+              </div>
             </div>
           )}
         </div>
