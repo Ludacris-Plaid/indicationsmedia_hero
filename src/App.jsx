@@ -4,6 +4,7 @@ import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import ProjectGrid from './components/ProjectGrid'
 import About from './components/About'
+import BlogCarousel from './components/BlogCarousel'
 import Contact from './components/Contact'
 import CustomCursor from './components/CustomCursor'
 import DataStream from './components/DataStream'
@@ -29,7 +30,7 @@ export default function App() {
     const container = scrollRef.current
     if (!container) return
 
-    const sections = ['hero', 'work', 'about', 'contact']
+    const sections = ['hero', 'work', 'about', 'blog', 'contact']
     const observers = []
 
     sections.forEach((id) => {
@@ -78,6 +79,7 @@ export default function App() {
         <Hero />
         <ProjectGrid onProjectHover={setHoveredProject} hoveredProject={hoveredProject} setActiveSection={setActiveSection} />
         <About />
+        <BlogCarousel />
         <Contact />
       </div>
     </div>
