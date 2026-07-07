@@ -84,7 +84,7 @@ function HamburgerIcon({ isOpen }) {
 }
 
 function MobileMenu({ isOpen, onClose, activeSection, setActiveSection, scrollToTop }) {
-  const navItems = ['Home', 'Work', 'About', 'Blog', 'Contact']
+  const navItems = ['Home', 'Work', 'About', 'Contact']
   const [visible, setVisible] = useState(false)
   const [animating, setAnimating] = useState(false)
 
@@ -290,7 +290,7 @@ function MobileMenu({ isOpen, onClose, activeSection, setActiveSection, scrollTo
 export default function Navigation({ activeSection, setActiveSection, scrollToTop }) {
   const isMobile = useIsMobile()
   const [menuOpen, setMenuOpen] = useState(false)
-  const navItems = ['Home', 'Work', 'About', 'Blog', 'Contact']
+  const navItems = ['Home', 'Work', 'About', 'Contact']
 
   useEffect(() => {
     if (menuOpen) {
