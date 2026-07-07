@@ -250,61 +250,34 @@ export default function ProjectModal({ project, onClose }) {
               }}>›</button>
           )}
 
-          {/* Bottom-center: dot indicator + counter pill */}
+          {/* Bottom-center: clean dot indicator + counter */}
           <div style={{
-            position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
-            display: 'flex', alignItems: 'center', gap: '10px',
-            padding: '6px 14px', background: 'rgba(3, 8, 6, 0.85)',
-            border: '1px solid rgba(0, 255, 102, 0.25)', borderRadius: '20px',
-            backdropFilter: 'blur(6px)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+            position: 'absolute', bottom: '14px', left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', alignItems: 'center', gap: '8px',
+            padding: '7px 16px', background: 'rgba(3, 8, 6, 0.85)',
+            border: '1px solid rgba(0, 255, 102, 0.3)', borderRadius: '20px',
+            backdropFilter: 'blur(8px)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 102, 0.05)',
           }}>
             {Array.from({ length: gallery.length }).map((_, i) => (
               <button key={i} onClick={() => setSlideIdx(i)} aria-label={`Go to slide ${i + 1}`}
                 style={{
-                  width: i === slideIdx ? '24px' : '8px', height: '8px',
+                  width: i === slideIdx ? '22px' : '7px', height: '7px',
                   borderRadius: '4px',
                   background: i === slideIdx ? '#00ff66' : 'rgba(0, 255, 102, 0.3)',
                   border: 'none', padding: 0, cursor: 'pointer', transition: 'all 0.25s',
-                  boxShadow: i === slideIdx ? '0 0 10px rgba(0, 255, 102, 0.7)' : 'none',
+                  boxShadow: i === slideIdx ? '0 0 8px rgba(0, 255, 102, 0.8)' : 'none',
                 }} />
             ))}
             <span style={{
               fontFamily: "'Courier New', monospace", fontSize: '10px',
-              color: 'rgba(0, 255, 102, 0.8)', letterSpacing: '0.1em',
-              fontWeight: 700, minWidth: '32px', textAlign: 'center',
+              color: 'rgba(0, 255, 102, 0.9)', letterSpacing: '0.15em',
+              fontWeight: 700, minWidth: '36px', textAlign: 'center',
+              borderLeft: '1px solid rgba(0, 255, 102, 0.2)',
+              paddingLeft: '10px', marginLeft: '2px',
             }}>
-              {String(slideIdx + 1).padStart(2, '0')}/{String(gallery.length).padStart(2, '0')}
+              {String(slideIdx + 1).padStart(2, '0')}<span style={{ color: 'rgba(0, 255, 102, 0.4)' }}>/</span>{String(gallery.length).padStart(2, '0')}
             </span>
-          </div>
-
-          {/* Top-right: progress bar showing position */}
-          <div style={{
-            position: 'absolute', top: '12px', right: '12px',
-            display: 'flex', alignItems: 'center', gap: '6px',
-            padding: '4px 10px', background: 'rgba(3, 8, 6, 0.85)',
-            border: '1px solid rgba(0, 255, 102, 0.25)', borderRadius: '12px',
-            backdropFilter: 'blur(6px)',
-          }}>
-            <span style={{
-              fontFamily: "'Courier New', monospace", fontSize: '9px',
-              color: 'rgba(0, 255, 102, 0.5)', letterSpacing: '0.15em',
-            }}>
-              {gallery[slideIdx]?.label}
-            </span>
-          </div>
-
-          {/* Top progress bar — thin line at very top of carousel */}
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
-            background: 'rgba(0, 255, 102, 0.1)',
-          }}>
-            <div style={{
-              height: '100%', background: '#00ff66',
-              width: `${((slideIdx + 1) / gallery.length) * 100}%`,
-              transition: 'width 0.3s ease',
-              boxShadow: '0 0 6px rgba(0, 255, 102, 0.6)',
-            }} />
           </div>
         </div>
 
