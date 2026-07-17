@@ -177,22 +177,24 @@ async function savePosts(posts) {
   })
 }
 
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
 export default async function handler(req, res) {
-  const CORS_HEADERS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  }
+  setCORS(res)
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).setHeaders(CORS_HEADERS).end()
+    return res.status(200).end()
   }
 
   if (req.method === 'GET') {
     try {
       const posts = await getPosts()
       const sorted = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date))
-      return res.status(200).setHeaders(CORS_HEADERS).json(sorted)
+      return res.status(200).json(sorted)
     } catch (err) {
       return res.status(500).json({ error: 'Failed to load posts' })
     }
@@ -236,7 +238,7 @@ export default async function handler(req, res) {
       posts.push(newPost)
       await savePosts(posts)
 
-      return res.status(201).setHeaders(CORS_HEADERS).json(newPost)
+      return res.status(201).json(newPost)
     } catch (err) {
       return res.status(500).json({ error: 'Failed to save post' })
     }

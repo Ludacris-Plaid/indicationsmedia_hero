@@ -17,6 +17,12 @@ const GEO_MAP = {
   AE: 'UAE', SA: 'Saudi Arabia', CL: 'Chile', CO: 'Colombia', PE: 'Peru',
 }
 
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
 async function getEvents() {
   try {
     const blob = await get(ANALYTICS_PATH, { type: 'json' })
@@ -35,14 +41,10 @@ async function saveEvents(events) {
 }
 
 export default async function handler(req, res) {
-  const CORS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  }
+  setCORS(res)
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).setHeaders(CORS).end()
+    return res.status(200).end()
   }
 
   // POST — record an event
@@ -75,7 +77,7 @@ export default async function handler(req, res) {
       if (events.length > 50000) events.splice(0, events.length - 50000)
       await saveEvents(events)
 
-      return res.status(201).setHeaders(CORS).json({ ok: true })
+      return res.status(201).json({ ok: true })
     } catch (err) {
       return res.status(500).json({ error: err.message || 'Failed to record event' })
     }
@@ -84,7 +86,7 @@ export default async function handler(req, res) {
   // GET — aggregated stats (admin only)
   if (req.method === 'GET') {
     const auth = req.headers.authorization?.replace('Bearer ', '')
-    const pwd = req.query.password
+    const pwd = req.query?.password
     if (auth !== process.env.ADMIN_PASSWORD && pwd !== process.env.ADMIN_PASSWORD) {
       return res.status(401).json({ error: 'Unauthorized' })
     }
@@ -190,7 +192,7 @@ export default async function handler(req, res) {
         ts: e.timestamp,
       }))
 
-      return res.status(200).setHeaders(CORS).json({
+      return res.status(200).json({
         totalVisits,
         uniqueVisitors,
         bounceRate,
