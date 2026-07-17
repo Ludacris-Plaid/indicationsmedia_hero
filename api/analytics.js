@@ -22,10 +22,6 @@ async function getEvents() {
     const blob = await get(ANALYTICS_PATH, { type: 'json' })
     return blob.json || []
   } catch {
-    await put(ANALYTICS_PATH, JSON.stringify([]), {
-      contentType: 'application/json',
-      access: 'public',
-    })
     return []
   }
 }
@@ -34,6 +30,7 @@ async function saveEvents(events) {
   await put(ANALYTICS_PATH, JSON.stringify(events), {
     contentType: 'application/json',
     access: 'public',
+    allowOverwrite: true,
   })
 }
 

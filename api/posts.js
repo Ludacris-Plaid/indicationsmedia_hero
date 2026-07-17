@@ -163,6 +163,7 @@ async function getPosts() {
     await put(POSTS_PATH, JSON.stringify(SEED_POSTS), {
       contentType: 'application/json',
       access: 'public',
+      allowOverwrite: true,
     })
     return SEED_POSTS
   }
@@ -172,6 +173,7 @@ async function savePosts(posts) {
   await put(POSTS_PATH, JSON.stringify(posts), {
     contentType: 'application/json',
     access: 'public',
+    allowOverwrite: true,
   })
 }
 
