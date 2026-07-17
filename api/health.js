@@ -64,7 +64,8 @@ async function checkProvider(provider) {
     clearTimeout(timeout)
 
     const latency = Date.now() - start
-    const status = res.ok ? 'up' : res.status >= 500 ? 'down' : 'degraded'
+    // 401 is expected for auth-required endpoints — means the service is alive
+    const status = res.ok || res.status === 401 ? 'up' : res.status >= 500 ? 'down' : 'degraded'
     return {
       ...provider,
       status,
