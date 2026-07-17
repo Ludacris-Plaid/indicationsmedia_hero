@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import AdminStats from '../components/AdminStats'
+import AdminOps from '../components/AdminOps'
 
 const CATEGORY_OPTIONS = [
   { value: 'SECURITY', color: '#ff3366' },
@@ -376,6 +377,7 @@ export default function AdminPage({ onBack }) {
                 { key: 'posts', label: 'POSTS', icon: '>' },
                 { key: 'create', label: 'CREATE', icon: '+' },
                 { key: 'analytics', label: 'ANALYTICS', icon: '◆' },
+                { key: 'ops', label: 'OPS', icon: '◉' },
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -897,6 +899,12 @@ export default function AdminPage({ onBack }) {
               <AdminStats password={password} />
             )}
             {/* ── END ANALYTICS TAB ── */}
+
+            {/* ── OPS TAB ── */}
+            {adminTab === 'ops' && (
+              <AdminOps password={password} />
+            )}
+            {/* ── END OPS TAB ── */}
           </div>
         )}
       </div>
