@@ -25,7 +25,7 @@ function setCORS(res) {
 
 async function getEvents() {
   try {
-    const blob = await get(ANALYTICS_PATH)
+    const blob = await get(ANALYTICS_PATH, { access: 'public' })
     const res = await fetch(blob.url)
     if (!res.ok) return []
     return await res.json()
