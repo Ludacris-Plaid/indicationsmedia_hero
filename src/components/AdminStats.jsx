@@ -509,6 +509,8 @@ export default function AdminStats({ password }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [lastUpdate, setLastUpdate] = useState(null)
+  const [health, setHealth] = useState(null)
+  const [healthLoading, setHealthLoading] = useState(true)
 
   const fetchStats = async () => {
     try {
@@ -527,10 +529,26 @@ export default function AdminStats({ password }) {
     }
   }
 
+  const fetchHealth = async () => {
+    try {
+      const res = await fetch('/api/health', {
+        headers: { Authorization: `Bearer ${password}` },
+      })
+      if (!res.ok) throw new Error('Health check failed')
+      const data = await res.json()
+      setHealth(data)
+      setHealthLoading(false)
+    } catch {
+      setHealthLoading(false)
+    }
+  }
+
   useEffect(() => {
     fetchStats()
+    fetchHealth()
     const interval = setInterval(fetchStats, 30000)
-    return () => clearInterval(interval)
+    const healthInterval = setInterval(fetchHealth, 60000)
+    return () => { clearInterval(interval); clearInterval(healthInterval) }
   }, [password])
 
   return (
@@ -612,6 +630,175 @@ export default function AdminStats({ password }) {
           }}>
             <SectionHeader label="HOURLY_TRAFFIC_24H" color={C.green} />
             <HourlyChart data={stats.hourlyTraffic} />
+          </div>
+
+          {/* ── API HEALTH STATUS ── */}
+          <div style={{
+            padding: '20px', marginBottom: '28px',
+            background: `${C.cyan}04`, border: `1px solid ${C.cyan}18`,
+            borderRadius: '4px', overflow: 'hidden',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              marginBottom: '16px',
+            }}>
+              <SectionHeader label="API_HEALTH_STATUS" color={C.cyan} />
+              <span style={{
+                fontFamily: C.mono, fontSize: '8px', color: C.muted,
+                letterSpacing: '0.1em',
+              }}>
+                AUTO_REFRESH: 60s
+              </span>
+            </div>
+
+            {healthLoading ? (
+              <div style={{
+                fontFamily: C.mono, fontSize: '11px', color: C.cyan,
+                textAlign: 'center', padding: '20px',
+              }}>
+                {'>'} PINGING_ENDPOINTS...
+              </div>
+            ) : health ? (
+              <>
+                {/* Overall status bar */}
+                <div style={{
+                  padding: '10px 14px', marginBottom: '14px',
+                  background: health.overall === 'operational'
+                    ? 'rgba(0,255,102,0.05)' : 'rgba(255,51,102,0.05)',
+                  border: `1px solid ${health.overall === 'operational' ? 'rgba(0,255,102,0.2)' : 'rgba(255,51,102,0.2)'}`,
+                  borderRadius: '2px',
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                }}>
+                  <span style={{
+                    width: 8, height: 8, borderRadius: '50%',
+                    background: health.overall === 'operational' ? C.green : C.red,
+                    boxShadow: `0 0 8px ${health.overall === 'operational' ? C.green : C.red}`,
+                    animation: 'pulse 2s ease-in-out infinite',
+                  }} />
+                  <span style={{
+                    fontFamily: C.mono, fontSize: '11px', fontWeight: 700,
+                    color: health.overall === 'operational' ? C.green : C.red,
+                    letterSpacing: '0.1em',
+                  }}>
+                    {health.overall === 'operational' ? 'ALL_SYSTEMS_OPERATIONAL' : 'SYSTEM_DEGRADED'}
+                  </span>
+                </div>
+
+                {/* Provider cards */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '10px',
+                }}>
+                  {health.providers.map((p) => {
+                    const statusColor = p.status === 'up' ? C.green
+                      : p.status === 'degraded' ? '#FF6600'
+                      : C.red
+                    const statusLabel = p.status === 'up' ? 'ONLINE'
+                      : p.status === 'degraded' ? 'DEGRADED'
+                      : p.status === 'timeout' ? 'TIMEOUT'
+                      : 'OFFLINE'
+                    return (
+                      <div key={p.id} style={{
+                        padding: '12px 14px',
+                        background: `${statusColor}06`,
+                        border: `1px solid ${statusColor}25`,
+                        borderRadius: '3px',
+                        transition: 'all 0.3s',
+                      }}>
+                        {/* Provider header */}
+                        <div style={{
+                          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                          marginBottom: '8px',
+                        }}>
+                          <span style={{
+                            fontFamily: C.mono, fontSize: '9px', fontWeight: 700,
+                            color: p.color, letterSpacing: '0.08em',
+                          }}>
+                            {p.name}
+                          </span>
+                          <span style={{
+                            fontFamily: C.mono, fontSize: '8px',
+                            color: 'rgba(255,255,255,0.3)',
+                            padding: '1px 6px',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            borderRadius: '2px',
+                          }}>
+                            {p.role}
+                          </span>
+                        </div>
+
+                        {/* Status + latency */}
+                        <div style={{
+                          display: 'flex', alignItems: 'center', gap: '8px',
+                          marginBottom: '6px',
+                        }}>
+                          <span style={{
+                            width: 6, height: 6, borderRadius: '50%',
+                            background: statusColor, boxShadow: `0 0 6px ${statusColor}`,
+                          }} />
+                          <span style={{
+                            fontFamily: C.mono, fontSize: '10px', fontWeight: 700,
+                            color: statusColor, letterSpacing: '0.08em',
+                          }}>
+                            {statusLabel}
+                          </span>
+                          <span style={{
+                            fontFamily: C.mono, fontSize: '9px', color: C.muted,
+                          }}>
+                            {p.latency}ms
+                          </span>
+                        </div>
+
+                        {/* Model */}
+                        <div style={{
+                          fontFamily: C.mono, fontSize: '9px',
+                          color: 'rgba(255,255,255,0.25)',
+                          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                        }}>
+                          {p.model}
+                        </div>
+
+                        {/* Latency sparkline */}
+                        {health.history?.[p.id] && (
+                          <div style={{ marginTop: '8px' }}>
+                            <div style={{
+                              display: 'flex', alignItems: 'end', gap: '2px',
+                              height: '16px',
+                            }}>
+                              {health.history[p.id].slice(-12).map((h, i) => {
+                                const maxLatency = 5000
+                                const barHeight = Math.max(2, Math.min(16, (h.latency / maxLatency) * 16))
+                                const barColor = h.status === 'up' ? C.green
+                                  : h.status === 'degraded' ? '#FF6600'
+                                  : C.red
+                                return (
+                                  <div key={i} style={{
+                                    width: '4px',
+                                    height: `${barHeight}px`,
+                                    background: barColor,
+                                    borderRadius: '1px',
+                                    opacity: 0.5 + (i / 12) * 0.5,
+                                    animation: `barGrow 0.5s ease ${i * 50}ms`,
+                                  }} />
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </>
+            ) : (
+              <div style={{
+                fontFamily: C.mono, fontSize: '11px', color: C.red,
+                textAlign: 'center', padding: '20px',
+              }}>
+                ERR: Health check data unavailable
+              </div>
+            )}
           </div>
 
           {/* ── GEO + PAGES (side by side) ── */}
