@@ -114,8 +114,12 @@ export default function AdminPage({ onBack }) {
       background: '#030806',
       padding: '20px',
       overflowY: 'auto',
+      cursor: 'default',
     }}>
       <style>{`
+        html, html *, html *::before, html *::after { cursor: default !important; }
+        html a, html button, html input, html textarea, html select, html label,
+        html [role="link"], html [role="button"] { cursor: pointer !important; }
         @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
         @keyframes glitchFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
