@@ -25,8 +25,9 @@ function setCORS(res) {
 
 async function getEvents() {
   try {
-    const blob = await get(ANALYTICS_PATH, { type: 'json', access: 'public' })
-    return blob.json || []
+    const blob = await get(ANALYTICS_PATH)
+    const text = await blob.text()
+    return JSON.parse(text)
   } catch {
     return []
   }
@@ -96,20 +97,16 @@ export default async function handler(req, res) {
       const pageviews = events.filter(e => e.type === 'pageview')
       const interactions = events.filter(e => e.type === 'interaction')
 
-      // --- total visits ---
       const totalVisits = pageviews.length
 
-      // --- unique visitors (by IP) ---
       const uniqueIPs = new Set(pageviews.map(e => e.ip))
       const uniqueVisitors = uniqueIPs.size
 
-      // --- bounce rate (visitors with only 1 pageview) ---
       const ipCounts = {}
       pageviews.forEach(e => { ipCounts[e.ip] = (ipCounts[e.ip] || 0) + 1 })
       const bouncers = Object.values(ipCounts).filter(c => c === 1).length
       const bounceRate = uniqueVisitors > 0 ? Math.round((bouncers / uniqueVisitors) * 100) : 0
 
-      // --- avg session duration (gap > 30 min = new session) ---
       let totalDuration = 0
       let sessionCount = 0
       const sortedByIP = {}
@@ -135,7 +132,6 @@ export default async function handler(req, res) {
       })
       const avgDuration = sessionCount > 0 ? Math.round(totalDuration / sessionCount / 1000) : 0
 
-      // --- geographic breakdown ---
       const geoCounts = {}
       pageviews.forEach(e => {
         const code = e.country || 'Unknown'
@@ -151,7 +147,6 @@ export default async function handler(req, res) {
         .sort((a, b) => b.visits - a.visits)
         .slice(0, 20)
 
-      // --- hourly traffic (last 24h) ---
       const now = Date.now()
       const hourlyTraffic = []
       for (let i = 23; i >= 0; i--) {
@@ -166,14 +161,12 @@ export default async function handler(req, res) {
         hourlyTraffic.push({ hour: label, visits: count })
       }
 
-      // --- page breakdown ---
       const pageCounts = {}
       pageviews.forEach(e => { pageCounts[e.page] = (pageCounts[e.page] || 0) + 1 })
       const pageAnalytics = Object.entries(pageCounts)
         .map(([page, views]) => ({ page, views }))
         .sort((a, b) => b.views - a.views)
 
-      // --- interaction breakdown ---
       const interCounts = {}
       interactions.forEach(e => {
         const name = e.meta?.name || e.page
@@ -183,7 +176,6 @@ export default async function handler(req, res) {
         .map(([name, count]) => ({ name, count }))
         .sort((a, b) => b.count - a.count)
 
-      // --- recent events (last 30) ---
       const recent = events.slice(-30).reverse().map(e => ({
         type: e.type,
         page: e.page,
