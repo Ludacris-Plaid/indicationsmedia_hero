@@ -157,7 +157,7 @@ const SEED_POSTS = [
 
 async function getPosts() {
   try {
-    const blob = await get(POSTS_PATH, { type: 'json' })
+    const blob = await get(POSTS_PATH, { type: 'json', access: 'public' })
     return blob.json
   } catch {
     await put(POSTS_PATH, JSON.stringify(SEED_POSTS), {
