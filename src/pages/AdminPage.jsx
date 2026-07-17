@@ -110,7 +110,7 @@ export default function AdminPage({ onBack }) {
 
   return (
     <div style={{
-      minHeight: '100dvh',
+      height: '100dvh',
       background: '#030806',
       padding: '20px',
       overflowY: 'auto',

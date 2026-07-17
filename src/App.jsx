@@ -23,9 +23,13 @@ export default function App() {
   const isAdmin = window.location.pathname === '/admin'
 
   useEffect(() => {
+    if (isAdmin) {
+      document.documentElement.style.overflow = ''
+      return
+    }
     document.documentElement.style.overflow = 'hidden'
     return () => { document.documentElement.style.overflow = '' }
-  }, [])
+  }, [isAdmin])
 
   const scrollToTop = () => {
     if (scrollRef.current) {
