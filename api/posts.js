@@ -181,7 +181,7 @@ async function savePosts(posts) {
 
 function setCORS(res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
 }
 
@@ -243,6 +243,69 @@ export default async function handler(req, res) {
       return res.status(201).json(newPost)
     } catch (err) {
       return res.status(500).json({ error: 'Failed to save post' })
+    }
+  }
+
+  if (req.method === 'PUT') {
+    const authHeader = req.headers.authorization
+    const token = authHeader?.replace('Bearer ', '')
+    if (token !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    try {
+      const { id, title, category, excerpt, content, image, color } = req.body
+      if (!id) {
+        return res.status(400).json({ error: 'Post id is required' })
+      }
+
+      const posts = await getPosts()
+      const idx = posts.findIndex(p => p.id === id)
+      if (idx === -1) {
+        return res.status(404).json({ error: 'Post not found' })
+      }
+
+      posts[idx] = {
+        ...posts[idx],
+        ...(title && { title }),
+        ...(category && { category: category.toUpperCase() }),
+        ...(excerpt !== undefined && { excerpt }),
+        ...(content && { content }),
+        ...(image && { image }),
+        ...(color && { color }),
+      }
+
+      await savePosts(posts)
+      return res.status(200).json(posts[idx])
+    } catch (err) {
+      return res.status(500).json({ error: 'Failed to update post' })
+    }
+  }
+
+  if (req.method === 'DELETE') {
+    const authHeader = req.headers.authorization
+    const token = authHeader?.replace('Bearer ', '')
+    if (token !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    try {
+      const id = parseInt(req.query.id)
+      if (!id) {
+        return res.status(400).json({ error: 'Post id is required' })
+      }
+
+      const posts = await getPosts()
+      const idx = posts.findIndex(p => p.id === id)
+      if (idx === -1) {
+        return res.status(404).json({ error: 'Post not found' })
+      }
+
+      const deleted = posts.splice(idx, 1)[0]
+      await savePosts(posts)
+      return res.status(200).json({ ok: true, deleted })
+    } catch (err) {
+      return res.status(500).json({ error: 'Failed to delete post' })
     }
   }
 

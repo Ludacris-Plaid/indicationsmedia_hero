@@ -45,7 +45,13 @@ export default function AdminPage({ onBack }) {
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [recentPosts, setRecentPosts] = useState([])
-  const [adminTab, setAdminTab] = useState('posts')
+  const [adminTab, setAdminTab] = useState('analytics')
+  const [editingPost, setEditingPost] = useState(null)
+  const [deleteConfirm, setDeleteConfirm] = useState(null)
+  const [editForm, setEditForm] = useState({ title: '', category: 'SECURITY', excerpt: '', content: '', image: '' })
+  const [editSending, setEditSending] = useState(false)
+  const [editResult, setEditResult] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
   const inputRef = useRef(null)
   const passwordRef = useRef(null)
 
@@ -59,14 +65,14 @@ export default function AdminPage({ onBack }) {
   }, [phase])
 
   useEffect(() => {
-    if (authed) loadRecent()
+    if (authed) loadPosts()
   }, [authed])
 
-  const loadRecent = async () => {
+  const loadPosts = async () => {
     try {
       const res = await fetch('/api/posts')
       const data = await res.json()
-      setRecentPosts(data.slice(0, 5))
+      setRecentPosts(data)
     } catch {}
   }
 
@@ -96,7 +102,7 @@ export default function AdminPage({ onBack }) {
         const post = await res.json()
         setResult({ ok: true, post })
         setForm({ title: '', category: 'SECURITY', excerpt: '', content: '', image: '' })
-        loadRecent()
+        loadPosts()
       } else {
         const err = await res.json()
         setResult({ ok: false, error: err.error })
@@ -107,6 +113,73 @@ export default function AdminPage({ onBack }) {
       setSending(false)
     }
   }
+
+  const openEdit = (post) => {
+    setEditingPost(post)
+    setEditForm({
+      title: post.title,
+      category: post.category,
+      excerpt: post.excerpt || '',
+      content: post.content,
+      image: post.image,
+      color: post.color || '',
+    })
+    setEditResult(null)
+  }
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault()
+    if (!editForm.title || !editForm.content || !editForm.image) return
+    setEditSending(true)
+    setEditResult(null)
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${password}`,
+        },
+        body: JSON.stringify({ id: editingPost.id, ...editForm }),
+      })
+      if (res.ok) {
+        setEditResult({ ok: true })
+        loadPosts()
+        setTimeout(() => {
+          setEditingPost(null)
+          setEditResult(null)
+        }, 1200)
+      } else {
+        const err = await res.json()
+        setEditResult({ ok: false, error: err.error })
+      }
+    } catch {
+      setEditResult({ ok: false, error: 'Connection failed' })
+    } finally {
+      setEditSending(false)
+    }
+  }
+
+  const handleDelete = async (post) => {
+    try {
+      const res = await fetch(`/api/posts?id=${post.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${password}`,
+        },
+      })
+      if (res.ok) {
+        setDeleteConfirm(null)
+        loadPosts()
+      }
+    } catch {}
+  }
+
+  const filteredPosts = searchQuery
+    ? recentPosts.filter(p =>
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : recentPosts
 
   return (
     <div style={{
@@ -124,6 +197,7 @@ export default function AdminPage({ onBack }) {
         @keyframes glitchFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0%, 100% { box-shadow: 0 0 8px rgba(0,255,102,0.3); } 50% { box-shadow: 0 0 20px rgba(0,255,102,0.6); } }
+        @keyframes slideIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .admin-input:focus { outline: none; }
         .admin-input::placeholder { color: rgba(0, 255, 102, 0.2); }
         .admin-textarea:focus { outline: none; }
@@ -300,6 +374,7 @@ export default function AdminPage({ onBack }) {
             }}>
               {[
                 { key: 'posts', label: 'POSTS', icon: '>' },
+                { key: 'create', label: 'CREATE', icon: '+' },
                 { key: 'analytics', label: 'ANALYTICS', icon: '◆' },
               ].map((tab) => (
                 <button
@@ -339,9 +414,203 @@ export default function AdminPage({ onBack }) {
 
             {/* ── POSTS TAB ── */}
             {adminTab === 'posts' && <>
-            {/* New Post Form */}
+            {/* Search */}
             <div style={{
-              marginBottom: '32px',
+              marginBottom: '16px',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '8px 12px',
+              background: 'rgba(0, 204, 255, 0.03)',
+              border: '1px solid rgba(0, 204, 255, 0.15)',
+              borderRadius: '2px',
+            }}>
+              <span style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '10px',
+                color: '#00ccff',
+              }}>{'>'} SEARCH:</span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="filter by title or category..."
+                className="admin-input"
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '11px',
+                }}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '9px',
+                    color: '#ff3366',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  [CLEAR]
+                </button>
+              )}
+            </div>
+
+            {/* All Posts */}
+            <div style={{
+              padding: '20px',
+              background: 'rgba(0, 204, 255, 0.02)',
+              border: '1px solid rgba(0, 204, 255, 0.15)',
+              borderRadius: '4px',
+            }}>
+              <div style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '10px',
+                color: '#00ccff',
+                letterSpacing: '0.15em',
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}>
+                <span style={{ width: '6px', height: '6px', background: '#00ccff', borderRadius: '50%' }} />
+                {'> ALL_POSTS'} <span style={{ color: 'rgba(0, 204, 255, 0.4)', fontSize: '9px' }}>[{filteredPosts.length}]</span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {filteredPosts.map((post) => {
+                  const catColor = CATEGORY_OPTIONS.find(c => c.value === post.category)?.color || '#00ff66'
+                  return (
+                    <div key={post.id} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '8px 12px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.05)',
+                      borderRadius: '2px',
+                      transition: 'border-color 0.2s',
+                    }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)'}
+                    >
+                      {/* Category badge */}
+                      <span style={{
+                        fontFamily: "'Courier New', monospace",
+                        fontSize: '8px',
+                        fontWeight: 700,
+                        color: catColor,
+                        padding: '2px 6px',
+                        border: `1px solid ${catColor}40`,
+                        borderRadius: '2px',
+                        minWidth: '60px',
+                        textAlign: 'center',
+                        flexShrink: 0,
+                      }}>
+                        {post.category}
+                      </span>
+                      {/* Title + date */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                          fontSize: '12px',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}>
+                          {post.title}
+                        </div>
+                        <div style={{
+                          fontFamily: "'Courier New', monospace",
+                          fontSize: '9px',
+                          color: 'rgba(255, 255, 255, 0.2)',
+                          marginTop: '2px',
+                        }}>
+                          id:{post.id} · {post.date}
+                        </div>
+                      </div>
+                      {/* Actions */}
+                      <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                        <button
+                          onClick={() => openEdit(post)}
+                          style={{
+                            fontFamily: "'Courier New', monospace",
+                            fontSize: '9px',
+                            fontWeight: 700,
+                            color: '#00ccff',
+                            background: 'rgba(0, 204, 255, 0.08)',
+                            border: '1px solid rgba(0, 204, 255, 0.2)',
+                            borderRadius: '2px',
+                            padding: '4px 10px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            letterSpacing: '0.05em',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor = '#00ccff'
+                            e.currentTarget.style.background = 'rgba(0, 204, 255, 0.15)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.2)'
+                            e.currentTarget.style.background = 'rgba(0, 204, 255, 0.08)'
+                          }}
+                        >
+                          EDIT
+                        </button>
+                        <button
+                          onClick={() => setDeleteConfirm(post)}
+                          style={{
+                            fontFamily: "'Courier New', monospace",
+                            fontSize: '9px',
+                            fontWeight: 700,
+                            color: '#ff3366',
+                            background: 'rgba(255, 51, 102, 0.08)',
+                            border: '1px solid rgba(255, 51, 102, 0.2)',
+                            borderRadius: '2px',
+                            padding: '4px 10px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            letterSpacing: '0.05em',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor = '#ff3366'
+                            e.currentTarget.style.background = 'rgba(255, 51, 102, 0.15)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = 'rgba(255, 51, 102, 0.2)'
+                            e.currentTarget.style.background = 'rgba(255, 51, 102, 0.08)'
+                          }}
+                        >
+                          DEL
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+                {filteredPosts.length === 0 && (
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '11px',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    textAlign: 'center',
+                    padding: '20px',
+                  }}>
+                    {searchQuery ? 'No posts match your search.' : 'No posts yet. Create your first one in the CREATE tab.'}
+                  </div>
+                )}
+              </div>
+            </div>
+            </>}
+            {/* ── END POSTS TAB ── */}
+
+            {/* ── CREATE TAB ── */}
+            {adminTab === 'create' && <>
+            <div style={{
               padding: '24px',
               background: 'rgba(0, 255, 102, 0.02)',
               border: '1px solid rgba(0, 255, 102, 0.15)',
@@ -620,131 +889,8 @@ export default function AdminPage({ onBack }) {
                 </div>
               </form>
             </div>
-
-            {/* Recent Posts */}
-            <div style={{
-              padding: '20px',
-              background: 'rgba(0, 204, 255, 0.02)',
-              border: '1px solid rgba(0, 204, 255, 0.15)',
-              borderRadius: '4px',
-            }}>
-              <div style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: '10px',
-                color: '#00ccff',
-                letterSpacing: '0.15em',
-                marginBottom: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-              }}>
-                <span style={{ width: '6px', height: '6px', background: '#00ccff', borderRadius: '50%' }} />
-                {'> RECENT_ENTRIES'}
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {recentPosts.map((post) => {
-                  const catColor = CATEGORY_OPTIONS.find(c => c.value === post.category)?.color || '#00ff66'
-                  return (
-                    <div key={post.id} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '10px 12px',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      border: '1px solid rgba(255, 255, 255, 0.05)',
-                      borderRadius: '2px',
-                    }}>
-                      <span style={{
-                        fontFamily: "'Courier New', monospace",
-                        fontSize: '8px',
-                        fontWeight: 700,
-                        color: catColor,
-                        padding: '2px 6px',
-                        border: `1px solid ${catColor}40`,
-                        borderRadius: '2px',
-                        minWidth: '60px',
-                        textAlign: 'center',
-                      }}>
-                        {post.category}
-                      </span>
-                      <span style={{
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        fontSize: '12px',
-                        color: 'rgba(255, 255, 255, 0.7)',
-                        flex: 1,
-                      }}>
-                        {post.title}
-                      </span>
-                      <span style={{
-                        fontFamily: "'Courier New', monospace",
-                        fontSize: '9px',
-                        color: 'rgba(255, 255, 255, 0.25)',
-                      }}>
-                        {post.date}
-                      </span>
-                    </div>
-                  )
-                })}
-                {recentPosts.length === 0 && (
-                  <div style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: '11px',
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    textAlign: 'center',
-                    padding: '20px',
-                  }}>
-                    No posts yet. Create your first one above.
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Bot API instructions */}
-            <div style={{
-              marginTop: '24px',
-              padding: '16px',
-              background: 'rgba(124, 58, 237, 0.03)',
-              border: '1px solid rgba(124, 58, 237, 0.2)',
-              borderRadius: '4px',
-            }}>
-              <div style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: '10px',
-                color: '#7C3AED',
-                letterSpacing: '0.15em',
-                marginBottom: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-              }}>
-                <span style={{ width: '6px', height: '6px', background: '#7C3AED', borderRadius: '50%' }} />
-                {'> BOT_API_REFERENCE'}
-              </div>
-              <pre style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: '10px',
-                color: 'rgba(255, 255, 255, 0.5)',
-                lineHeight: 1.7,
-                margin: 0,
-                overflowX: 'auto',
-                whiteSpace: 'pre-wrap',
-              }}>
-{`POST /api/posts
-Authorization: Bearer <ADMIN_PASSWORD>
-Content-Type: application/json
-
-{
-  "title": "Post Title",
-  "category": "SECURITY | CRYPTO | AI",
-  "image": "https://images.unsplash.com/photo-...",
-  "excerpt": "Short summary (optional)",
-  "content": "Full blog post body..."
-}`}
-              </pre>
-            </div>
             </>}
-            {/* ── END POSTS TAB ── */}
+            {/* ── END CREATE TAB ── */}
 
             {/* ── ANALYTICS TAB ── */}
             {adminTab === 'analytics' && (
@@ -754,6 +900,456 @@ Content-Type: application/json
           </div>
         )}
       </div>
+
+      {/* ── EDIT MODAL ── */}
+      {editingPost && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px',
+          backdropFilter: 'blur(4px)',
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '640px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            background: '#0a0e0c',
+            border: '1px solid rgba(0, 204, 255, 0.25)',
+            borderRadius: '4px',
+            padding: '24px',
+            animation: 'slideIn 0.3s ease',
+          }}>
+            {/* Modal header */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '20px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid rgba(0, 204, 255, 0.15)',
+            }}>
+              <div style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#00ccff',
+                letterSpacing: '0.12em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}>
+                <span style={{ width: '6px', height: '6px', background: '#00ccff', borderRadius: '50%' }} />
+                {'> EDITING'} <span style={{ color: 'rgba(0, 204, 255, 0.4)' }}>id:{editingPost.id}</span>
+              </div>
+              <button
+                onClick={() => { setEditingPost(null); setEditResult(null) }}
+                style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '10px',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '2px',
+                  padding: '4px 10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#ff3366'
+                  e.currentTarget.style.color = '#ff3366'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)'
+                }}
+              >
+                [X] CLOSE
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {/* Title */}
+              <div>
+                <label style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '9px',
+                  color: 'rgba(0, 204, 255, 0.5)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '6px',
+                }}>TITLE</label>
+                <input
+                  type="text"
+                  value={editForm.title}
+                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                  required
+                  className="admin-input"
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    background: 'rgba(0, 204, 255, 0.03)',
+                    border: '1px solid rgba(0, 204, 255, 0.15)',
+                    borderRadius: '2px',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '15px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#00ccff'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'}
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '9px',
+                  color: 'rgba(0, 204, 255, 0.5)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '6px',
+                }}>CATEGORY</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {CATEGORY_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setEditForm({ ...editForm, category: opt.value })}
+                      style={{
+                        fontFamily: "'Courier New', monospace",
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        letterSpacing: '0.1em',
+                        padding: '8px 16px',
+                        borderRadius: '2px',
+                        border: `1px solid ${editForm.category === opt.value ? opt.color : 'rgba(255,255,255,0.1)'}`,
+                        background: editForm.category === opt.value ? `${opt.color}15` : 'transparent',
+                        color: editForm.category === opt.value ? opt.color : 'rgba(255,255,255,0.3)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      {opt.value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Image URL */}
+              <div>
+                <label style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '9px',
+                  color: 'rgba(0, 204, 255, 0.5)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '6px',
+                }}>IMAGE_URL <span style={{ color: '#ff3366' }}>*</span></label>
+                <input
+                  type="url"
+                  value={editForm.image}
+                  onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
+                  required
+                  className="admin-input"
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    background: 'rgba(0, 204, 255, 0.03)',
+                    border: '1px solid rgba(0, 204, 255, 0.15)',
+                    borderRadius: '2px',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '12px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#00ccff'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'}
+                />
+                {editForm.image && (
+                  <div style={{
+                    marginTop: '8px',
+                    width: '100%',
+                    height: '80px',
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                    border: '1px solid rgba(0, 204, 255, 0.1)',
+                  }}>
+                    <img
+                      src={editForm.image}
+                      alt="Preview"
+                      onError={(e) => { e.currentTarget.style.display = 'none' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.7)' }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Excerpt */}
+              <div>
+                <label style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '9px',
+                  color: 'rgba(0, 204, 255, 0.5)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '6px',
+                }}>EXCERPT</label>
+                <input
+                  type="text"
+                  value={editForm.excerpt}
+                  onChange={(e) => setEditForm({ ...editForm, excerpt: e.target.value })}
+                  className="admin-input"
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    background: 'rgba(0, 204, 255, 0.03)',
+                    border: '1px solid rgba(0, 204, 255, 0.15)',
+                    borderRadius: '2px',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '12px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#00ccff'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'}
+                />
+              </div>
+
+              {/* Content */}
+              <div>
+                <label style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '9px',
+                  color: 'rgba(0, 204, 255, 0.5)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '6px',
+                }}>CONTENT</label>
+                <textarea
+                  value={editForm.content}
+                  onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
+                  required
+                  rows={12}
+                  className="admin-textarea"
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    background: 'rgba(0, 204, 255, 0.03)',
+                    border: '1px solid rgba(0, 204, 255, 0.15)',
+                    borderRadius: '2px',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '12px',
+                    lineHeight: 1.7,
+                    resize: 'vertical',
+                    minHeight: '180px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = '#00ccff'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(0, 204, 255, 0.15)'}
+                />
+              </div>
+
+              {/* Submit */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '4px' }}>
+                <button
+                  type="submit"
+                  disabled={editSending || !editForm.title || !editForm.content || !editForm.image}
+                  style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    color: '#030806',
+                    background: editSending || !editForm.title || !editForm.content || !editForm.image
+                      ? 'rgba(0, 204, 255, 0.15)'
+                      : '#00ccff',
+                    padding: '12px 28px',
+                    borderRadius: '2px',
+                    border: 'none',
+                    cursor: editSending ? 'default' : 'pointer',
+                    boxShadow: editSending ? 'none' : '0 0 20px rgba(0, 204, 255, 0.3)',
+                    transition: 'all 0.3s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  {editSending ? 'SAVING...' : 'SAVE_CHANGES'}
+                  {!editSending && <span style={{ fontSize: '14px' }}>↗</span>}
+                </button>
+
+                {editResult && (
+                  <div style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '11px',
+                    color: editResult.ok ? '#00ff66' : '#ff3366',
+                    animation: 'fadeInUp 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}>
+                    <span style={{
+                      width: '6px', height: '6px', borderRadius: '50%',
+                      background: editResult.ok ? '#00ff66' : '#ff3366',
+                    }} />
+                    {editResult.ok ? 'UPDATED' : editResult.error}
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── DELETE CONFIRM MODAL ── */}
+      {deleteConfirm && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px',
+          backdropFilter: 'blur(4px)',
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '440px',
+            background: '#0a0e0c',
+            border: '1px solid rgba(255, 51, 102, 0.25)',
+            borderRadius: '4px',
+            padding: '24px',
+            animation: 'slideIn 0.3s ease',
+          }}>
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#ff3366',
+              letterSpacing: '0.12em',
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              <span style={{ width: '6px', height: '6px', background: '#ff3366', borderRadius: '50%' }} />
+              {'> CONFIRM_DELETE'}
+            </div>
+
+            <div style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '14px',
+              color: 'rgba(255, 255, 255, 0.7)',
+              lineHeight: 1.6,
+              marginBottom: '8px',
+            }}>
+              Are you sure you want to delete this post?
+            </div>
+
+            <div style={{
+              padding: '10px 12px',
+              background: 'rgba(255, 51, 102, 0.05)',
+              border: '1px solid rgba(255, 51, 102, 0.15)',
+              borderRadius: '2px',
+              marginBottom: '20px',
+            }}>
+              <div style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '13px',
+                color: 'rgba(255, 255, 255, 0.8)',
+                marginBottom: '4px',
+              }}>
+                {deleteConfirm.title}
+              </div>
+              <div style={{
+                fontFamily: "'Courier New', monospace",
+                fontSize: '9px',
+                color: 'rgba(255, 255, 255, 0.3)',
+              }}>
+                id:{deleteConfirm.id} · {deleteConfirm.category} · {deleteConfirm.date}
+              </div>
+            </div>
+
+            <div style={{
+              fontFamily: "'Courier New', monospace",
+              fontSize: '10px',
+              color: '#ff3366',
+              marginBottom: '16px',
+              padding: '8px 10px',
+              background: 'rgba(255, 51, 102, 0.05)',
+              border: '1px solid rgba(255, 51, 102, 0.1)',
+              borderRadius: '2px',
+            }}>
+              ⚠ This action cannot be undone.
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={() => handleDelete(deleteConfirm)}
+                style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  color: '#fff',
+                  background: '#ff3366',
+                  padding: '10px 24px',
+                  borderRadius: '2px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 16px rgba(255, 51, 102, 0.3)',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 0 24px rgba(255, 51, 102, 0.5)'}
+                onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 0 16px rgba(255, 51, 102, 0.3)'}
+              >
+                DELETE_FOREVER
+              </button>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  background: 'transparent',
+                  padding: '10px 24px',
+                  borderRadius: '2px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.4)'
+                }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
