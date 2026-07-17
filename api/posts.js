@@ -158,8 +158,9 @@ const SEED_POSTS = [
 async function getPosts() {
   try {
     const blob = await get(POSTS_PATH)
-    const text = await blob.text()
-    return JSON.parse(text)
+    const res = await fetch(blob.url)
+    if (!res.ok) throw new Error('Blob fetch failed')
+    return await res.json()
   } catch {
     await put(POSTS_PATH, JSON.stringify(SEED_POSTS), {
       contentType: 'application/json',

@@ -26,8 +26,9 @@ function setCORS(res) {
 async function getEvents() {
   try {
     const blob = await get(ANALYTICS_PATH)
-    const text = await blob.text()
-    return JSON.parse(text)
+    const res = await fetch(blob.url)
+    if (!res.ok) return []
+    return await res.json()
   } catch {
     return []
   }
