@@ -157,8 +157,8 @@ const SEED_POSTS = [
 
 async function getPosts() {
   try {
-    const blob = await get(POSTS_PATH, { access: 'public' })
-    const res = await fetch(blob.url)
+    const result = await get(POSTS_PATH, { access: 'public' })
+    const res = await fetch(result.blob.url)
     if (!res.ok) throw new Error('Blob fetch failed')
     return await res.json()
   } catch {
