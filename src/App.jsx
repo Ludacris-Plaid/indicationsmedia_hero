@@ -11,12 +11,14 @@ import DataStream from './components/DataStream'
 import GlitchOverlay from './components/GlitchOverlay'
 import AdminPage from './pages/AdminPage'
 import useIsMobile from './hooks/useIsMobile'
+import useAnalytics from './hooks/useAnalytics'
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero')
   const [hoveredProject, setHoveredProject] = useState(null)
   const scrollRef = useRef(null)
   const isMobile = useIsMobile()
+  useAnalytics()
 
   const isAdmin = window.location.pathname === '/admin'
 

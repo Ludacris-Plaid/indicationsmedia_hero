@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
+import { marked } from 'marked'
+import CodeBlock from './CodeBlock'
 
 const CATEGORY_COLORS = {
   SECURITY: '#ff3366',
@@ -24,10 +26,38 @@ export default function BlogModal({ post, onClose }) {
     }
   }, [post, onClose])
 
+  const tokens = useMemo(() => {
+    if (!post) return []
+    return marked.lexer(post.content)
+  }, [post])
+
   if (!post) return null
 
   const catColor = CATEGORY_COLORS[post.category] || '#00ff66'
-  const paragraphs = post.content.split('\n\n').filter(Boolean)
+
+  const renderToken = (token, i) => {
+    if (token.type === 'code') {
+      return <CodeBlock key={i} code={token.text} language={token.lang} />
+    }
+    if (token.type === 'paragraph') {
+      const html = marked.parseInline(token.text)
+      return (
+        <p
+          key={i}
+          style={{
+            fontFamily: "'Courier New', monospace",
+            fontSize: '14px',
+            lineHeight: 1.8,
+            color: 'rgba(255, 255, 255, 0.65)',
+            margin: '0 0 20px 0',
+          }}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      )
+    }
+    if (token.type === 'space') return null
+    return null
+  }
 
   return (
     <div
@@ -51,6 +81,15 @@ export default function BlogModal({ post, onClose }) {
         .blog-modal-body::-webkit-scrollbar { width: 4px }
         .blog-modal-body::-webkit-scrollbar-track { background: transparent }
         .blog-modal-body::-webkit-scrollbar-thumb { background: rgba(0, 255, 102, 0.2); border-radius: 2px }
+        .blog-modal-body p code {
+          font-family: 'Courier New', monospace;
+          font-size: 13px;
+          color: #00ff66;
+          background: rgba(0, 255, 102, 0.08);
+          border: 1px solid rgba(0, 255, 102, 0.15);
+          border-radius: 3px;
+          padding: 1px 5px;
+        }
       `}</style>
 
       <div style={{
@@ -109,45 +148,34 @@ export default function BlogModal({ post, onClose }) {
           </h2>
         </div>
 
-        {/* Hero image */}
-        {post.image && (
-          <div style={{
-            width: '100%',
-            height: '240px',
-            overflow: 'hidden',
-            flexShrink: 0,
-          }}>
-            <img
-              src={post.image}
-              alt=""
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-                filter: 'brightness(0.75) saturate(0.85)',
-              }}
-            />
-          </div>
-        )}
-
         {/* Body */}
         <div ref={bodyRef} className="blog-modal-body" style={{
           padding: '28px 40px',
           overflowY: 'auto',
           flex: 1,
         }}>
-          {paragraphs.map((p, i) => (
-            <p key={i} style={{
-              fontFamily: "'Courier New', monospace",
-              fontSize: '14px',
-              lineHeight: 1.8,
-              color: 'rgba(255, 255, 255, 0.65)',
-              margin: '0 0 20px 0',
+          {/* Hero image — scrolls away with content */}
+          {post.image && (
+            <div style={{
+              width: 'calc(100% + 80px)',
+              margin: '-28px -40px 24px',
+              height: '220px',
+              overflow: 'hidden',
             }}>
-              {p}
-            </p>
-          ))}
+              <img
+                src={post.image}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  filter: 'brightness(0.7) saturate(0.85)',
+                }}
+              />
+            </div>
+          )}
+          {tokens.map(renderToken)}
         </div>
 
         {/* Footer */}

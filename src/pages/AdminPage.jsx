@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import AdminStats from '../components/AdminStats'
 
 const CATEGORY_OPTIONS = [
   { value: 'SECURITY', color: '#ff3366' },
@@ -44,6 +45,7 @@ export default function AdminPage({ onBack }) {
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [recentPosts, setRecentPosts] = useState([])
+  const [adminTab, setAdminTab] = useState('posts')
   const inputRef = useRef(null)
   const passwordRef = useRef(null)
 
@@ -266,7 +268,7 @@ export default function AdminPage({ onBack }) {
             {/* Status bar */}
             <div style={{
               display: 'flex', alignItems: 'center', gap: '12px',
-              marginBottom: '24px', padding: '10px 14px',
+              marginBottom: '16px', padding: '10px 14px',
               background: 'rgba(0, 255, 102, 0.03)',
               border: '1px solid rgba(0, 255, 102, 0.1)',
               borderRadius: '2px',
@@ -286,6 +288,53 @@ export default function AdminPage({ onBack }) {
               </span>
             </div>
 
+            {/* Tab Navigation */}
+            <div style={{
+              display: 'flex', gap: '4px', marginBottom: '24px',
+              borderBottom: '1px solid rgba(0, 255, 102, 0.1)',
+              paddingBottom: '0',
+            }}>
+              {[
+                { key: 'posts', label: 'POSTS', icon: '>' },
+                { key: 'analytics', label: 'ANALYTICS', icon: '◆' },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setAdminTab(tab.key)}
+                  style={{
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    padding: '8px 16px',
+                    background: adminTab === tab.key ? 'rgba(0, 255, 102, 0.08)' : 'transparent',
+                    border: '1px solid transparent',
+                    borderBottom: adminTab === tab.key ? '1px solid #030806' : '1px solid transparent',
+                    borderTop: adminTab === tab.key ? '1px solid rgba(0, 255, 102, 0.2)' : '1px solid transparent',
+                    borderLeft: adminTab === tab.key ? '1px solid rgba(0, 255, 102, 0.2)' : '1px solid transparent',
+                    borderRight: adminTab === tab.key ? '1px solid rgba(0, 255, 102, 0.2)' : '1px solid transparent',
+                    borderRadius: '4px 4px 0 0',
+                    color: adminTab === tab.key ? '#00ff66' : 'rgba(0, 255, 102, 0.35)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    marginBottom: '-1px',
+                    display: 'flex', alignItems: 'center', gap: '6px',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (adminTab !== tab.key) e.currentTarget.style.color = 'rgba(0, 255, 102, 0.6)'
+                  }}
+                  onMouseLeave={(e) => {
+                    if (adminTab !== tab.key) e.currentTarget.style.color = 'rgba(0, 255, 102, 0.35)'
+                  }}
+                >
+                  <span style={{ fontSize: '8px' }}>{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* ── POSTS TAB ── */}
+            {adminTab === 'posts' && <>
             {/* New Post Form */}
             <div style={{
               marginBottom: '32px',
@@ -690,6 +739,14 @@ Content-Type: application/json
 }`}
               </pre>
             </div>
+            </>}
+            {/* ── END POSTS TAB ── */}
+
+            {/* ── ANALYTICS TAB ── */}
+            {adminTab === 'analytics' && (
+              <AdminStats password={password} />
+            )}
+            {/* ── END ANALYTICS TAB ── */}
           </div>
         )}
       </div>
