@@ -19,19 +19,8 @@ const GEO_MAP = {
 
 async function getEvents() {
   try {
-    const blob = await get(ANALYTICS_PATH, { access: 'public' })
-    if (!blob) return []
-    const stream = blob.stream
-    if (!stream) return []
-    const reader = stream.getReader()
-    const decoder = new TextDecoder()
-    let result = ''
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      result += decoder.decode(value, { stream: true })
-    }
-    return JSON.parse(result)
+    const blob = await get(ANALYTICS_PATH, { type: 'json' })
+    return blob.json || []
   } catch {
     await put(ANALYTICS_PATH, JSON.stringify([]), {
       contentType: 'application/json',
