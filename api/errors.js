@@ -11,7 +11,8 @@ function setCORS(res) {
 async function readBlob(path, fallback) {
   try {
     const result = await get(path, { access: 'public' })
-    const res = await fetch(result.url)
+    if (!result || !result.blob?.url) return fallback
+    const res = await fetch(result.blob.url)
     if (!res.ok) return fallback
     return await res.json()
   } catch (err) {
