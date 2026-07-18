@@ -2,29 +2,38 @@ import { get, put } from '@vercel/blob'
 
 const ERRORS_PATH = 'analytics/errors.json'
 
-async function getErrorData() {
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
+async function readBlob(path, fallback) {
   try {
-    const result = await get(ERRORS_PATH, { access: 'public' })
-    const res = await fetch(result.blob.url)
-    if (!res.ok) throw new Error('Blob fetch failed')
+    const result = await get(path, { access: 'public' })
+    const res = await fetch(result.url)
+    if (!res.ok) return fallback
     return await res.json()
-  } catch {
-    return { errors: [] }
+  } catch (err) {
+    console.error(`[errors] readBlob(${path}) failed:`, err.message)
+    return fallback
   }
 }
 
-async function saveErrorData(data) {
-  await put(ERRORS_PATH, JSON.stringify(data), {
+async function writeBlob(path, data) {
+  await put(path, JSON.stringify(data), {
     contentType: 'application/json',
     access: 'public',
     allowOverwrite: true,
   })
 }
 
-function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+async function getErrorData() {
+  return readBlob(ERRORS_PATH, { errors: [] })
+}
+
+async function saveErrorData(data) {
+  await writeBlob(ERRORS_PATH, data)
 }
 
 export default async function handler(req, res) {
@@ -46,6 +55,9 @@ export default async function handler(req, res) {
       const now = Date.now()
       const today = new Date().toISOString().slice(0, 10)
 
+      // Guard: if read returned empty structure but we expect data, log warning
+      if (!Array.isArray(data.errors)) data.errors = []
+
       data.errors.push({
         ts: now,
         date: today,
@@ -60,9 +72,10 @@ export default async function handler(req, res) {
       const cutoff = now - 7 * 24 * 60 * 60 * 1000
       data.errors = data.errors.filter(e => e.ts > cutoff)
 
-      saveErrorData(data).catch(() => {})
+      await saveErrorData(data)
       return res.status(200).json({ ok: true })
     } catch (err) {
+      console.error('[errors] POST error:', err)
       return res.status(500).json({ error: 'Failed to log error' })
     }
   }
@@ -73,11 +86,12 @@ export default async function handler(req, res) {
 
   try {
     const data = await getErrorData()
+    const errors = data.errors || []
     const now = Date.now()
 
     // Filter to last 24h
-    const last24h = data.errors.filter(e => e.ts > now - 24 * 60 * 60 * 1000)
-    const last7d = data.errors
+    const last24h = errors.filter(e => e.ts > now - 24 * 60 * 60 * 1000)
+    const last7d = errors
 
     // Group by status code
     const byStatus = {}
@@ -124,6 +138,7 @@ export default async function handler(req, res) {
       recent: last24h.slice(-50).reverse(),
     })
   } catch (err) {
+    console.error('[errors] GET error:', err)
     return res.status(500).json({ error: 'Failed to load errors' })
   }
 }

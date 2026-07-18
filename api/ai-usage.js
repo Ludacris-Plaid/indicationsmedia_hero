@@ -8,29 +8,38 @@ const PRICING = {
   'meta/llama-3.1-8b-instruct': { input: 0.00, output: 0.00, provider: 'nvidia' },
 }
 
-async function getUsageData() {
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
+async function readBlob(path, fallback) {
   try {
-    const result = await get(USAGE_PATH, { access: 'public' })
-    const res = await fetch(result.blob.url)
-    if (!res.ok) throw new Error('Blob fetch failed')
+    const result = await get(path, { access: 'public' })
+    const res = await fetch(result.url)
+    if (!res.ok) return fallback
     return await res.json()
-  } catch {
-    return { calls: [], totals: {} }
+  } catch (err) {
+    console.error(`[ai-usage] readBlob(${path}) failed:`, err.message)
+    return fallback
   }
 }
 
-async function saveUsageData(data) {
-  await put(USAGE_PATH, JSON.stringify(data), {
+async function writeBlob(path, data) {
+  await put(path, JSON.stringify(data), {
     contentType: 'application/json',
     access: 'public',
     allowOverwrite: true,
   })
 }
 
-function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+async function getUsageData() {
+  return readBlob(USAGE_PATH, { calls: [], totals: {} })
+}
+
+async function saveUsageData(data) {
+  await writeBlob(USAGE_PATH, data)
 }
 
 export default async function handler(req, res) {
@@ -50,6 +59,8 @@ export default async function handler(req, res) {
       if (!model) return res.status(400).json({ error: 'model required' })
 
       const data = await getUsageData()
+      if (!Array.isArray(data.calls)) data.calls = []
+
       const now = Date.now()
       const today = new Date().toISOString().slice(0, 10)
 
@@ -87,9 +98,10 @@ export default async function handler(req, res) {
           : 100,
       }
 
-      saveUsageData(data).catch(() => {})
+      await saveUsageData(data)
       return res.status(200).json({ ok: true })
     } catch (err) {
+      console.error('[ai-usage] POST error:', err)
       return res.status(500).json({ error: 'Failed to log usage' })
     }
   }
@@ -97,6 +109,7 @@ export default async function handler(req, res) {
   // GET — return usage stats
   try {
     const data = await getUsageData()
+    const calls = data.calls || []
     const now = Date.now()
 
     // Group by day for last 7 days
@@ -106,7 +119,7 @@ export default async function handler(req, res) {
       daily[d] = { calls: 0, inputTokens: 0, outputTokens: 0, cost: 0, errors: 0 }
     }
 
-    for (const call of data.calls) {
+    for (const call of calls) {
       if (daily[call.date]) {
         daily[call.date].calls++
         daily[call.date].inputTokens += call.inputTokens
@@ -121,7 +134,7 @@ export default async function handler(req, res) {
 
     // Group by model
     const byModel = {}
-    for (const call of data.calls) {
+    for (const call of calls) {
       if (!byModel[call.model]) byModel[call.model] = { calls: 0, inputTokens: 0, outputTokens: 0 }
       byModel[call.model].calls++
       byModel[call.model].inputTokens += call.inputTokens
@@ -129,12 +142,13 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      totals: data.totals,
+      totals: data.totals || {},
       daily,
       byModel,
-      recentCalls: data.calls.slice(-20).reverse(),
+      recentCalls: calls.slice(-20).reverse(),
     })
   } catch (err) {
+    console.error('[ai-usage] GET error:', err)
     return res.status(500).json({ error: 'Failed to load usage' })
   }
 }

@@ -50,6 +50,24 @@ const PROVIDERS = [
   },
 ]
 
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
+async function readBlob(path, fallback) {
+  try {
+    const result = await get(path, { access: 'public' })
+    const res = await fetch(result.url)
+    if (!res.ok) return fallback
+    return await res.json()
+  } catch (err) {
+    console.error(`[health] readBlob(${path}) failed:`, err.message)
+    return fallback
+  }
+}
+
 async function checkProvider(provider) {
   const start = Date.now()
   try {
@@ -57,7 +75,7 @@ async function checkProvider(provider) {
     const timeout = setTimeout(() => controller.abort(), 10000)
 
     const res = await fetch(provider.checkUrl, {
-      method: provider.id === 'analytics-api' ? 'GET' : 'GET',
+      method: 'GET',
       signal: controller.signal,
       headers: { 'User-Agent': 'indications-admin-healthcheck' },
     })
@@ -87,12 +105,6 @@ async function checkProvider(provider) {
   }
 }
 
-function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-}
-
 export default async function handler(req, res) {
   setCORS(res)
 
@@ -117,15 +129,8 @@ export default async function handler(req, res) {
     const overall = allUp ? 'operational' : anyDown ? 'degraded' : 'partial'
 
     // Load previous results from blob to show history
-    let history = {}
-    try {
-      const result = await get(HEALTH_CACHE_PATH, { access: 'public' })
-      const res = await fetch(result.blob.url)
-      if (res.ok) {
-        const cached = await res.json()
-        history = cached.history || {}
-      }
-    } catch {}
+    const cached = await readBlob(HEALTH_CACHE_PATH, { history: {} })
+    const history = cached.history || {}
 
     // Update history (last 20 checks per provider)
     const newHistory = { ...history }
@@ -139,13 +144,13 @@ export default async function handler(req, res) {
       newHistory[r.id] = newHistory[r.id].slice(-20)
     }
 
-    // Cache results (fire and forget)
+    // Cache results — fire and forget with error logging
     const { put } = await import('@vercel/blob')
     put(HEALTH_CACHE_PATH, JSON.stringify({ history: newHistory, lastRun: new Date().toISOString() }), {
       contentType: 'application/json',
       access: 'public',
       allowOverwrite: true,
-    }).catch(() => {})
+    }).catch(err => console.error('[health] Cache save failed:', err.message))
 
     return res.status(200).json({
       overall,
@@ -164,6 +169,7 @@ export default async function handler(req, res) {
       history: newHistory,
     })
   } catch (err) {
+    console.error('[health] Handler error:', err)
     return res.status(500).json({ error: 'Health check failed' })
   }
 }

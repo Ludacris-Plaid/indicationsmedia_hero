@@ -210,6 +210,78 @@ function HourlyChart({ data }) {
   )
 }
 
+/* ───────── daily traffic chart (bar chart, last 30 days) ───────── */
+function DailyChart({ data }) {
+  const max = Math.max(...data.map(d => d.pageviews), 1)
+  const W = 680, H = 120, PAD = 40, CHART_W = W - PAD * 2, CHART_H = H - 30
+  const barW = Math.max(4, (CHART_W / data.length) - 2)
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
+        background: `linear-gradient(90deg, transparent, ${C.cyan}, transparent)`,
+        animation: 'glowBorder 3s ease-in-out infinite', zIndex: 1,
+      }} />
+
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: 'block' }}>
+        <defs>
+          <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={C.cyan} stopOpacity="0.8" />
+            <stop offset="100%" stopColor={C.cyan} stopOpacity="0.2" />
+          </linearGradient>
+          <filter id="barGlow">
+            <feGaussianBlur stdDeviation="1" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
+        {/* grid lines */}
+        {[0, 0.25, 0.5, 0.75, 1].map((pct, i) => (
+          <line key={i}
+            x1={PAD} y1={10 + CHART_H * (1 - pct)} x2={PAD + CHART_W} y2={10 + CHART_H * (1 - pct)}
+            stroke="rgba(0,204,255,0.06)" strokeWidth="1"
+          />
+        ))}
+
+        {/* bars */}
+        {data.map((d, i) => {
+          const x = PAD + (i / data.length) * CHART_W + 1
+          const barH = Math.max(1, (d.pageviews / max) * CHART_H)
+          const y = 10 + CHART_H - barH
+          return (
+            <g key={i}>
+              <rect x={x} y={y} width={barW} height={barH}
+                fill="url(#barGrad)" rx="1" filter="url(#barGlow)"
+                opacity={0.6 + (i / data.length) * 0.4}
+              >
+                <animate attributeName="height" from="0" to={barH} dur="0.6s" begin={`${i * 20}ms`} fill="freeze" />
+                <animate attributeName="y" from={10 + CHART_H} to={y} dur="0.6s" begin={`${i * 20}ms`} fill="freeze" />
+              </rect>
+              {/* interaction dots on top */}
+              {d.interactions > 0 && (
+                <circle cx={x + barW / 2} cy={y - 4} r="2" fill={C.purple} opacity="0.7">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite" />
+                </circle>
+              )}
+            </g>
+          )
+        })}
+
+        {/* x-axis labels (every 5th day) */}
+        {data.filter((_, i) => i % 5 === 0).map((d, i) => (
+          <text key={i}
+            x={PAD + (i * 5 / data.length) * CHART_W + barW / 2} y={H - 2}
+            fill={C.muted} fontSize="7" fontFamily={C.mono} textAnchor="middle"
+          >
+            {d.date.slice(5)}
+          </text>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
 /* ───────── geo map (simplified world with dots) ───────── */
 const COUNTRY_COORDS = {
   US: [20, 35], CA: [22, 22], GB: [47, 24], DE: [50, 26], FR: [48, 28],
@@ -631,6 +703,38 @@ export default function AdminStats({ password }) {
             <SectionHeader label="HOURLY_TRAFFIC_24H" color={C.green} />
             <HourlyChart data={stats.hourlyTraffic} />
           </div>
+
+          {/* ── DAILY TRAFFIC (30 days, from persistent counters) ── */}
+          {stats.dailyTraffic && (
+            <div style={{
+              padding: '20px', marginBottom: '28px',
+              background: `${C.cyan}04`, border: `1px solid ${C.cyan}18`,
+              borderRadius: '4px', overflow: 'hidden',
+            }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                marginBottom: '16px',
+              }}>
+                <SectionHeader label="DAILY_TRAFFIC_30D" color={C.cyan} />
+                {stats.countersFirstEvent && (
+                  <span style={{
+                    fontFamily: C.mono, fontSize: '8px', color: C.muted,
+                    letterSpacing: '0.08em',
+                  }}>
+                    TRACKING_SINCE: {new Date(stats.countersFirstEvent).toLocaleDateString()}
+                  </span>
+                )}
+              </div>
+              <DailyChart data={stats.dailyTraffic} />
+              <div style={{
+                display: 'flex', gap: '16px', marginTop: '10px',
+                fontFamily: C.mono, fontSize: '8px', color: C.muted,
+              }}>
+                <span><span style={{ color: C.cyan }}>■</span> Pageviews</span>
+                <span><span style={{ color: C.purple }}>●</span> Interactions</span>
+              </div>
+            </div>
+          )}
 
           {/* ── API HEALTH STATUS ── */}
           <div style={{

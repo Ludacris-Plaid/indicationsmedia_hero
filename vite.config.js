@@ -1,5 +1,105 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+const LOCAL_EVENTS_FILE = join(process.cwd(), '.analytics-events.json')
+const LOCAL_COUNTERS_FILE = join(process.cwd(), '.analytics-counters.json')
+const MAX_RAW_EVENTS = 10000
+const RETENTION_MS = 30 * 24 * 60 * 60 * 1000
+
+function loadJson(file, fallback) {
+  try {
+    if (existsSync(file)) {
+      const raw = readFileSync(file, 'utf-8')
+      return JSON.parse(raw)
+    }
+  } catch { /* corrupted file */ }
+  return fallback
+}
+
+function saveJson(file, data) {
+  try {
+    writeFileSync(file, JSON.stringify(data), 'utf-8')
+  } catch { /* best effort */ }
+}
+
+function getLocalEvents() {
+  const data = loadJson(LOCAL_EVENTS_FILE, [])
+  return Array.isArray(data) ? data : []
+}
+
+function saveLocalEvents(events) {
+  saveJson(LOCAL_EVENTS_FILE, events)
+}
+
+function getLocalCounters() {
+  return loadJson(LOCAL_COUNTERS_FILE, {
+    totalPageviews: 0,
+    totalInteractions: 0,
+    uniqueVisitors: {},
+    daily: {},
+    pages: {},
+    interactions: {},
+    geo: {},
+    firstEventAt: null,
+    lastEventAt: null,
+    lastUpdated: null,
+  })
+}
+
+function saveLocalCounters(counters) {
+  counters.lastUpdated = new Date().toISOString()
+  saveJson(LOCAL_COUNTERS_FILE, counters)
+}
+
+function updateCounters(counters, event) {
+  const now = Date.now()
+  const today = new Date().toISOString().slice(0, 10)
+  const key = event.type === 'pageview' ? 'totalPageviews' : 'totalInteractions'
+  counters[key]++
+
+  if (!counters.firstEventAt) counters.firstEventAt = event.timestamp
+  counters.lastEventAt = event.timestamp
+
+  if (!counters.daily[today]) {
+    counters.daily[today] = { pageviews: 0, interactions: 0, uniqueIps: {}, geo: {}, pages: {} }
+  }
+  const day = counters.daily[today]
+  if (event.type === 'pageview') {
+    day.pageviews++
+    day.uniqueIps[event.ip] = (day.uniqueIps[event.ip] || 0) + 1
+  } else {
+    day.interactions++
+  }
+
+  const gCode = event.country || 'Unknown'
+  day.geo[gCode] = (day.geo[gCode] || 0) + 1
+  counters.geo[gCode] = (counters.geo[gCode] || 0) + 1
+
+  if (event.type === 'pageview') {
+    day.pages[event.page] = (day.pages[event.page] || 0) + 1
+    counters.pages[event.page] = (counters.pages[event.page] || 0) + 1
+  }
+  if (event.type === 'interaction') {
+    const name = event.meta?.name || event.page
+    counters.interactions[name] = (counters.interactions[name] || 0) + 1
+  }
+
+  counters.uniqueVisitors[event.ip] = now
+
+  // Prune old daily stats and unique visitors
+  const cutoff = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  for (const k of Object.keys(counters.daily)) {
+    if (k < cutoff) delete counters.daily[k]
+  }
+  const ipCutoff = now - 90 * 24 * 60 * 60 * 1000
+  for (const [ip, ts] of Object.entries(counters.uniqueVisitors)) {
+    if (ts < ipCutoff) delete counters.uniqueVisitors[ip]
+  }
+
+  return counters
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -151,9 +251,6 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
       {
         name: 'analytics-api',
         configureServer(server) {
-          // In-memory store for local dev (resets on server restart)
-          const localEvents = []
-
           server.middlewares.use('/api/analytics', async (req, res) => {
             res.setHeader('Content-Type', 'application/json')
             res.setHeader('Access-Control-Allow-Origin', '*')
@@ -176,15 +273,30 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                   res.end(JSON.stringify({ error: 'type and page required' }))
                   return
                 }
-                const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || '127.0.0.1'
+                const ip = (req.headers['x-forwarded-for']?.split(',')[0]?.trim() || '127.0.0.1').replace(/::ffff:/, '')
                 const country = req.headers['x-vercel-ip-country'] || 'US'
-                localEvents.push({
+                const event = {
                   id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
                   type, page, country, ip,
                   userAgent: req.headers['user-agent'] || '',
                   timestamp: new Date().toISOString(),
                   meta: meta || {},
-                })
+                }
+
+                // Update both stores
+                const events = getLocalEvents()
+                const counters = getLocalCounters()
+
+                events.push(event)
+                const cutoff = Date.now() - RETENTION_MS
+                const filtered = events.filter(e => new Date(e.timestamp).getTime() > cutoff)
+                const trimmed = filtered.length > MAX_RAW_EVENTS ? filtered.slice(filtered.length - MAX_RAW_EVENTS) : filtered
+
+                updateCounters(counters, event)
+
+                saveLocalCounters(counters)
+                saveLocalEvents(trimmed)
+
                 res.statusCode = 201
                 res.end(JSON.stringify({ ok: true }))
               } catch {
@@ -195,7 +307,6 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
             }
 
             if (req.method === 'GET') {
-              // Simple password check for local dev
               const auth = req.headers.authorization?.replace('Bearer ', '')
               const pwd = new URL(req.url, 'http://localhost').searchParams.get('password')
               if (auth !== env.ADMIN_PASSWORD && pwd !== env.ADMIN_PASSWORD) {
@@ -204,22 +315,18 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                 return
               }
 
-              const pageviews = localEvents.filter(e => e.type === 'pageview')
-              const interactions = localEvents.filter(e => e.type === 'interaction')
-              const totalVisits = pageviews.length
-              const uniqueIPs = new Set(pageviews.map(e => e.ip))
-              const uniqueVisitors = uniqueIPs.size
+              const events = getLocalEvents()
+              const counters = getLocalCounters()
+              const pageviews = events.filter(e => e.type === 'pageview')
+              const interactions = events.filter(e => e.type === 'interaction')
+
+              const totalVisits = counters.totalPageviews || pageviews.length
+              const uniqueVisitors = Object.keys(counters.uniqueVisitors || {}).length || new Set(pageviews.map(e => e.ip)).size
 
               const ipCounts = {}
               pageviews.forEach(e => { ipCounts[e.ip] = (ipCounts[e.ip] || 0) + 1 })
               const bouncers = Object.values(ipCounts).filter(c => c === 1).length
               const bounceRate = uniqueVisitors > 0 ? Math.round((bouncers / uniqueVisitors) * 100) : 0
-
-              const geoCounts = {}
-              pageviews.forEach(e => { geoCounts[e.country] = (geoCounts[e.country] || 0) + 1 })
-              const geo = Object.entries(geoCounts)
-                .map(([code, visits]) => ({ code, country: code, visits, pct: totalVisits > 0 ? Math.round((visits / totalVisits) * 100) : 0 }))
-                .sort((a, b) => b.visits - a.visits).slice(0, 20)
 
               const now = Date.now()
               const hourlyTraffic = []
@@ -233,24 +340,69 @@ You are professional, knowledgeable, and speak like a senior engineer who enjoys
                 hourlyTraffic.push({ hour: `${String(h).padStart(2, '0')}:00`, visits: count })
               }
 
-              const pageCounts = {}
-              pageviews.forEach(e => { pageCounts[e.page] = (pageCounts[e.page] || 0) + 1 })
-              const pageAnalytics = Object.entries(pageCounts).map(([page, views]) => ({ page, views })).sort((a, b) => b.views - a.views)
+              const dailyTraffic = []
+              for (let i = 29; i >= 0; i--) {
+                const d = new Date(now - i * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+                const dayData = counters.daily?.[d]
+                dailyTraffic.push({
+                  date: d,
+                  pageviews: dayData?.pageviews || 0,
+                  interactions: dayData?.interactions || 0,
+                  uniqueVisitors: dayData?.uniqueIps ? Object.keys(dayData.uniqueIps).length : 0,
+                })
+              }
 
-              const interCounts = {}
-              interactions.forEach(e => { interCounts[e.meta?.name || e.page] = (interCounts[e.meta?.name || e.page] || 0) + 1 })
-              const interactionBreakdown = Object.entries(interCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
+              const geo = Object.entries(counters.geo || {})
+                .map(([code, count]) => ({
+                  code, country: code, visits: count,
+                  pct: totalVisits > 0 ? Math.round((count / totalVisits) * 100) : 0,
+                }))
+                .sort((a, b) => b.visits - a.visits).slice(0, 20)
 
-              const avgDuration = 0 // simplified for local dev
-              const recent = localEvents.slice(-30).reverse().map(e => ({
+              const pageAnalytics = Object.entries(counters.pages || {})
+                .map(([page, views]) => ({ page, views }))
+                .sort((a, b) => b.views - a.views)
+
+              const interactionBreakdown = Object.entries(counters.interactions || {})
+                .map(([name, count]) => ({ name, count }))
+                .sort((a, b) => b.count - a.count)
+
+              let totalDuration = 0
+              let sessionCount = 0
+              const sortedByIP = {}
+              pageviews.forEach(e => {
+                if (!sortedByIP[e.ip]) sortedByIP[e.ip] = []
+                sortedByIP[e.ip].push(new Date(e.timestamp).getTime())
+              })
+              Object.values(sortedByIP).forEach(timestamps => {
+                timestamps.sort((a, b) => a - b)
+                if (timestamps.length < 2) { sessionCount++; return }
+                let sessionStart = timestamps[0]
+                let lastTime = timestamps[0]
+                for (let i = 1; i < timestamps.length; i++) {
+                  if (timestamps[i] - lastTime > 30 * 60 * 1000) {
+                    totalDuration += (lastTime - sessionStart)
+                    sessionCount++
+                    sessionStart = timestamps[i]
+                  }
+                  lastTime = timestamps[i]
+                }
+                totalDuration += (lastTime - sessionStart)
+                sessionCount++
+              })
+              const avgDuration = sessionCount > 0 ? Math.round(totalDuration / sessionCount / 1000) : 0
+
+              const recent = events.slice(-30).reverse().map(e => ({
                 type: e.type, page: e.page, country: e.country, name: e.meta?.name || null, ts: e.timestamp,
               }))
 
               res.statusCode = 200
               res.end(JSON.stringify({
                 totalVisits, uniqueVisitors, bounceRate, avgDuration,
-                geo, hourlyTraffic, pageAnalytics, interactionBreakdown,
-                recent, totalEvents: localEvents.length,
+                geo, hourlyTraffic, dailyTraffic, pageAnalytics, interactionBreakdown,
+                recent, totalEvents: events.length,
+                countersFirstEvent: counters.firstEventAt,
+                countersLastEvent: counters.lastEventAt,
               }))
               return
             }

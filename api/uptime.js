@@ -10,23 +10,38 @@ const TARGETS = [
   { id: 'nvidia', name: 'NVIDIA NIM', url: 'https://integrate.api.nvidia.com/v1/models', color: '#76b900' },
 ]
 
-async function getUptimeData() {
+function setCORS(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+}
+
+async function readBlob(path, fallback) {
   try {
-    const result = await get(UPTIME_PATH, { access: 'public' })
-    const res = await fetch(result.blob.url)
-    if (!res.ok) throw new Error('Blob fetch failed')
+    const result = await get(path, { access: 'public' })
+    const res = await fetch(result.url)
+    if (!res.ok) return fallback
     return await res.json()
-  } catch {
-    return { checks: {} }
+  } catch (err) {
+    console.error(`[uptime] readBlob(${path}) failed:`, err.message)
+    return fallback
   }
 }
 
-async function saveUptimeData(data) {
-  await put(UPTIME_PATH, JSON.stringify(data), {
+async function writeBlob(path, data) {
+  await put(path, JSON.stringify(data), {
     contentType: 'application/json',
     access: 'public',
     allowOverwrite: true,
   })
+}
+
+async function getUptimeData() {
+  return readBlob(UPTIME_PATH, { checks: {} })
+}
+
+async function saveUptimeData(data) {
+  await writeBlob(UPTIME_PATH, data)
 }
 
 async function pingTarget(target) {
@@ -62,12 +77,6 @@ function calcUptimePercent(checks, hours) {
   return Math.round((upCount / recent.length) * 10000) / 100
 }
 
-function setCORS(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-}
-
 export default async function handler(req, res) {
   setCORS(res)
   if (req.method === 'OPTIONS') return res.status(200).end()
@@ -80,6 +89,8 @@ export default async function handler(req, res) {
 
   try {
     const data = await getUptimeData()
+    if (!data.checks || typeof data.checks !== 'object') data.checks = {}
+
     const now = Date.now()
 
     // Ping all targets in parallel
@@ -92,8 +103,8 @@ export default async function handler(req, res) {
       return { ...target, ...ping }
     }))
 
-    // Save asynchronously
-    saveUptimeData(data).catch(() => {})
+    // Save — fire and forget but with error logging
+    saveUptimeData(data).catch(err => console.error('[uptime] Save failed:', err.message))
 
     // Build response with uptime percentages
     const response = results.map(r => ({
@@ -112,6 +123,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ targets: response })
   } catch (err) {
+    console.error('[uptime] Handler error:', err)
     return res.status(500).json({ error: 'Uptime check failed' })
   }
 }
